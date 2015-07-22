@@ -1,0 +1,56 @@
+module precision_version_module
+!----- LGPL --------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This library is free software; you can redistribute it and/or                
+!  modify it under the terms of the GNU Lesser General Public                   
+!  License as published by the Free Software Foundation version 2.1.                 
+!                                                                               
+!  This library is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU            
+!  Lesser General Public License for more details.                              
+!                                                                               
+!  You should have received a copy of the GNU Lesser General Public             
+!  License along with this library; if not, see <http://www.gnu.org/licenses/>. 
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: precision_version.F90.svn 1180 2012-01-13 17:05:48Z mourits $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/utils_lgpl/precision/packages/precision/src/precision_version.F90.svn $
+
+implicit none
+
+    character(*),  public, parameter :: precision_major        = 'VN_MAJOR'
+    character(*),  public, parameter :: precision_minor        = 'VN_MINOR'
+    character(*),  public, parameter :: precision_revision     = 'VN_REVISION'
+    character(*),  public, parameter :: precision_build_number = 'VN_BUILD_NUMBER'
+
+    character(*),  public, parameter :: precision_company      = 'Deltares'
+    character(*),  public, parameter :: precision_company_url  = 'http://www.deltares.nl'
+    character(*),  public, parameter :: precision_program      = 'PRECISION'
+
+    character(*),  public, parameter :: precision_version      = precision_major//'.'//precision_minor//'.'//precision_revision//'.'//precision_build_number
+    character(*),  public, parameter :: precision_version_full = 'Deltares, '//precision_program//' Version '//precision_version//', '//__DATE__//', '//__TIME__
+    character(*),  public, parameter :: precision_version_id   = '@(#)'//precision_version_full
+
+contains
+
+    subroutine getfullversionstring_precision(stringout)
+        character(*), intent(out) :: stringout
+        integer                   :: length
+
+        length = min(len_trim(precision_version_full),len(stringout))
+        stringout = precision_version_id(5:5+length-1)
+    end subroutine getfullversionstring_precision
+
+end module precision_version_module

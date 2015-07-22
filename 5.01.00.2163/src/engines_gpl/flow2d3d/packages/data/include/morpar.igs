@@ -1,0 +1,230 @@
+!----- GPL ---------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This program is free software: you can redistribute it and/or modify         
+!  it under the terms of the GNU General Public License as published by         
+!  the Free Software Foundation version 3.                                      
+!                                                                               
+!  This program is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                
+!  GNU General Public License for more details.                                 
+!                                                                               
+!  You should have received a copy of the GNU General Public License            
+!  along with this program.  If not, see <http://www.gnu.org/licenses/>.        
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: morpar.igs 1983 2012-11-16 14:24:08Z mourits $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/engines_gpl/flow2d3d/packages/data/include/morpar.igs $
+!-------------------------------------------------------------------------------
+!
+! collection of morphology output options
+!
+type moroutputtype
+    integer :: transptype      ! 0 = mass
+                               ! 1 = volume including pores
+                               ! 2 = volume excluding pores
+    logical :: cumavg
+    logical :: dg
+    logical :: dgsd
+    logical :: dm
+    logical :: dzduuvv
+    logical :: fixfac
+    logical :: hidexp
+    logical :: frac
+    logical :: mudfrac
+    logical :: sandfrac
+    logical :: percentiles
+    logical :: sbcuv
+    logical :: sbcuuvv
+    logical :: sbwuv
+    logical :: sbwuuvv
+    logical :: sswuv
+    logical :: sswuuvv
+    logical :: suvcor
+    logical :: sourcesink
+    logical :: taurat
+    logical :: umod
+    logical :: ustar
+    logical :: uuuvvv
+    logical :: zumod
+end type moroutputtype
+
+!
+! sediment transport and morphology numerical settings
+!
+type mornumericstype
+    logical :: upwindbedload            ! switch for upwind bedload in UPWBED
+    logical :: laterallyaveragedbedload ! bedload transport laterally averaged in UPWBED
+    logical :: maximumwaterdepth        ! water depth at zeta point in DWNVEL given by
+                                        ! at least water depth at active velocity points
+end type mornumericstype
+
+!
+! morphology boundary conditions at one open boundary
+!
+type bedbndtype
+    integer                         :: icond    ! bed boundary condition
+                                                !   0: "free boundary" (default if updinf = true)
+                                                !   1: fixed bed level (default if updinf = false)
+                                                !   2: prescribed bed level
+                                                !   3: prescribed bed level change rate
+                                                !   4: prescribed bed load transport rate
+    integer , dimension(4)          :: ibcmt    ! boundary conditions morphology table
+                                                !  (1) table index in bcm file
+                                                !  (2) first index of boundary parameter
+                                                !  (3) number of entries
+                                                !  (4) last used record in table
+    integer                         :: npnt     ! number points of boundary
+    integer , dimension(:), pointer :: idir
+    integer , dimension(:), pointer :: nm
+    integer , dimension(:), pointer :: nxmx
+    real(fp), dimension(:), pointer :: alfa_mag
+    real(fp), dimension(:), pointer :: alfa_dist
+end type bedbndtype
+
+!
+! bed composition boundary conditions at one open boundary
+!
+type cmpbndtype
+    integer                :: icond    ! bed composition condition
+                                       !   0: "free composition"
+                                       !   1: fixed composition (default)
+                                       !   2: prescribed composition
+    integer , dimension(4) :: ibcmt    ! boundary conditions morphology table
+                                       !  (1) table index in bcm file
+                                       !  (2) first index of boundary parameter
+                                       !  (3) number of entries
+                                       !  (4) last used record in table
+end type cmpbndtype
+
+type gd_morpar
+    !
+    ! doubles
+    !
+    real(hp):: morft      !  morphological time
+    real(hp):: morft0     !  initial morphological time
+    !
+    ! single / doubles
+    !
+    real(fp):: morfac     !  morphological timescale factor
+    real(fp):: thresh     !  threshold value for slowing erosion near a fixed layer (m)
+    real(fp):: aksfac     !  factor for setting aks height
+    real(fp):: rwave      !  factor for calculating wave-related roughness from ripple dimensions
+    real(fp):: alfabs     !  factor for longitudinal bed load transport
+    real(fp):: alfabn     !  factor for transverse bed load transport
+    real(fp):: wetslope   !  maximum wet bed slope (used for avalanching)
+    real(fp):: avaltime   !  time scale in seconds (used for avalanching)
+    real(fp):: camax      !  Maximum volumetric reference concentration
+    real(fp):: dzmax      !  factor for limiting source and sink term in EROSED (percentage of water depth)
+    real(fp):: sus        !  flag for calculating suspended load transport
+    real(fp):: bed        !  flag for calculating bed load transport
+    real(fp):: pangle     !  phase lead angle acc. to Nielsen (1992) for TR2004 expression
+    real(fp):: fpco       !  coefficient for phase llag effects
+    real(fp):: factcr     !  calibration factor on Shields' critical shear stress   
+    real(fp):: tmor       !  time where calculation for morphological changes start (minutes relative to ITDATE,00:00:00)
+    real(fp):: thetsd     !  global dry bank erosion factor
+    real(fp):: susw       !  factor for adjusting wave-related suspended sand transport (included in bed-load)
+    real(fp):: sedthr     !  minimum depth for sediment calculations
+    real(fp):: hmaxth     !  maximum depth for setting theta for erosion of dry bank
+    real(fp):: bedw       !  factor for adjusting wave-related bed-load sand transport (included in bed-load)
+    real(fp):: rdw
+    real(fp):: rdc
+    real(fp):: espir      !  factor for weighing the effect of the spiral flow intensity in 2D simulations
+    real(fp):: ashld      !  bed slope direction effect Shields' parameter
+    real(fp):: bshld      !  bed slope direction effect Shields' parameter (power of theta_i)
+    real(fp):: cshld      !  bed slope direction effect Shields' parameter (power of d_i/depth)
+    real(fp):: dshld      !  bed slope direction effect Shields' parameter (power of d_i/d_m)
+    real(fp):: coulfri    !  Coulomb friction coef. in formula of Parker and Andrews
+    real(fp):: flfdrat    !  ratio of lift and drag forces (Fl/Fd) in formula of Parker and Andrews
+    real(fp):: alfpa      !  coulfri/(1+coulfri*flfdrat)
+    real(fp):: thcrpa     !  bed slope theta_cr in formula of Parker and Andrews
+    real(fp):: asklhe     !  exponent alpha in hiding & exposure according Soehngen, Kellermann, Loy
+    real(fp):: mwwjhe     !  exponent m factor in hiding & exposure according Wu, Wang, Jia
+    real(fp):: ttlalpha   !  transport layer thickness: proportionality factor
+    real(fp):: ttlmin     !  transport layer thickness: minimum thickness
+    !
+    ! reals
+    !
+    !
+    ! integers
+    !
+    integer :: mergehandle !  stream handle for communication with mormerge
+    integer :: i10         !  index of D10 in the xx array
+    integer :: i50         !  index of D50 in the xx array
+    integer :: i90         !  index of D90 in the xx array
+    integer :: ihidexp     !  switch for hiding exposure effect
+                           !  1: none
+                           !  2: Egiazaroff (1965)
+                           !  3: Ashida & Michiue (1971), modified Egiazaroff
+                           !  4: Soehngen, Kellermann, Loy (1992)
+                           !  5: Wu, Wang, Jia (2000)
+    integer :: itmor       !  time step where calculation for morphological changes starts
+    integer :: iopkcw
+    integer :: iopsus
+    integer :: islope      !  switch for bed slope effect, according
+                           !  1: none
+                           !  2: Bagnold, Ikeda/Van Rijn
+                           !  3: Van Bendegom, Koch&Flokstra
+    integer :: morfacpar   ! parameter index of morfac in table structure
+                           ! only used when varyingmorfac=true
+    integer :: morfacrec   ! record index of morfac in table structure
+                           ! only used when varyingmorfac=true
+    integer :: morfactable ! table index of morfac in table structure
+                           ! only used when varyingmorfac=true
+    integer :: nxx         !  number of percentiles in xx
+    integer :: subiw       ! wave period subdivision in TR2004    
+    integer :: ttlform     !  switch for thickness of transport layer
+                           !  1: fixed (user-spec.) thickness
+                           !  2: 
+                           !  3: 
+    integer :: telform     !  switch for thickness of exchange layer
+                           !  1: fixed (user-spec.) thickness
+    !
+    ! pointers
+    !
+    type (handletype)                             :: bcmfile    ! tables containing morphological boundary conditions
+    type (handletype)                             :: morfacfile ! table  containing morphological factor
+    type (moroutputtype)                , pointer :: moroutput  ! structure containing morphology output options
+    type (mornumericstype)              , pointer :: mornum     ! structure containing numerical settings
+    type (bedbndtype)     , dimension(:), pointer :: morbnd     ! transport / bed level boundary parameters
+    type (cmpbndtype)     , dimension(:), pointer :: cmpbnd     ! bed composition boundary parameters
+    real(hp)              , dimension(:), pointer :: mergebuf   ! buffer array for communcation with mormerge
+    real(fp)              , dimension(:), pointer :: xx         ! percentile xx (dxx stored in erosed.ig*)
+    ! 
+    ! logicals
+    !
+    logical :: bedupd              !  flag for doing bed level updates
+    logical :: cmpupd              !  flag for doing composition (underlayer) updates
+    logical :: eqmbcsand           !  flag for setting equilibrium sediment concentration profiles at the open boundaries for sand sediment
+    logical :: eqmbcmud            !  flag for setting equilibrium sediment concentration profiles at the open boundaries for mud sediment
+    logical :: densin              !  Flag=TRUE when sediment is included in fluid density calculations flag for including sediment in fluid density calculations
+    logical :: rouse               !  flag for setting equilibrium concentrations to standard Rouse profiles
+    logical :: epspar
+    logical :: eulerisoglm         !  Flag for using eulerian velocities for suspended transports    
+    logical :: glmisoeuler         !  Flag for using GLM velocities for bedload transports and reference concentrations   
+    logical :: updinf              !  Flag for updating bottom at inflow openboundaries
+    logical :: neglectentrainment  !  flag for neglecting entrainment and suspension in the mass balance (mass balance based on suspended load fluxes)
+    logical :: oldmudfrac          !  true: use the old method for the mud source term calculation (without Frac multiplication)
+    logical :: varyingmorfac       !  true: morfac specified in a time serie file
+    logical :: multi               !  Flag for merging bottoms of different parallel runs
+    !
+    ! characters
+    !
+    character(256) :: bcmfilnam    !  name of input  file for morphological boundary conditions
+    character(256) :: flcomp       !  name of file containing initial bed composition
+    character(256) :: mmsyncfilnam !  name of output file for synchronisation of mormerge run
+    character(256) :: telfil       !  name of file containing exchange layer thickness
+    character(256) :: ttlfil       !  name of file containing transport layer thickness
+    !
+end type gd_morpar

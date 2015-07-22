@@ -1,0 +1,19 @@
+//------------------------------------------------------------------------------
+
+README for Delft-Stream libsrc directory
+
+Irv.Elshoff@deltares.nl
+24 oct 05
+
+
+The file "stream.cpp" is the only souce file for the Delft-Stream library.
+It support both TCP/IP and MPI mode, and contains both C and C++ MPI bindings.
+The latter are MPI-2, and will prevail over the C bindings once MPI-2
+becomes more widely implemented.
+
+The file "stream-mpi.cpp" is a test/debug version that only supports MPI
+and uses the MPI-1.2 C bindings.
+
+
+
+//------------------------------------------------------------------------------

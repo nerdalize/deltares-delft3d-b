@@ -1,0 +1,73 @@
+!----- GPL ---------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This program is free software: you can redistribute it and/or modify         
+!  it under the terms of the GNU General Public License as published by         
+!  the Free Software Foundation version 3.                                      
+!                                                                               
+!  This program is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                
+!  GNU General Public License for more details.                                 
+!                                                                               
+!  You should have received a copy of the GNU General Public License            
+!  along with this program.  If not, see <http://www.gnu.org/licenses/>.        
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: eqtran.igs 1180 2012-01-13 17:05:48Z mourits $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/engines_gpl/flow2d3d/packages/data/include/eqtran.igs $$
+!-------------------------------------------------------------------------------
+type sv_eqtran
+    !
+    ! doubles
+    !
+    ! reals
+    !
+    ! integers
+    !
+    integer                                 :: max_integers_settle !  Maximum number of integers which can be delivered to shared library
+    integer                                 :: max_reals_settle    !  Maximum number of reals which can be delivered to shared library
+    integer                                 :: max_strings_settle  !  Maximum number of character strings which can be delivered to shared library
+    !
+    integer                                 :: max_integers !  Maximum number of integers which can be delivered to shared library
+    integer                                 :: max_reals    !  Maximum number of reals which can be delivered to shared library
+    integer                                 :: max_strings  !  Maximum number of character strings which can be delivered to shared library
+    integer                                 :: npar         !  Maximum number of sediment transport formula parameters
+    !
+    ! pointers
+    !
+    character(256)   , dimension(:)  , pointer :: dll_function_settle !  Name of subroutine in DLL that calculates the Settling velocity
+    character(256)   , dimension(:)  , pointer :: dll_name_settle     !  Name of DLL that contains the Settling velocity subroutine
+    integer(pntrsize), dimension(:)  , pointer :: dll_handle_settle   !  Handle of DLL that contains the Settling velocity subroutine
+    integer          , dimension(:)  , pointer :: dll_integers_settle !  Input integer array to shared library
+    real(hp)         , dimension(:)  , pointer :: dll_reals_settle    !  Input real array to shared library
+    character(256)   , dimension(:)  , pointer :: dll_strings_settle  !  Input character string array to shared library
+    character(256)   , dimension(:)  , pointer :: dll_usrfil_settle   !  Name of input file to be passed to subroutine in DLL
+    !
+    character(256)   , dimension(:)  , pointer :: dll_function !  Name of subroutine in DLL that calculates the Sediment transport formula
+    integer(pntrsize), dimension(:)  , pointer :: dll_handle   !  DLL containing Sediment transport formula
+    integer          , dimension(:)  , pointer :: dll_integers !  Input integer array to shared library
+    real(hp)         , dimension(:)  , pointer :: dll_reals    !  Input real array to shared library
+    character(256)   , dimension(:)  , pointer :: dll_strings  !  Input character string array to shared library
+    character(256)   , dimension(:)  , pointer :: dll_usrfil   !  Name of input file to be passed to subroutine in DLL
+    character(256)   , dimension(:)  , pointer :: flstrn       !  Sediment transport formula file names
+    integer          , dimension(:)  , pointer :: iform        !  Numbers of sediment transport formulae
+    character(256)   , dimension(:)  , pointer :: name         !  Sediment transport formula names
+    real(fp)         , dimension(:,:), pointer :: par          !  Sediment transport formula parameters
+    ! 
+    ! logicals
+    !
+    logical :: initlz
+    !
+    ! characters
+end type sv_eqtran

@@ -1,0 +1,28 @@
+#keep the includes
+
+# these variables will become obsolete when the modules below are autoconfiscated
+# maybe we should restructure this.
+MAKE_TARGETDIR=wlinux
+MAKE_PLATFORM=wlinux
+
+#C++  includes, these should be removed.
+
+#C flags
+AM_CFLAGS = \
+    -I$(top_builddir)/include -DFTN_UNDERSCORE -DLINUX -D_FILE_OFFSET_BITS=64 -DPTR8 -DINTEL
+AM_CXXFLAGS = \
+    -I$(top_builddir)/include -DFTN_UNDERSCORE -DLINUX -D_FILE_OFFSET_BITS=64 -DPTR8 -DINTEL
+
+
+#build in different subdirectories
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+#strip: all
+#	test -z $(PROGRAMS) || echo "trying to strip $(PROGRAMS)"
+#	test -z $(PROGRAMS) || $(top_srcdir)/scripts/wlstrip $(PROGRAMS)
+
+ACLOCAL_AMFLAGS = -I$(top_builddir)/m4
+
+strip: all
+	$(top_srcdir)/scripts/stripper

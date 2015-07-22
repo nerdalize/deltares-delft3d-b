@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+        <DeltaresHydro start="flow2d3d">
+            <flow2d3d
+                MDFile          = 'f34.mdf'
+                >
+            </flow2d3d>
+        </DeltaresHydro>
+
+
+
+
+<!--  Optionally added to DeltaresHydro:
+            <CrashOnAbort/>
+ -->
+<!--  Optionally added to flow2d3d:
+                library         = 'flow2d3d_sp.dll'
+                waitFile        = 'debug.txt'
+                description     = 'Testbank Single Domain'
+                threadStackSize = '16'
+ -->

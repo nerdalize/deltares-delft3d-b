@@ -1,0 +1,4 @@
+ove.grd    53    89    53    53  det.grd     1    37     1     1
+det.grd     1    37    45    37  ove.grd    53    89    97    89
+det.grd    45    37    45     1  ove.grd    97    89    97    53
+ove.grd    97    53    53    53  det.grd    45     1     1     1

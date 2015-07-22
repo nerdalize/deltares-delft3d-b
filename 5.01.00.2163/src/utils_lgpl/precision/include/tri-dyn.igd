@@ -1,0 +1,47 @@
+!----- LGPL --------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This library is free software; you can redistribute it and/or                
+!  modify it under the terms of the GNU Lesser General Public                   
+!  License as published by the Free Software Foundation version 2.1.                 
+!                                                                               
+!  This library is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU            
+!  Lesser General Public License for more details.                              
+!                                                                               
+!  You should have received a copy of the GNU Lesser General Public             
+!  License along with this library; if not, see <http://www.gnu.org/licenses/>. 
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: tri-dyn.igd 1180 2012-01-13 17:05:48Z mourits $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/utils_lgpl/precision/include/tri-dyn.igd $
+real(prec) , dimension(0:0) :: d
+real(fp)   , dimension(0:0) :: r
+real(sp)   , dimension(0:0) :: s
+integer    , dimension(0:0) :: i
+character*1, dimension(0:0) :: ch
+
+! Activate the following line in case fp = hp
+equivalence ( r(0),  dbuf(0))
+! Activate the following line in case fp = sp
+!equivalence ( r(0),  rbuf(0))
+
+! Activate the following line in case prec = hp
+equivalence ( d(0),  dbuf(0))
+! Activate the following line in case prec = sp
+!equivalence ( d(0),  rbuf(0))
+
+equivalence ( s(0),  rbuf(0))
+equivalence ( i(0),  ibuf(0))
+equivalence (ch(0), chbuf(0))

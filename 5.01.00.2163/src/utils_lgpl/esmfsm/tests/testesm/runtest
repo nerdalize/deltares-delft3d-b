@@ -1,0 +1,40 @@
+#-------------------------------------------------------------------------------
+#   Delft-ESM (Easy Shared Memory)
+#   Test Program
+# 
+#   Irv.Elshoff@deltares.nl
+#   30 aug 04
+# 
+#   Copyright (C) 2004, Deltares
+#-------------------------------------------------------------------------------
+
+
+PATH="$ESMFSM_HOME/bin/$ESMFSM_PLATFORM:$PATH"
+
+contextid=`esm_create`
+if [ $? -ne 0 ]; then
+    echo "ESM_Create fails"
+    exit 1
+fi
+
+testesm $contextid
+if [ $? -ne 0 ]; then
+    echo "ESM test fails"
+    exit 1
+fi
+
+exit 0
+
+esm_info
+if [ $? -ne 0 ]; then
+    echo "ESM_Info fails"
+    exit 1
+fi
+
+esm_delete $contextid
+if [ $? -ne 0 ]; then
+    echo "ESM_Delete fails"
+    exit 1
+fi
+
+exit 0

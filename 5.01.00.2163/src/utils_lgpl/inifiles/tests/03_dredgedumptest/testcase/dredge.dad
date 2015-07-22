@@ -1,0 +1,19 @@
+*
+* Comments are allowed on several places in this input file
+* For example here
+*
+[Information]
+   File created by    = Delft-QUICKIN, Version: 3.1804
+   File Creation Date = 19-12-2003,  8:50:45
+   Fileversion        = 01.01
+   Polygon File       = dredge.pol
+[Dredge]
+   Name         = KUIL1
+   Dredge Depth =   0.60
+   Dump         = BULT
+   Percentage   = 100.0
+[Dredge]
+   Name         = KUIL2
+   Dredge Depth =   0.60
+   Dump         = BULT
+   Percentage   = 100.0

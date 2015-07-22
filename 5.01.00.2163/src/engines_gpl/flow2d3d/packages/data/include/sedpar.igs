@@ -1,0 +1,104 @@
+!----- GPL ---------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This program is free software: you can redistribute it and/or modify         
+!  it under the terms of the GNU General Public License as published by         
+!  the Free Software Foundation version 3.                                      
+!                                                                               
+!  This program is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                
+!  GNU General Public License for more details.                                 
+!                                                                               
+!  You should have received a copy of the GNU General Public License            
+!  along with this program.  If not, see <http://www.gnu.org/licenses/>.        
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: sedpar.igs 1294 2012-02-28 17:34:56Z ormondt $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/engines_gpl/flow2d3d/packages/data/include/sedpar.igs $$
+!-------------------------------------------------------------------------------
+type gd_sedpar
+    !
+    ! doubles
+    !
+    real(fp) :: csoil     !  concentration at bed used in hindered settling formulation
+    real(fp) :: mdcuni    !  mud content / mud fraction uniform value (non-zero only
+                          !  if mud is not included simulation)
+    real(fp) :: kssilt    !  ks value for silt to be used in soulsby 2004 formulation
+    real(fp) :: kssand    !  ks value for sand (not yet used)
+    !
+    ! reals
+    !
+    !
+    ! integers
+    !
+    integer  :: nmudfrac  !  number of simulated mud fractions
+    !
+    ! pointers
+    !
+    real(fp)      , dimension(:)    , pointer :: rhosol     !  Soil density
+    !
+    real(fp)      , dimension(:,:,:), pointer :: logseddia             !  Characteristic sediment diameter table using log scale [%,log(m)]
+    real(fp)      , dimension(:)    , pointer :: logsedsig             !  Standard deviation on log scale (log of geometric std.) [-]
+    real(fp)      , dimension(:)    , pointer :: sedd10                !  10% Diameter sediment fraction [m]
+    real(fp)      , dimension(:)    , pointer :: sedd50                !  50% Diameter sediment fraction [m]
+    real(fp)      , dimension(:)    , pointer :: sedd50fld  => null()  !  Spatially varying 50% sediment diameter [m]
+    real(fp)      , dimension(:)    , pointer :: seddm                 !  Arithmetic mean sediment diameter [m]
+    real(fp)      , dimension(:)    , pointer :: sedd90                !  90% Diameter sediment fraction [m]
+    !
+    real(fp)      , dimension(:)    , pointer :: cdryb      !  Dry bed concentration for determining
+                                                            !  sediment depths
+    real(fp)      , dimension(:)    , pointer :: dstar      !  Dimensionless grain size 
+    real(fp)      , dimension(:)    , pointer :: gamflc     !  Calibration factor on flocculation parameter in Van Rijn (2004) 
+    real(fp)      , dimension(:,:)  , pointer :: gamtcr     !  Calibration factor on critical shear stress in Van Rijn (2004)
+    real(fp)      , dimension(:)    , pointer :: taucr      !  Critical shear stress 
+    real(fp)      , dimension(:)    , pointer :: tetacr     !  Dimensionless critical shear stress (Shields parameter)
+    real(fp)      , dimension(:)    , pointer :: ws0        !  Settling velocity fresh water
+    real(fp)      , dimension(:)    , pointer :: wsm        !  Settling velocity saline water
+    real(fp)      , dimension(:)    , pointer :: salmax     !  Maximum salinity [ppt]
+    real(fp)      , dimension(:)    , pointer :: sdbuni     !  Uniform value of initial sediment mass at bed
+    real(fp)      , dimension(:)    , pointer :: sedtrcfac  !  Calibration factor for tracer sediments
+    real(fp)      , dimension(:,:)  , pointer :: tcrdep     !  Critical stress deposition fields
+    real(fp)      , dimension(:)    , pointer :: tcduni     !  Critical stress deposition uniform values
+    real(fp)      , dimension(:,:)  , pointer :: tcrero     !  Critical stress erosion fields
+    real(fp)      , dimension(:)    , pointer :: tceuni     !  Critical stress erosion uniform values for sand
+    real(fp)      , dimension(:)    , pointer :: thcmud     !  Critical stress erosion uniform values for mud
+    real(fp)      , dimension(:,:)  , pointer :: eropar     !  Erosion parameter fields
+    real(fp)      , dimension(:)    , pointer :: erouni     !  Erosion parameter uniform values
+    real(fp)      , dimension(:)    , pointer :: tcguni     !  Calibration factor on critical shear stress in Van Rijn (2004) uniform values
+    real(fp)      , dimension(:)    , pointer :: mudcnt     !  mud content / mud fraction field (non-zero only if mud
+                                                            !  is not included simulation)
+    integer       , dimension(:)    , pointer :: nseddia    !  Number of characteristic sediment diameters
+    integer       , dimension(:)    , pointer :: sedtyp     !  Sediment type: 0=total/1=noncoh/2=coh
+    character(10) , dimension(:)    , pointer :: inisedunit !  'm' or 'kg/m2' : Initial sediment at bed specified as thickness ([m]) or density ([kg/m2])
+    character(20) , dimension(:)    , pointer :: namsed     !  Names of all sediment fractions
+    character(256), dimension(:)    , pointer :: flsdbd     !  File name containing initial sediment mass at bed
+    character(256), dimension(:)    , pointer :: flstcd     !  Critical stress deposition file names
+    character(256), dimension(:)    , pointer :: flstce     !  Critical stress erosion file names
+    character(256), dimension(:)    , pointer :: flsero     !  Erosion parameter file names
+    character(256), dimension(:)    , pointer :: flstcg     !  File name calibration factor on critical shear stress in Van Rijn (2004) uniform values
+    ! 
+    ! logicals
+    !
+    logical :: anymud     ! Flag to indicate whether a mud fraction
+                          ! is included in the simulation.
+    logical :: bsskin     ! Flag to indicate whether a bed stress should be computed
+                          ! according to soulsby 2004
+    !
+    ! characters
+    !
+    character(256) :: flsdia     ! spatial sediment diameter file (in case of one sediment
+                                 ! fraction only)
+    character(256) :: flsmdc     ! mud content / mud fraction file (only if mud is not
+                                 ! included in simulation)
+end type gd_sedpar

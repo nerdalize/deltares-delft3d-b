@@ -1,0 +1,84 @@
+/*
+ *  elm_buf.s[  0-  7] = elm_buf.p[ 0] = next_pnt_hash
+ *  elm_buf.s[  8- 15] = elm_buf.p[ 1] = rest_length (174-16=168)
+ *  elm_buf.s[ 16- 23] = "       1"
+ *  elm_buf.s[ 24- 47] = element name        (16 bytes)
+ *  elm_buf.s[ 40- 45] = element type        ( 8 bytes)
+ *  elm_buf.s[ 48- 51] = elm_buf.p[ 9] = size of element in bytes
+ *  elm_buf.s[ 52- 55] = elm_buf.i[10] = size of single element in bytes
+ *  elm_buf.s[ 56- 71] = element quantity    (16 bytes)
+ *  elm_buf.s[ 72- 87] = element unity       (16 bytes)
+ *  elm_buf.s[ 88-151] = element description (64 bytes)
+ *  elm_buf.s[152-155] = elm_buf.i[35] = elm_num_dimens       (N<=5)
+ *  elm_buf.s[156-159] = elm_buf.i[36] = elm_dimens[0]
+ *  elm_buf.s[160-163] = elm_buf.i[37] = elm_dimens[1]
+ *  elm_buf.s[164-167] = elm_buf.i[38] = elm_dimens[2]
+ *  elm_buf.s[168-161] = elm_buf.i[39] = elm_dimens[3]
+ *  elm_buf.s[172-175] = elm_buf.i[40] = elm_dimens[4]
+ */
+/*==========================================================================*/
+/*
+ *  cel_buf.s[  0-  7] = cel_buf.p[ 0] = next_pnt_hash
+ *  cel_buf.s[  8- 15] = cel_buf.p[ 1] = rest_length
+ *  cel_buf.s[ 16- 23] = "       2"
+ *  cel_buf.s[ 24- 39] = cel name            (16 bytes)
+ *  cel_buf.s[ 40- 47] = cel_buf.p[ 5] = size of cel in bytes
+ *  cel_buf.s[ 48- 51] = cel_buf.i[12] = cel dimension
+ *
+ *  cel_buf.s[ 52- 67] = 1st element name    (16 bytes)
+ *  cel_buf.s[ 68- 83] = 2nd element name    (16 bytes)
+ *                ...  = ...
+ *                ...  = ...
+ */
+/*==========================================================================*/
+/*
+ *  grp_buf.s[  0-  7] = grp_buf.p[ 0] = next_pointer
+ *  grp_buf.s[  8- 15] = grp_buf.p[ 1] = rest_length      (.. = ..-16 bytes)
+ *  grp_buf.s[ 16- 23] = "       3"
+ *  grp_buf.s[ 24- 39] = group   name                     (16 bytes)
+ *  grp_buf.s[ 40- 55] = cel name used in this group      (16 bytes)
+ *  grp_buf.s[ 56- 59] = grp_buf.i[11] = grp_num_dim      (N<=5)
+ *  grp_buf.s[ 60- 63] = grp_buf.i[12] = grp_dimens[0]
+ *  grp_buf.s[ 64- 67] = grp_buf.i[13] = grp_dimens[1]
+ *  grp_buf.s[ 68- 71] = grp_buf.i[14] = grp_dimens[2]
+ *  grp_buf.s[ 72- 75] = grp_buf.i[15] = grp_dimens[3]
+ *  grp_buf.s[ 76- 79] = grp_buf.i[16] = grp_dimens[4]
+ *  grp_buf.s[ 80- 83] = grp_buf.i[17] = grp_order[0]
+ *  grp_buf.s[ 84- 87] = grp_buf.i[18] = grp_order[1]
+ *  grp_buf.s[ 88- 91] = grp_buf.i[19] = grp_order[2]
+ *  grp_buf.s[ 92- 95] = grp_buf.i[20] = grp_order[3]
+ *  grp_buf.s[ 96- 99] = grp_buf.i[21] = grp_order[4]
+ */
+/*==========================================================================*/
+/*
+ *  Fix dimensions:
+ *  dat_buf.s[  0-  7] = dat_buf.p[ 0] = next_pnt_hash
+ *  dat_buf.s[  8- 15] = dat_buf.p[ 1] = rest_length ( . -16= . )
+ *  dat_buf.s[ 16- 23] = "       4"   vaste dimensies
+ *  dat_buf.s[ 24- 39] = group name        (16 bytes)
+ *  dat_buf.s[ 40- 55] = group definition  (16 bytes)
+ *  dat_buf.s[ 56-135] = integer attribute names  (80 bytes = 5*16)
+ *  dat_buf.s[136-155] = dat_buf.in[31] ... [35]
+ *  dat_buf.s[156-275] = real    attribute names  (80 bytes)
+ *  dat_buf.s[276-295] = dat_buf.re[56] ... [60]
+ *  dat_buf.s[296-375] = string  attribute names  (80 bytes)
+ *  dat_buf.s[376-455] = string  attribute values (80 bytes)
+ *
+ *  Variable dimensions:
+ *  dat_buf.s[  0-  7] = dat_buf.p[ 0] = next_pnt_hash
+ *  dat_buf.s[  8- 15] = dat_buf.p[ 1] = rest_length ( . -16= . )
+ *  dat_buf.s[ 16- 23] = "       5"   variable dimensions
+ *  dat_buf.s[ 24- 39] = group name        (16 bytes)
+ *  dat_buf.s[ 40- 55] = group definition  (16 bytes)
+ *  dat_buf.s[ 56-135] = integer attribute names  (80 bytes = 5*16)
+ *  dat_buf.s[136-155] = dat_buf.in[31] ... [35]
+ *  dat_buf.s[156-275] = real    attribute names  (80 bytes)
+ *  dat_buf.s[276-295] = dat_buf.re[56] ... [60]
+ *  dat_buf.s[296-375] = string  attribute names  (80 bytes)
+ *  dat_buf.s[376-455] = string  attribute values (80 bytes)
+ *  dat_buf.s[404-407] = dat_buf.i[101] =
+ *  dat_buf.s[408-411] = dat_buf.i[102] = pointer_1
+ *  .........
+ *  dat_buf.s[1068-1071] = dat_buf.i[267] = pointer_256
+ */
+/*==========================================================================*/

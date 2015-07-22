@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>ESM API Documentation</title>
+  <style>
+    H1 { font-family: Helvetica,Arial; color: #048; }
+    H2 { font-family: Helvetica,Arial; color: #048; }
+    H3 { font-family: Helvetica,Arial; }
+    H4 {  }
+    .typescript {
+       color: #800;
+       background-color: #EEE;
+       font-family: monospace;
+margin-top: 0px;
+margin-bottom: 15px;
+width: 700px;
+text-align: left;
+       }
+    BLOCKQUOTE { margin: 0px; }
+  </style>
+</head>
+<body>
+<h1>ESM API Documentation<br>
+</h1>
+<big style="color: rgb(153, 0, 0);">Version 4.06</big><big
+ style="font-style: italic;"><br>
+<br>
+Irv.Elshoff@deltares.nl<br>
+16 nov 04</big><br>
+<br>
+<h2>Contents</h2>
+<ul>
+  <li><a href="#Introduction">Introduction</a></li>
+  <li><a href="#Function_Specifications">Function Specifications</a></li>
+  <ul>
+    <li><a href="#ESM_Init">ESM_Init</a></li>
+    <li><a href="#ESM_Create">ESM_Create</a></li>
+    <li><a href="#ESM_Delete">ESM_Delete</a></li>
+    <li><a href="#ESM_Alloc">ESM_Alloc</a></li>
+    <li><a href="#ESM_Free">ESM_Free</a></li>
+    <li><a href="#ESM_ListContexts">ESM_ListContexts</a><br>
+    </li>
+    <li><a href="#ESM_ListRegions">ESM_ListRegions</a></li>
+    <li><a href="#ESM_Error">ESM_Error</a></li>
+    <li><a href="#ESM_TraceFile">ESM_TraceFile</a><br>
+    </li>
+  </ul>
+</ul>
+<br>
+<h2><a name="Introduction"></a>Introduction</h2>
+ESM can be used for inter-process communication.&nbsp; In general, one
+process (or thread) creates a context and communicates it's ID to other
+processes.&nbsp; Then processes can allocate and free regions of memory
+in the context.&nbsp; When the application is finished, some process
+should delete the context.<br>
+<br>
+With the exception of <span style="font-family: monospace;">ESM_Create</span>,
+<span style="font-family: monospace;">ESM_Alloc</span> and <span
+ style="font-family: monospace;">ESM_Error</span>, all ESM functions
+return a status code indicating success or failure.&nbsp; <span
+ style="font-family: monospace;">ESM_OK</span> (zero) is returned on
+success; <span style="font-family: monospace;">ESM_ERROR</span> (-1)
+on error.<br>
+<h3>Contexts</h3>
+A context is a collection of related memory segments shared by one
+or more
+processes on a single host. A host is the domain of a single
+operating system instance, and may span multiple physical processors.<br>
+<p>Contexts are identified by a non-zero integer whose scope is a host
+(for shared memory) or address space (for local memory).&nbsp; Positive
+context
+IDs are for shared memory contexts, negative IDs
+for local memory.&nbsp; An application program can use both kinds of
+contexts simultaneously.<br>
+</p>
+<p>Shared memory contexts have user/group permissions that are
+enforced by UNIX. All processes must have the same effective user and
+group
+ID to share a context (this may be relaxed in the future).</p>
+<p>Each process (including all threads in that process) can be
+connected to <tt>ESM_MAX_CON</tt> (presently
+64) contexts simulataneously.<br>
+</p>
+<h3>Pages</h3>
+<p>Shared memory contexts are made up of one or more
+pages.&nbsp;&nbsp;&nbsp;
+UNIX SVR4's shared memory facility limits the
+number of memory segments (pages) that may
+be allocated and attached to a process (less than 100 in most cases).
+Choosing an appropriate page size is important (see <a
+ href="#ESM_Create">ESM_Create</a>).<br>
+</p>
+<h3>
+Regions</h3>
+A region is a named block of memory with a context.&nbsp; Regions
+cannot be larger than a page in shared memory contexts (local memory
+contexts do not have this constraint).<br>
+<h2><a name="Function_Specifications"></a>Function Specifications</h2>
+<h3><a name="ESM_Init"></a>ESM_Init</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left">
+      <blockquote>int <span style="font-style: italic;">status</span>
+= <b>ESM_Init</b> (<br>
+&nbsp;&nbsp;&nbsp; int <span style="font-style: italic;">flags</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; ); </blockquote>
+      </td>
+    </tr>
+  </tbody>
+</table>
+This function initializes ESM, and must be called by each process or
+thread before using the other ESM functions.&nbsp; It sets
+process/thread specific flags (logically or-ed):
+<br>
+<ul>
+  <li><span style="font-family: monospace;">ESM_SILENT</span> -
+Normally, when an error occurs
+a message is written to standard output indicating what when
+wrong.&nbsp; When this flag is
+set, nothing is written.<br>
+  </li>
+  <li><span style="font-family: monospace;">ESM_TRACE</span> - Produces
+a trace of all actions to aid in debugging.&nbsp; If this flag is set, <span
+ style="font-family: monospace;">ESM_SILENT</span> will be turned off.<br>
+  </li>
+</ul>
+Returns <span style="font-family: monospace;">ESM_OK</span> when ESM
+is ready, or <span style="font-family: monospace;">ESM_ERROR</span> if
+an error occurred.<br>
+<h3><a name="ESM_Create"></a>ESM_Create</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left">int <span style="font-style: italic;">contextID</span>
+= <span style="font-weight: bold;">ESM_Create</span> (<br>
+&nbsp;&nbsp;&nbsp; int <span style="font-style: italic;">shared,<br>
+&nbsp;&nbsp;&nbsp; int pagesize<br style="font-style: italic;">
+      </span>&nbsp;&nbsp;&nbsp; );<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+This function creates a new context for regions.&nbsp; If <span
+ style="font-family: monospace; font-style: italic;">shared</span> is
+non-zero, the context will be created in UNIX SVR4 shared memory;
+otherwise it will be in local memory.<br>
+<br>
+In the shared case, a positive page size (in kilobytes) must be
+specified.&nbsp;&nbsp; A too small page size will
+eventually exhaust the maximum number of attached pages.&nbsp; A too
+large page size could waste memory.&nbsp; 10 MB is probably a good
+value for most programs, but a larger value (e.g., 100 MB) may be
+needed for memory-intensive programs.<br>
+<br>
+Shared memory is not presently implemented on Microsoft Windows.<br>
+<br>
+<span style="font-family: monospace;">ESM_Create</span> returns a
+context ID, or zero if an error occurred and the
+context could not be created.<br>
+<h3><a name="ESM_Delete"></a>ESM_Delete</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left">int <span style="font-style: italic;">status</span>
+= <span style="font-weight: bold;">ESM_Delete</span> (<br>
+&nbsp;&nbsp;&nbsp; int <span style="font-style: italic;">contextID</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+This function deletes a context and frees all memory associated with
+it.&nbsp; Regions in the context (i.e., pointers previously returned by
+ESM_Alloc) should not be used by any process afterwards.&nbsp; It is
+the programmer's responsibility to ensure that this cannot
+happen.&nbsp; ESM has no way of knowing if a process is still using
+memory in a context.<br>
+<br>
+Returns <span style="font-family: monospace;">ESM_OK</span> if
+successful, and <span style="font-family: monospace;">ESM_ERROR</span>
+if an error occurred (e.g., the
+context does not exist).<br>
+<h3><a name="ESM_Alloc"></a>ESM_Alloc</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left">
+      <pre>void * <span style="font-style: italic;">pointer</span> = <b>ESM_Alloc</b> (<br>    int <span
+ style="font-style: italic;">contextID</span>,<br>    char *<span
+ style="font-style: italic;"> name</span>,<br>    int <span
+ style="font-style: italic;">size</span><br style="font-style: italic;">    );</pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+If the size argument is positive, this function reserves a region of
+(shared) memory in the specified
+context, maps it into the virtual addess space of the calling process,
+and
+returns the local address of the first byte in the region.&nbsp; NULL
+is returned if an error occurred (e.g., resources exhausted).&nbsp; The
+name is assigned to the region for subsequent lookups (by other
+processes).<br>
+<br>
+If the size if not positive, the name is looked up and the pointer to
+the
+region returned if previously allocated, or NULL is the region is
+unknown.&nbsp; No memory is allocated.<br>
+<br>
+A region with a particular name and size may exist at most once in a
+context.&nbsp; In other words, it is OK to allocate a region <span
+ style="font-style: italic;">X</span> of size <span
+ style="font-style: italic;">Y</span> more than once (subsequent
+allocations return the existing pointer), but attempting to allocate
+region <span style="font-style: italic;">X</span> with size <span
+ style="font-style: italic;">Z</span> will fail and return NULL if size
+<span style="font-style: italic;">Y</span> != <span
+ style="font-style: italic;">Z</span> already exists.<br>
+<h3><a name="ESM_Free"></a>ESM_Free</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left"> int <span style="font-style: italic;">status</span>
+= <span style="font-weight: bold;">ESM_Free</span> (<br>
+&nbsp;&nbsp;&nbsp; int <span style="font-style: italic;">contextID</span>,<br>
+&nbsp;&nbsp;&nbsp; char * <span style="font-style: italic;">name</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+This functions frees the space associated with the named region and
+return 0 upon success and -1 otherwise.&nbsp; The (pointer to the)
+region should not be used subsequently by any process or thread.&nbsp;
+Doing so may result in unpredictable results or a program crash. &nbsp;
+Returns <span style="font-family: monospace;">ESM_OK</span> or <span
+ style="font-family: monospace;">ESM_ERROR</span>.
+<h3><a name="ESM_ListContexts"></a>ESM_ListContexts</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left"> int <span style="font-style: italic;">status</span>
+= <span style="font-weight: bold;">ESM_ListContexts</span> (<br>
+&nbsp;&nbsp;&nbsp; FILE * <span style="font-style: italic;">outputfile</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+This functions prints a human-readable list of contexts known to a
+process.&nbsp; Contexts are known after they are created or when a
+region was allocated or freed in the context.&nbsp; Output is written
+to the file descriptor,
+which must be opened for writing.&nbsp; Returns <span
+ style="font-family: monospace;">ESM_OK</span> or <span
+ style="font-family: monospace;">ESM_ERROR</span>.<br>
+<h3><a name="ESM_ListRegions"></a>ESM_ListRegions</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left"> int <span style="font-style: italic;">status</span>
+= <span style="font-weight: bold;">ESM_ListRegions</span> (<br>
+&nbsp;&nbsp;&nbsp; int <span style="font-style: italic;">contextID</span>,<br>
+&nbsp;&nbsp;&nbsp; FILE * <span style="font-style: italic;">outputfile</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+This functions prints a human-readable list of all regions in the
+specified context.&nbsp; Output is written to the file descriptor,
+which must be opened for writing.&nbsp; Returns <span
+ style="font-family: monospace;">ESM_OK</span> or <span
+ style="font-family: monospace;">ESM_ERROR</span>.
+<h3><a name="ESM_Error"></a>ESM_Error</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left"> char * <span style="font-style: italic;">errormessage</span>
+= <span style="font-weight: bold;">ESM_Error</span> (<br>
+&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Returns a pointer to a character string describing the reason for the
+last ESM function failure.<br>
+<h3><a name="ESM_TraceFile"></a>ESM_TraceFile</h3>
+<table class="typescript" cellpadding="10" cellspacing="0" border="0">
+  <tbody align="left">
+    <tr>
+      <td align="left">int <span style="font-style: italic;">status</span>
+= <span style="font-weight: bold;">ESM_TraceFile</span> (<br>
+&nbsp;&nbsp;&nbsp; char * <span style="font-style: italic;">filename</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+If the <span style="font-family: monospace;">ESM_TRACE</span> flag is
+set during initialization, a trace of every operation is written to
+standard output.&nbsp; The <span style="font-family: monospace;">ESM_TraceFile</span>
+function can be used to specify an alternative file.&nbsp; Each thread
+that uses ESM can have its own trace file.&nbsp; Returns <span
+ style="font-family: monospace;">ESM_OK</span> upon success or <span
+ style="font-family: monospace;">ESM_ERROR</span> if the file could not
+be created or appended to.<br>
+<br>
+</body>
+</html>

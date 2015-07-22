@@ -1,0 +1,186 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<title>DelftIO Par./Loc./Time Fortran 90 Interface</title>
+</head>
+
+<body>
+<font face="Arial">
+
+<p>DelftIO <font size="+1">Configuration</font> Fortran 90 Interface</font> </p>
+
+<p><font size="+1" color="#FF0000"><b><i>Module files</i></b></font> </p>
+
+<p><b><i>use dio_plt_rw</i></b> </p>
+
+<p>Module includes the module dio_config, which&nbsp; implements the Init-functions below.
+</p>
+
+<p><font size="+1" color="#FF0000"><b><i>Initialization of the configuration</i></b></font>
+</p>
+
+<p>subroutine DioInit( [ configFile ] )&nbsp; </p>
+
+<table border="1">
+  <tr>
+    <td><i><font color="#0000FF">arguments</font></i></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(*)</td>
+    <td>:: name</td>
+    <td>I</td>
+    <td>Optional: name of configuration file</td>
+  </tr>
+</table>
+
+<p>This routine <b><i>may</i></b> be called by each program that uses the DelftIO library
+(if it's not called, the library will use its own defaults, see below). <br>
+If the (optional) configFilename is provided, this file is used to determine the required
+configuration. <br>
+If it is not provided, DelftIO checks if a file <b>dioconfig.ini</b> exists on the current
+working directory, in which case that file is used. If this file isn't available, its
+existence is checked on the directory containing the current executable program. If
+neither file exists, the following stream defaults are used for each dataset that is
+opened on an automatically created stream:
+
+<ul>
+  <li><b>StreamType</b>: dataset's stream type is Dio_Stream_Binary (for optimal performance)</li>
+  <li><b>Online</b>: False (no online coupling between sending / receiving processes for this
+    dataset)</li>
+  <li><b>Active</b>: True (stream for the dataset indeed will be created, in other words:
+    Puts/Gets are not being neglected).</li>
+</ul>
+
+<p>In the <b>dioconfig.ini</b> file, information can be provided to overrule these
+library-defaults on two levels:
+
+<ul>
+  <li>Overrule the defaults for all datasets to be created (the 'Defaults' part, see below)</li>
+  <li>For a specific dataset, overrule its current default settings (i.e. the 'inherited'
+    library-defaults or the values from the 'Defaults' part in the file).</li>
+</ul>
+
+<p>Of course, if required, the programmer still can overrule the configuration still force
+a dataset to be created on another type of stream than specified in the configuration
+file, by defining the dataset explicitly on a stream that he first has created. </p>
+
+<p>The configuration file is according to the 'ini-file' format. An example will
+illustrate its use. Note that not all keywords (in as well the Defaults part a the a
+specific dataset part) need to be present (except of course for the 'Name' keyword). </p>
+
+<p><a NAME="options"></a><font size="+1" color="#FF0000"><b><i>Configuration options</i></b></font>
+</p>
+
+<p><em><strong>Run time settings</strong></em></p>
+
+<p>The following options can be specified in the <b>[Settings]</b> part (the third column
+shows the default DelftIO uses if&nbsp; no configuration file is used, or if the option is
+not included in the configuration file).<br>
+</p>
+
+<table BORDER="1">
+  <tr>
+    <td><b>Option</b></td>
+    <td><b>Values</b></td>
+    <td><b>Description</b></td>
+    <td><b>Library Default</b></td>
+  </tr>
+  <tr>
+    <td>Delay</td>
+    <td>nr. of milliseconds</td>
+    <td>Number of milliseconds to wait before checking file existence (used by the low level
+    synchronization functions). This delay time is <strong>very important</strong> when
+    running applications on other drives then the local PC-drives, or when running on Unix. If
+    its value is set too low, DelftIO may access files that are not available yet (due to
+    delays in the operating system), which will lead to errors in the data exchange.</td>
+    <td>10 mSec. for PC,<br>
+    500 for Unix</td>
+  </tr>
+  <tr>
+    <td><a NAME="TimeOut"></a>TimeOut</td>
+    <td>day;hour:min:sec.centiSec <br>
+    string</td>
+    <td>Determines after which time synchronized Get/Put functions should return, if the data
+    is not available or can not be put; <br>
+    Format: dd;hh:mm:ss.cs</td>
+    <td>00;00:01:00.00</td>
+  </tr>
+</table>
+
+<p><em><strong>Dataset options</strong></em></p>
+
+<p>The following options can be specified in the <b>[Defaults]</b> part or in a <b>[Dataset&lt;n&gt;]</b>
+part (the third column shows the default DelftIO uses if&nbsp; no configuration file is
+used, or if the option is not included in the configuration file). </p>
+
+<p><i>Note</i> 1:&nbsp; 'enumerated' options (like ASCII / Binary) are - for the moment -
+case sensitive. </p>
+
+<p><i>Note</i> 2:&nbsp; Boolean options can be specified in other terms than True/False: <br>
+<font face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Y|YES|yes|Yes|T|TRUE|true|True|J|JA|Ja|ja</font> <br>
+<font face="Courier">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+N|NO|no|No|F|FALSE|false|False|N|NEE|Nee|nee</font> <br>
+&nbsp; </p>
+
+<table BORDER="1">
+  <tr>
+    <td><b>Option</b></td>
+    <td><b>Values</b></td>
+    <td><b>Description</b></td>
+    <td><b>Library Default</b></td>
+  </tr>
+  <tr>
+    <td>StreamType</td>
+    <td>ASCII / Binary</td>
+    <td>File format for storage/retrieval of dataset</td>
+    <td>Binary</td>
+  </tr>
+  <tr>
+    <td>Active</td>
+    <td>True / False</td>
+    <td>Indicaties if dataset set should be stored/retrieved indeed, or should be skipped <br>
+    (used for testing purposes).</td>
+    <td>True</td>
+  </tr>
+  <tr>
+    <td>OnLine</td>
+    <td>True / False</td>
+    <td>Indicaties if dataset is used for online coupling, i.e. if should DelftIO take care of
+    the synchronization between the providing and retreiving process.</td>
+    <td>False</td>
+  </tr>
+  </table>
+
+<p>&nbsp;</p>
+
+<p><a NAME="example"></a><font size="+1" color="#FF0000"><b><i>Example of a DelftIO
+configuration file</i></b></font> </p>
+
+<p><font size="-1" face="Courier New">[Settings]</font> <br>
+<font size="-1" face="Courier New">Delay=200<br>
+TimeOut=00;00:02:00.00</font></p>
+
+<p><font size="-1" face="Courier New">[Defaults]</font> <br>
+<font size="-1" face="Courier New">StreamType=ASCII</font> <br>
+<font size="-1" face="Courier New">OnLine=True</font> <br>
+<font size="-1" face="Courier New">NumberOfDatasets=2</font> </p>
+
+<p><font size="-1" face="Courier New">[Dataset1]</font> <br>
+<font size="-1" face="Courier New">Name=Dataset_A</font> <br>
+<font size="-1" face="Courier New">StreamType=Binary</font> <br>
+<font size="-1" face="Courier New">OnLine=False</font> </p>
+
+<p><font size="-1" face="Courier New">[Dataset2]</font> <br>
+<font size="-1" face="Courier New">Name=Dataset_B</font> <br>
+<font size="-1" face="Courier New">Active=False</font> <br>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>ESM/FSM Overview</title>
+  <style>
+    H1 { font-family: Helvetica,Arial; color: #048; }
+    H2 { font-family: Helvetica,Arial; color: #048; }
+    H3 { font-family: Helvetica,Arial; }
+    H4 {  }
+    .typescript {
+       color: #800;
+       background-color: #EEE;
+       font-family: monospace;
+margin-top: 15px;
+margin-bottom: 15px;
+width: 700px;
+text-align: left;
+       }
+    BLOCKQUOTE { margin: 0px; }
+  </style>
+</head>
+<body>
+<h1>ESM/FSM Overview</h1>
+<big style="color: rgb(153, 0, 0);">Version 4.06</big><big
+ style="font-style: italic;"><br>
+<br>
+Irv.Elshoff@deltares.nl<br>
+19 aug 04</big><br>
+<br>
+<h2>Introduction</h2>
+ESM and FSM are libraries for C and Fortran, respectively, that provide
+easy access to shared memory using a named "key" space.&nbsp; ESM is an
+acronym for Easy Shared Memory. FSM is for Fortran Shared memory.&nbsp;
+Programs using ESM/FSM can allocate space for variables and assign a
+character-string name to the space that can be used by another process
+to get the address of the variable. ESM/FSM variables can range from
+single characters, integers or reals to much larger data structures.<br>
+<br>
+Both libraries use the notion of a "context" to group related
+variables.&nbsp; By default, contexts are in placed in shared memory,
+that is, UNIX SVR4 shared memory, so that several processes on the same
+host can access the variables.&nbsp; A flag can be given that uses
+"local" memory instead of shared memory.&nbsp;&nbsp; This is useful
+when lightweight processes (also known as threads) are used.&nbsp;
+Shared memory is not implemented on the Microsoft Windows platform.<br>
+<br>
+FSM is based on the Deltares' FMM (Fortran Memory
+Management).&nbsp; FMM was created around 1990 to provide dynamic
+memory management for Fortran-77.&nbsp; FSM has the same API (with a
+few extensions) as FMM for backward compatibility.&nbsp; FSM is built
+on top of ESM.&nbsp; Since Fortran-95 provides native memory
+management, FSM is not recommended for use in new programs, unless
+shared memory is required.<br>
+<br>
+ESM has been changed radically since the 3.0 version.&nbsp; In
+particular, the API calls have changed, and threads are now properly
+supported.<br>
+<br>
+<span style="font-family: helvetica,arial;"></span>
+<h2>Links</h2>
+<ul>
+  <li><a href="esm.html">ESM API Documentation</a></li>
+  <li><a href="fsm.html">FSM API Documentation</a><br>
+  </li>
+</ul>
+<br>
+</body>
+</html>

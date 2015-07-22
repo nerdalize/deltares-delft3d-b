@@ -1,0 +1,46 @@
+TODO ter verbetering van laastste versie:
+
+F90-Linux:
+- dio-<applName>-errors.txt produren?
+
+F90
+- CurPutGetCount, nTimes op 0 zetten bij herlezen locId's
+  (wordt gebruikt bij Nefis, dus aanpassen voor volgende Nefis release)
+- In DioDsMakeT0String asserten dat hisTimeUnit op 1 staat
+  (en anders: er mee vermenigvuldigen!).
+- DioPltCreate etc.: versnellen.
+- W32-Settings voor Nefis aanpassen zodat dat lib op Release of Debug wordt geplaats
+- Op UX make install / make installNefis maken
+- DioPltReadHeaderASCIIorBIN boolean maken
+- Resultwaarden beter naar boven doorgeven
+- PLTAppend implementeren
+- Module Dio maken die alles include't
+  In deze module een DioEnd opnemen, die diverse close acties uitvoert.
+- Get values voor een specifieke time step implementeren?
+X tstManyTimesteps test aan All toevoegen.
+X ReadAllTimes laten jumpen naar de laatste waarde van het valuesblok,
+  zodat kan worden gecontroleerd of het blok wel echt aanwezig is.
+X bij Jul Start ook optioneel een Jul end
+  (als aanwezig: time step unit bepalen)
+X HIA name bij Map file: .MAA
+X Map Files testen
+X Probleem in JulianToDioTime oplossen (zie resultsApproved\tstHis\sgi-mips\tstHis(OK)-res.txt)
+X GetIntLocIds implementeren
+X ID's niet schrijven/lezen (in Nefis)
+X HIA file van te voren opruimen
+X Integers getallen HIA file free formatted schrijven
+X Map Files implementeren
+X stream type op basis van name
+X Integers getallen HIA file free formatted lezen
+X Bug-repair t.g.v. maximale filelengte checken tegen EB-versie.
+X Ophoging nPlts intelligenter maken, en in functie onderbrengen.
+X Op meer plaatsen foutmeldingen genereren
+X GetValues for synched streams: success als nPar/nLoc beide 0 zijn
+
+F77/DLL:
+X return waarde van de GET-functies aanpassen
+X als een file niet bestaat: 0 returnen voor DiofPltGet
+X DiofGetLastError / DiofGetLastErrorMessage implementeren.
+X LastError resetten na opvragen.
+X Op meer plaatsen foutmeldingen genereren
+

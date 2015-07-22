@@ -1,0 +1,67 @@
+!----- GPL ---------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This program is free software: you can redistribute it and/or modify         
+!  it under the terms of the GNU General Public License as published by         
+!  the Free Software Foundation version 3.                                      
+!                                                                               
+!  This program is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                
+!  GNU General Public License for more details.                                 
+!                                                                               
+!  You should have received a copy of the GNU General Public License            
+!  along with this program.  If not, see <http://www.gnu.org/licenses/>.        
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: fourier.igs 1180 2012-01-13 17:05:48Z mourits $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/engines_gpl/flow2d3d/packages/data/include/fourier.igs $$
+!-------------------------------------------------------------------------------
+    type gd_fourier
+    !
+    ! integers
+    !
+    integer :: fouwrt       ! Time to write fourier TEKAL file
+    integer :: ibluv
+    integer :: iblqf
+    integer :: iblbs
+    integer :: iblep
+    integer :: iblwl
+    integer :: iblcn
+    !
+    ! pointers
+    !
+    integer          , dimension(:)    , pointer :: fconno  ! Constituent number for Fourier analysis
+    integer          , dimension(:)    , pointer :: flayno  ! Layer number for fourier analysis
+    integer          , dimension(:)    , pointer :: fnumcy  ! Number of cycles for fourier analysis
+    integer          , dimension(:)    , pointer :: ftmsto  ! Integer time step counter stop time for fourier analysis
+    integer          , dimension(:)    , pointer :: ftmstr  ! Integer time step counter start time for fourier analysis
+    integer(pntrsize), dimension(:)    , pointer :: ifoupt  ! Pointer for FOUNAM(IFOU), points in real array R
+    integer          , dimension(:)    , pointer :: iofset  ! Offset from pointer address to asked layer and constituent for IFOU
+    !
+    real(fp)         , dimension(:)    , pointer :: fknfac  ! Fourier amplitude correction factor
+    real(fp)         , dimension(:,:,:), pointer :: foucomp ! Component in Fourier Analysis
+    real(fp)         , dimension(:)    , pointer :: foufas  ! Frequency for fourier analysis
+    real(fp)         , dimension(:,:,:), pointer :: fousma  ! Suma of fourier analysis
+    real(fp)         , dimension(:,:,:), pointer :: fousmb  ! Sumb of fourier analysis
+    real(fp)         , dimension(:,:,:), pointer :: fouvec  !  Maximum of vector magnitude for fourier analysis
+                                                            !  For velocity (u,v), discharge (qxk, qyk) and bed shear stress (taubpu,taubpv)
+                                                            !  NB: For discharges the analysis is actually performed on the unit discharges qxk/guu and qyk/gvv
+    real(fp)         , dimension(:)    , pointer :: fv0pu   ! Fourier phase correction
+    !    
+    character(1)     , dimension(:)    , pointer :: fouelp  !  Flag (Y/N) indicating whether elliptic parameters are requested
+                                                            !  Or Flag (X/I)indicating no fourier analyse but MAX/MIN values are requested
+    character(16)    , dimension(:)    , pointer :: founam  ! Names of variables for fourier analysis 
+    character(1)     , dimension(:)    , pointer :: foutyp  ! Character indicating whether parameter is a scalar (s) or vector (v) quantity
+    !
+    end type gd_fourier

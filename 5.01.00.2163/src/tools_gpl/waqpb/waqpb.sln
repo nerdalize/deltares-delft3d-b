@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "waqpb_export", "packages\waqpb_export\waqpb_export.vfproj", "{C1B7594C-6BCD-4F5B-8277-D565AD576C2D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A7BAFE5D-1301-48F8-878B-9BECB3DDE241} = {A7BAFE5D-1301-48F8-878B-9BECB3DDE241}
+		{F890CF86-BCA9-4527-9C17-EED27DFAE904} = {F890CF86-BCA9-4527-9C17-EED27DFAE904}
+		{0C8D0AC5-B140-498B-B383-05CE14C138B1} = {0C8D0AC5-B140-498B-B383-05CE14C138B1}
+		{2587ADEA-13B7-4BE1-BFB4-588FF22027DF} = {2587ADEA-13B7-4BE1-BFB4-588FF22027DF}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "waqpb_import", "waqpb_import", "{077CD778-2A04-45CA-9122-F5636263F09C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "waqpb_lib", "waqpb_lib", "{D2C06F9F-76E0-453A-937F-45220EC510FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "waqpb_export", "waqpb_export", "{3179B36B-7418-46CC-93D8-C98B8C17F257}"
+EndProject
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "waqpb_import", "packages\waqpb_import\waqpb_import.vfproj", "{4E16B4C4-4809-47C2-91B5-F57A89222558}"
+EndProject
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "waqpb_lib", "packages\waqpb_lib\waqpb_lib.vfproj", "{F890CF86-BCA9-4527-9C17-EED27DFAE904}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nefis", "..\..\utils\nefis\packages\nefis\nefis.vcproj", "{A7BAFE5D-1301-48F8-878B-9BECB3DDE241}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nefis_version_number", "..\..\utils\nefis\packages\nefis_version_number\nefis_version_number.vcproj", "{0C8D0AC5-B140-498B-B383-05CE14C138B1}"
+EndProject
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "waq_utils_f", "..\..\engines\waq\packages\waq_utils_f\waq_utils_f.vfproj", "{2587ADEA-13B7-4BE1-BFB4-588FF22027DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1B7594C-6BCD-4F5B-8277-D565AD576C2D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C1B7594C-6BCD-4F5B-8277-D565AD576C2D}.Debug|Win32.Build.0 = Debug|Win32
+		{C1B7594C-6BCD-4F5B-8277-D565AD576C2D}.Release|Win32.ActiveCfg = Release|Win32
+		{C1B7594C-6BCD-4F5B-8277-D565AD576C2D}.Release|Win32.Build.0 = Release|Win32
+		{4E16B4C4-4809-47C2-91B5-F57A89222558}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4E16B4C4-4809-47C2-91B5-F57A89222558}.Debug|Win32.Build.0 = Debug|Win32
+		{4E16B4C4-4809-47C2-91B5-F57A89222558}.Release|Win32.ActiveCfg = Release|Win32
+		{4E16B4C4-4809-47C2-91B5-F57A89222558}.Release|Win32.Build.0 = Release|Win32
+		{F890CF86-BCA9-4527-9C17-EED27DFAE904}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F890CF86-BCA9-4527-9C17-EED27DFAE904}.Debug|Win32.Build.0 = Debug|Win32
+		{F890CF86-BCA9-4527-9C17-EED27DFAE904}.Release|Win32.ActiveCfg = Release|Win32
+		{F890CF86-BCA9-4527-9C17-EED27DFAE904}.Release|Win32.Build.0 = Release|Win32
+		{A7BAFE5D-1301-48F8-878B-9BECB3DDE241}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A7BAFE5D-1301-48F8-878B-9BECB3DDE241}.Debug|Win32.Build.0 = Debug|Win32
+		{A7BAFE5D-1301-48F8-878B-9BECB3DDE241}.Release|Win32.ActiveCfg = Release|Win32
+		{A7BAFE5D-1301-48F8-878B-9BECB3DDE241}.Release|Win32.Build.0 = Release|Win32
+		{0C8D0AC5-B140-498B-B383-05CE14C138B1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0C8D0AC5-B140-498B-B383-05CE14C138B1}.Debug|Win32.Build.0 = Debug|Win32
+		{0C8D0AC5-B140-498B-B383-05CE14C138B1}.Release|Win32.ActiveCfg = Release|Win32
+		{0C8D0AC5-B140-498B-B383-05CE14C138B1}.Release|Win32.Build.0 = Release|Win32
+		{2587ADEA-13B7-4BE1-BFB4-588FF22027DF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2587ADEA-13B7-4BE1-BFB4-588FF22027DF}.Debug|Win32.Build.0 = Debug|Win32
+		{2587ADEA-13B7-4BE1-BFB4-588FF22027DF}.Release|Win32.ActiveCfg = Release|Win32
+		{2587ADEA-13B7-4BE1-BFB4-588FF22027DF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C1B7594C-6BCD-4F5B-8277-D565AD576C2D} = {3179B36B-7418-46CC-93D8-C98B8C17F257}
+		{4E16B4C4-4809-47C2-91B5-F57A89222558} = {077CD778-2A04-45CA-9122-F5636263F09C}
+		{F890CF86-BCA9-4527-9C17-EED27DFAE904} = {D2C06F9F-76E0-453A-937F-45220EC510FA}
+	EndGlobalSection
+EndGlobal

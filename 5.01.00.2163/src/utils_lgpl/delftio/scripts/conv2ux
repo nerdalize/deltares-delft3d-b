@@ -1,0 +1,27 @@
+#!/bin/ksh
+#
+# conv2ux
+#
+# Convert current directory recursively to ux:
+# - Find all files of the types that need to be converted
+# - For each of these files, check if they contain '^M'.
+# - If so, perform d2u on that file.
+#
+
+
+for fType in F90 F FOR f90 f for inc cpp h mkf Makefile makefile
+do
+    files=`find . -name "*.$fType"`
+    if [ "$files" != "" ] ; then
+	for f in $files
+	do
+	    toBeDone=`grep '
+' $f | wc -l`
+	    if [ $toBeDone -gt 0 ] ; then
+		echo Converting $f
+		dos2unix --keepdate $f
+	    fi
+	done
+    fi
+done
+

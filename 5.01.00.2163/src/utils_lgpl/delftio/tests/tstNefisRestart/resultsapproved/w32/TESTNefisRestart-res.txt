@@ -1,0 +1,10 @@
+ IN Stream Created
+   3011.000       3012.000       3013.000    
+   3021.000       3022.000       3023.000    
+   3031.000       3032.000       3033.000    
+   3041.000       3042.000       3043.000    
+   3051.000       3052.000       3053.000    
+ DIOTESTFOUT:         503  R2 : Could not get nTimes from nefis file TESTRestart
+ IN Datasets Retrieved
+ TIME STAMP:    2452338.49703704      (2002/03/04 23:55:44.00   )
+ Have closed IN stream

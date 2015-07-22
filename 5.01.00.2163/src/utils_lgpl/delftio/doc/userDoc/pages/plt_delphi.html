@@ -1,0 +1,667 @@
+<html>
+
+<head>
+<title>DelftIO Par./Loc./Time Delphi Interface</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<p align="left"><font face="Arial">DelftIO <big>Par/Loc/Time</big> Dataset Delphi
+Interface</font></p>
+
+<p><font color="#FF0000"><strong><big><em>The dataset object</em></big></strong></font></p>
+
+<p><strong><em>Enumerations</em></strong></p>
+
+<table border="1" cellpadding="0">
+  <tr>
+    <td><font color="#0000FF"><em>type</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><font color="#400040">TDataType</font></td>
+    <td>dParameter, dLocation, dTime</td>
+    <td>Indicates the data type for some methods</td>
+  </tr>
+</table>
+
+<p><strong><em>The dataset object</em></strong></p>
+
+<p><em><strong><font color="#008000">constructor Create (stream : TStream; identification
+: String);</font></strong></em></p>
+
+<p>The constructor creates a dataset object and immediately writes/reads structure information
+about the dataset.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TStream</td>
+    <td>stream</td>
+    <td><a href="./streams_delphi.html">stream</a> on which dataset is defined</td>
+  </tr>
+  <tr>
+    <td>string</td>
+    <td>identification</td>
+    <td>A logical name identifying the dataset. If the name belongs to an existing dataset in
+    the stream, this dataset will be used for reading and writing. If it does not exist, it
+    will be created if the stream is opened for writing, otherwise an exception will be
+    raised.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>result</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TDataset</td>
+    <td>&nbsp;</td>
+    <td>Parameter/Location/Time dataset object</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF" size="2"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>An exception is raised if the stream is opened in read mode and the dataset does not
+    exist</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>Defining the dataset structure</em></strong></p>
+
+<p><em><strong><font color="#008000">procedure Define (Datatype : TDatatype; Name :
+string); overload;</font></strong></em></p>
+
+<p>This procedure adds an extra string identifier along one of the axes of the PLT
+structure.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TDataType</td>
+    <td>datatype</td>
+    <td>The data type item to be defined</td>
+  </tr>
+  <tr>
+    <td>string</td>
+    <td>name</td>
+    <td>The string identifier along one of the axes. If the string identifier already exists
+    for this data type, nothing happens.</td>
+  </tr>
+</table>
+</div>
+
+<p><em><strong><font color="#008000">procedure Define (Datatype : TDatatype; Names :
+TStringList); overload;</font></strong></em></p>
+
+<p>This procedure adds a number of string identifiers along one of the axes of the PLT
+structure.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TDataType</td>
+    <td>datatype</td>
+    <td>The data type item to be defined</td>
+  </tr>
+  <tr>
+    <td>TStringList</td>
+    <td>names</td>
+    <td>A list of string identifiers along one of the axes. Existing string identifiers in the
+    dataset are ignored.</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>function Count (Datatype : TDatatype) : integer;</strong></em></font></p>
+
+<p>This function tells the number of string identifiers along one of the axes.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TDataType</td>
+    <td>datatype</td>
+    <td>The data type item to be counted</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>result</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>The number of string identifiers. If the dataset has not been flushed yet, the newly
+    added or deleted string identifiers are taken into account.</td>
+  </tr>
+</table>
+</div>
+
+<p><em><strong><font color="#008000">function getIndex (Datatype : TDatatype; Name :
+string) : integer;</font></strong></em></p>
+
+<p>Returns the index number of a specified string identifier along one the axes.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TDataType</td>
+    <td>datatype</td>
+    <td>The data type item, which should contain the string identifier</td>
+  </tr>
+  <tr>
+    <td>String</td>
+    <td>name</td>
+    <td>The name of the string identifier</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>result</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>The index number of the string identifier, zero based. If the string identifier has
+    not been found, -1 is returned.</td>
+  </tr>
+</table>
+</div>
+
+<p><em><strong><font color="#008000">function getName (Datatype : TDatatype; Index :
+integer) : string;</font></strong></em></p>
+
+<p>Returns the name of a string identifier at a specified position along one of the axes.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TDataType</td>
+    <td>datatype</td>
+    <td>The data type item, which should contain the string identifier</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>index</td>
+    <td>The position of the string identifier</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>result</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>String</td>
+    <td>&nbsp;</td>
+    <td>The name of the string identifier</td>
+  </tr>
+</table>
+</div>
+
+<p><em><strong><font color="#008000">procedure setName (Datatype : TDatatype; Index :
+integer; Name : string);</font></strong></em></p>
+
+<p>Sets the name of a string identifier at a specified position along one of the axes.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>TDataType</td>
+    <td>datatype</td>
+    <td>The data type item, which should contain the string identifier</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>index</td>
+    <td>The position of the string identifier</td>
+  </tr>
+  <tr>
+    <td>String</td>
+    <td>name</td>
+    <td>The name of the string identifier</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>Reading and writing the dataset values</em></strong></p>
+
+<p><em><strong><font color="#008000">function getValue (Par, Loc, Time : integer) :
+double; overload;</font></strong></em></p>
+
+<p>Gets the value at a specified position.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Par</td>
+    <td>The index along the parameter axis, zero based</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Loc</td>
+    <td>The index along the location axis</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Time</td>
+    <td>The index along the time axis</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>result</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>&nbsp;</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if one of the indices is out of bounds</td>
+  </tr>
+</table>
+</div>
+
+<p><em><strong><font color="#008000">function getValue (Index1, Index2 : integer) :
+double; overload;</font></strong></em></p>
+
+<p>Gets the value at a specified position. This function is appropriate if the dataset is
+at most two dimensional, i.e. the number of string identifiers along at most two of the
+axes is greater than one, along the other axes it is exactly one.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Index1</td>
+    <td>The index along the first axis, which contains more than one string identifier. The
+    axes are ordered as Par, Loc, Time.</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Index2</td>
+    <td>The index along the second axis, which contains more than one string identifier</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>result</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>&nbsp;</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if one of the indices is out of bounds or if the dataset is three dimensional.</td>
+  </tr>
+</table>
+</div>
+
+<p><em><strong><font color="#008000">function getValue (Index : integer) : double;
+overload;</font></strong></em></p>
+
+<p>Gets the value at a specified position. This function is appropriate if the dataset is
+at most one dimensional, i.e. the number of string identifiers along at most one of the
+axes is greater than one, along the other axes it is excatly one.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Index</td>
+    <td>The index along the axis, which contains more than one string identifier.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>result</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>&nbsp;</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if the index is out of bounds or if the dataset is two or three dimensional.</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>function getValue: double; overload;</strong></em></font></p>
+
+<p>Gets the value at a specified position. This function is appropriate if the dataset is
+zero dimensional, i.e. the number of string identifiers along all axes is exactly one.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>result</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>&nbsp;</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if the index is out of bounds or if the dataset is not zero dimensional</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>procedure setValue (Par, Loc, Time : integer; Value :
+double); overload;</strong></em></font></p>
+
+<p>Sets the value at a specified position.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Par</td>
+    <td>The index along the parameter axis, zero based</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Loc</td>
+    <td>The index along the location axis</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Time</td>
+    <td>The index along the time axis</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>Value</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if one of the indices is out of bounds</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>procedure setValue (Index1, Index2 : integer; Value :
+double); overload;</strong></em></font></p>
+
+<p>Sets the value at a specified position. This function is appropriate if the dataset is
+at most two dimensional, i.e. the number of string identifiers along at most two of the
+axes is greater than one, along the other axes it is exactly one.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Index1</td>
+    <td>The index along the first axis, which contains more than one string identifier. The
+    axes are ordered as Par, Loc, Time.</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Index2</td>
+    <td>The index along the second axis, which contains more than one string identifier</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>Value</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if one of the indices is out of bounds or if the dataset is three dimensional.</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>procedure setValue (Index : integer; Value : double);
+overload;</strong></em></font></p>
+
+<p>Sets the value at a specified position. This function is appropriate if the dataset is
+at most one dimensional, i.e. the number of string identifiers along at most one of the
+axes is greater than one, along the other axes it is excatly one.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>Index</td>
+    <td>The index along the axis, which contains more than one string identifier.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>result</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>&nbsp;</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if the index is out of bounds or if the dataset is two or three dimensional.</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>procedure setValue (Value : double); overload;</strong></em></font></p>
+
+<p>Sets the value at a specified position. This function is appropriate if the dataset is
+zero dimensional, i.e. the number of string identifiers along all axes is exactly one.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>result</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td>&nbsp;</td>
+    <td>The value at the specified position</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if the index is out of bounds or if the dataset is not zero dimensional</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>Flushing the dataset</em></strong></p>
+
+<p><font color="#008000"><em><strong>procedure Read;</strong></em></font></p>
+
+<p>This method retrieves the stored values. To perform a meaningful getValue accessing the
+stored values, this method must be called first. Otherwise, only values put by a setValue
+are retrieved, or zero values.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if an error occurs when accessing the stored values</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>procedure Write;</strong></em></font></p>
+
+<p>This method stores the values. To store the values, which have been set by setValue,
+this methos must be called. If you do not call this method after a (number of)
+setValue(s), these values will be lost.</p>
+
+<p>If necessary, this method calls WriteFramework first to store the dataset structure.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if an error occurs when writing the values</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#008000"><em><strong>procedure WriteFramework;</strong></em></font></p>
+
+<p>This method stores the structure of the dataset. If you changed the dataset structure,
+this method must be called to actually store this structure.</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>exception</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>EDelftIOError</td>
+    <td>&nbsp;</td>
+    <td>Raised if an error occurs when writing the dataset structure</td>
+  </tr>
+</table>
+</div>
+</body>
+</html>

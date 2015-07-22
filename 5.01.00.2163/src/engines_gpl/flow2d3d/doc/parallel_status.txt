@@ -1,0 +1,332 @@
+TO DO
+=====
+1) built-in checks: "if parallel and z-layers then stop with an error message" etc.
+
+
+
+wrong output
+============
+his-file:
+    his-const
+        XYTRA       Are set for each partition using local m/n indices
+                    Will be wrong when a crosssection lies in more than one partition
+                    Solution: write a routine gather_filter_merge collection the correct xy-locations per crosssection
+map-file:
+    TEMPOUT         Is not being written.
+
+    map-const
+        IROCOL      Is adapted for each partition. Solution will be complex.
+        NOROCO      Zie IROCOL
+        NOROW       Zie IROCOL
+
+    map-series
+        MNKSRC      k-coordinate may be -1 when the location was outside the partition used for writing
+
+
+
+Not supported functionality and limitations
+===========================================
+- Any usage of a com-file
+- Z layer model
+- Domain Decomposition
+- Wave online
+- Fluid mud online
+- RTC online
+- Coup online
+- drogues and moving observation points
+- culvert
+- powerstation only works when inlet and outfall are in the same partition (is checked)
+- walking discharge
+- Writing WAQ input files
+- Moving obstacles
+- 2D skewed (not 1D-) Weirs
+- Barriers
+- max(mmax,nmax)/npart <= 4 (is checked)
+- fourier output
+- roller model
+- dredge and dump
+- mormerge
+- mass balance polygons
+
+
+
+Testcase overview
+=================
+OK    : runs fine in parallel mode, results are correct
+ERROR : does not run in parallel mode, 
+
+group               testcase            
+-------------------|-----------------------
+01_general          02-fff                 ERROR: The combination of constant dx and dy and parallel is not available
+                    03-f34                 ERROR: Discharge "(14,2)" is a walking discharge and is not supported when running parallel
+                    04-ssd                 ERROR: max(mmax,nmax)/npart < 4
+                    05-sso                 ERROR: max(mmax,nmax)/npart < 4
+                    06-rot                 ERROR: constant dx/dy (floating structure problem is solved)
+                    07-chezy_r             ERROR: output on grid specified with constant dx/dy
+                    08-power               ERROR: output on grid specified with constant dx/dy, powerstation only works when inlet and outfall are in the same partition
+                    09-walking             ERROR: walking discharge
+                    10-culvert             ERROR: culvert
+                    11-c03                 OK
+                    12-breukelermeer       OK
+                    13-markermeer          OK
+                    14-g52                 OK
+                    15-eva                 OK
+                    16-f33tutorial         ERROR: drogues
+                    17-curvesphere         ERROR: Waves activated but no COM-file present
+                    18-decay               OK
+                    19-drogues_low         ERROR: drogues
+                    20-0steps              OK
+                    21-bccorrection        OK
+                    22-unesco_sal          OK
+                    23-unesco_temp         OK
+                    24-waq_output          OK
+                    25-mobs                ERROR: parallel and drogues/walking monitor points is not available. 
+                    26-abudhabi            OK
+                    27-keva1               OK
+                    28-keva2               OK
+                    29-keva3               OK
+02_spillways        01-2dw                 OK
+                    02-b1u                 OK 
+                    03-b2u                 OK
+                    04-b3u                 OK
+                    05-b4u                 not checked (grid not ready) ERROR: 2D weirs   
+                    07-b6u                 not checked (grid not ready) ERROR: 2D weirs
+                    08-t01                 OK
+                    09-t02                 not checked (grid not ready) ERROR: 2D weirs
+                    10-t03                 not checked (grid not ready) ERROR: 2D weirs
+                    11-local_weirs         OK
+03_original         01-getij               OK
+                    02-lockex              OK
+                    03-disch               ERROR: drogues / walking monitor points
+                    04-siulamd             ERROR: drogues / walking monitor points
+                    05-siulamo             ERROR: drogues / walking monitor points 
+                    06-india_droogval      OK
+                    07-india_cyclone       ***** DISABLED ********** DISABLED *****
+                    08-lakevictoria        OK
+                    09-getij_with_measur   OK
+                    10-hirlam              OK
+                    11-vietnam_cyclone     OK
+                    12-secchi_variable_0   NOT OK: diff_temp < 1.1C; diff_sep < 0.12m, dif_u < 0.1 m/s
+                                             1-4 doms: idem
+                                             2-4doms: diff_temp <  1E-3 C    diff_sep <5E-5m       diff_u < 2E-4; (OK!)
+                    13-foumod_scs          NOT OK: wl difference of 0.2 at skewed open boundary near Andaman Sea
+                    14-katrina_windcd3     OK
+04_coarsewind       01-001                 ***** DISABLED ********** DISABLED *****
+                    02-003                 OK
+                    03-004                 OK
+                    04-005                 ***** DISABLED ********** DISABLED *****
+                    05-006                 ***** DISABLED ********** DISABLED *****
+                    06-007                 OK
+                    07-034                 NOT OK: dif_sep <0.01m, dif_u < 0.1m/s
+                    08-w01                 OK
+                    09-scs                 NOT OK: wl difference of 0.4m at skewed open boundary near Andaman Sea
+                    10-mark_grid_svwp      OK
+                    11-mark_grid_arc       OK
+                    12-meteo_computation   ERROR: max(mmax,nmax)/npart < 4
+                    13-meteo_equidistant   ERROR: max(mmax,nmax)/npart < 4
+                    14-meteo_equidistant   ERROR: max(mmax,nmax)/npart < 4
+                    15-meteo_curvi_ll_gr   ERROR: max(mmax,nmax)/npart < 4
+                    16-meteo_curvi_ll_gr   ERROR: max(mmax,nmax)/npart < 4
+                    17-meteo_curvi_ul_gr   ERROR: max(mmax,nmax)/npart < 4
+                    18-meteo_curvi_ul_gr   ERROR: max(mmax,nmax)/npart < 4
+                    19-meteo_curvi_lr_gr   ERROR: max(mmax,nmax)/npart < 4
+                    20-meteo_curvi_lr_gr   ERROR: max(mmax,nmax)/npart < 4
+                    21-meteo_curvi_ur_gr   ERROR: max(mmax,nmax)/npart < 4
+                    22-meteo_curvi_ur_gr   ERROR: max(mmax,nmax)/npart < 4
+05_hles             1-l04                  OK
+                    2-l05                  OK
+06_ols              01-flume               ***** DISABLED ********** DISABLED *****
+                    02-d01                 ***** DISABLED ********** DISABLED *****
+                    03-hump                ***** DISABLED ********** DISABLED *****
+                    04-l06                 OK
+                    05-l07                 OK
+                    06-hump                OK
+                    07-hump2d              OK
+                    08-trench              OK
+                    09-trench2d            OK
+                    10-bijker              ERROR: Waves activated but no COM-file present
+                    11-rijn1993            ERROR: Waves activated but no COM-file present
+                    12-vanrijn_temp        OK
+07_zlayers          01-channel             ERROR: Z layer
+                    02-drying-flooding     ERROR: Z layer
+                    03-tidalflume          ERROR: Z layer
+                    04-temperature         ***** DISABLED ********** DISABLED *****
+                    05-pits                ERROR: Z layer
+                    06-125                 ERROR: Z layer
+                    07-f34                 ERROR: Z layer
+                    08-brassem             ERROR: Z layer
+                    09-zegerplas           ERROR: Z layer
+                    10-gate1               ERROR: Z layer
+                    11-gate2               ERROR: Z layer
+                    12-lockex_nhy          ERROR: Z layer
+                    13-jet_nhy             ERROR: Z layer
+                    14-01.06-rot_r         ERROR: Z layer
+                    15-01.07-chezy_r       ERROR: Z layer
+                    16-01.08-power_r       ERROR: Z layer
+                    17-01.12-breukelerme   ERROR: Z layer
+                    18-01.15-eva_plus      ERROR: Z layer
+                    19-03.06-india_droog   ERROR: Z layer
+                    20-04.07-034           ERROR: Z layer
+                    21-11.10-q10           ERROR: Z layer
+                    22-jvk-bak_met_dremp   ERROR: Z layer
+                    23-onl                 ERROR: Z layer
+                    24-forester            ERROR: Z layer
+                    25-bubblescreen        ERROR: Z layer
+                    26-powerstation        ERROR: Z layer
+07a_zlayers_implicit01-channel             ERROR: Z layer
+                    02-drying-flooding     ERROR: Z layer
+                    03-tidalflume          ERROR: Z layer
+                    04-temperature         ***** DISABLED ********** DISABLED *****
+                    05-pits                ERROR: Z layer
+                    06-125                 ERROR: Z layer
+                    07-f34                 ERROR: Z layer
+                    08-brassem             ERROR: Z layer
+                    09-zegerplas           ERROR: Z layer
+                    10-gate1               ERROR: Z layer
+                    11-gate2               ERROR: Z layer
+                    12-lockex_nhy          ERROR: Z layer
+                    13-jet_nhy             ERROR: Z layer
+                    14-01.06-rot_r         ERROR: Z layer
+                    15-01.07-chezy_r       ERROR: Z layer
+                    16-01.08-power_r       ERROR: Z layer
+                    17-01.12-breukelerme   ERROR: Z layer
+                    18-01.15-eva_plus      ERROR: Z layer
+                    19-03.06-india_droog   ERROR: Z layer
+                    20-04.07-034           ERROR: Z layer
+                    21-11.10-q10           ERROR: Z layer
+                    22-jvk-bak_met_dremp   ERROR: Z layer
+                    23-onl                 ERROR: Z layer
+                    24-forester            ERROR: Z layer
+                    25-bubblescreen        ERROR: Z layer
+08_fluidmud         1-helling              ERROR: Z layer
+                    2-aandrijving1         ERROR: Z layer
+                    3-aandrijving2         ERROR: Z layer
+                    4-slibhelling          ERROR: Z layer
+                    5-consolidatie         ERROR: Z layer
+                    6-inuitstroom          ERROR: Z layer
+                    7-erosie               ERROR: Z layer
+                    8-klots                ERROR: Z layer
+                    9-bezinken             ERROR: Z layer
+09_rtc              01-basic               ERROR: RTC online
+                    02-s01a_dd             ***** DISABLED ********** DISABLED *****
+10_dd               00-2bakjes             ERROR: DD
+                    01-3bakjes             ERROR: DD
+                    02-6bakjes             ERROR: DD
+                    03-vlissingen          ERROR: DD
+                    04-humber              ERROR: DD
+                    05-victoria            ERROR: DD
+                    06-x-even              ERROR: DD
+                    07-y-even              ERROR: DD
+                    08-vict-even           ERROR: DD
+                    09-3bakjes_movedback   ERROR: DD
+                    10-vlissingen_movedb   ERROR: DD
+                    11-tutorial            ERROR: DD
+                    12-whirlpool           ERROR: DD
+                    13-ols-trench-x        ERROR: DD
+                    14-ols-trench-y-refi   ERROR: DD
+                    15-ols-humber          ERROR: DD
+                    16-lockex_nhy          ERROR: DD
+                    17-jet_nhy             ERROR: DD
+                    18-cdw_nhy             ERROR: DD
+                    19-203                 ERROR: DD
+                    20-233                 ERROR: DD
+                    21-4channels_2d        ERROR: DD
+                    22-4channels_3d        ERROR: DD
+                    23-palmisland          ERROR: DD
+                    24-binnenhoek          ERROR: DD
+                    25-palmisland_4dom     ERROR: DD
+                    26-1dom_dd             ERROR: DD
+                    27-ols_forester        ERROR: DD
+                    28-settle_veloc_opb_   ERROR: DD
+                    29-z_ini               ERROR: DD
+11_qhqtot           01-q01                 ERROR: To be investigated
+                    02-q02                 ERROR: To be investigated
+                    03-q03                 ERROR: To be investigated
+                    04-q04                 ERROR: To be investigated
+                    05-q05                 ERROR: To be investigated
+                    06-q06                 ERROR: To be investigated
+                    07-q07                 ERROR: To be investigated
+                    08-q08                 ERROR: To be investigated
+                    09-q09                 ERROR: To be investigated
+                    10-q10                 ERROR: To be investigated
+12_restart          01-c31                 OK
+                    02-c32                 OK
+                    03-c33                 OK
+                    04-c34                 OK
+                    05-c35                 OK
+                    06-bedlvlmap           ERROR: On Linux. To be investigated. On Windows OK
+13_onlinecoup       1-o2d                  ERROR: Coup online
+14_roller           01-t16                 ERROR: Roller model
+                    02-t18                 ERROR: Roller model
+                    03-breaker             ERROR: Roller model
+                    04-roller_dd           ERROR: Roller model
+15_cutcells         1-z45                  ERROR: Z-model
+                    2-zfree                ERROR: Z-model
+16_culvert          01-culvert_type_d      ERROR: Culvert
+                    02-culvert_type_e      ERROR: Culvert
+                    03-culvert_opb         ERROR: Culvert
+17_dred_dump        01-insidedump          ERROR: Dredge and dump
+                    02-outsidedump         ERROR: Dredge and dump
+                    03-2dred1dump          ERROR: Dredge and dump
+                    04-dump_is_dred        ERROR: Dredge and dump
+                    05-dad_dd              ERROR: Dredge and dump
+                    06-sandmining          ERROR: Dredge and dump
+                    07-layered_bed         ERROR: Dredge and dump
+18_fls-advection    01-dambreak_dry        OK
+                    02-dambreak_wet        OK
+                    03-damput              ERROR: To be investigated
+                    04-nauw                OK
+                    05-rechtdam            OK 
+19_cdw              01-simple_sigma        ERROR: Current deflecting structure is not supported when running parallel 
+                    02-simple_z            ERROR: Z-model and parallel not available    
+                    03-schelde             ERROR: Current deflecting structure is not supported when running parallel
+20_trachytopes      01-tt3                 OK
+                    02-tt4                 OK
+                    03-tt5                 ***** DISABLED ********** DISABLED *****
+                    04-tt6                 ***** DISABLED ********** DISABLED *****
+                    05-tt7                 ***** DISABLED ********** DISABLED *****
+                    06-tt8                 ***** DISABLED ********** DISABLED *****
+                    07-tt9                 ***** DISABLED ********** DISABLED *****
+                    08-t10                 ***** DISABLED ********** DISABLED *****
+                    09-t11                 ***** DISABLED ********** DISABLED *****
+                    10-t12                 ***** DISABLED ********** DISABLED *****
+                    11-trachytest          ERROR: To be investigated
+                    12-dpmv                ERROR: dif_s1 > 1E-4  
+                    13-dpmv_dep            ERROR: dif_s1 > 1E-4 
+                    14-tt_veg_split        ERROR: To be investigated   
+                    15-dpmv_bend           ERROR: To be investigated
+21_waveol           01-trench_dd           ERROR: WAVE online
+                    02-lido_dd             ERROR: WAVE online
+                    03-coafin_dd           ERROR: WAVE online
+                    04-botnow_curnow       ERROR: WAVE online
+                    05-flow_wave_roller    ERROR: WAVE online
+22_graded           01-graded              ERROR: dif_s1 > 0.15            
+                    02-pankop              ERROR: diff u > 0.03 (at inflow) 
+                    03-trench              ERROR: locally very large differences
+                    04-trench_opb          ERROR: To be investigated
+                    05-pankop_secflow_sp   ERROR: To be investigated
+23_timeunit         01-sec                 ERROR: To be investigated
+24_mormerge         01-bas                 ERROR: mormerge
+                    02-bas_dd_wave         ERROR: mormerge
+                    03-groin4_wave         ERROR: mormerge
+25_bottfric_2D_3D   01-chezygoot_equid     OK
+                    02-chezygoot_log       OK
+                    03-estuarium_equid     OK
+                    04-estuarium_log       OK      
+                    05-noordzee_2d         OK
+                    06-noordzee_equid      OK
+                    07-noordzee_log        OK
+26_dunes            01-vRijn84             OK
+                    02-FredsoeMPM          OK
+                    03-vRijn84_advection   OK
+                    04-vRijn84_adv_dunei   OK
+88_sensitive        01.01-bakje            OK
+                    01.07-chezy            OK
+                    02.06-b5u              OK
+99_longruns         01-vlissingen          ERROR: DD     
+                    02-zlayer_tst          ERROR: Z layer
+                    03-6bakjeslong         ERROR: DD
+                    04-estuarium           OK
+                    05-schelde             ERROR: fourier
+                    06-rotterdam           ERROR: To be investigated
+

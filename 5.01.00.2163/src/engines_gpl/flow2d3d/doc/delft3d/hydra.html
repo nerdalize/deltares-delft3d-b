@@ -1,0 +1,805 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Delft-Hydra 2004 API Specification</title>
+  <style>
+    H1 { font-family: Helvetica,Arial; color: #00467A; }
+    H2 { font-family: Helvetica,Arial; color: #00467A; }
+    H3 { font-family: Helvetica,Arial; }
+    H4 {  }
+  </style>
+</head>
+<body>
+<h1>Delft-Hydra 2004 API Specification</h1>
+<p><big>
+<font color="#991111">version <big>4.0</big></font>
+</big></p>
+<big><i><a href="mailto:elshoff@deltares.nl">Irv Elshoff</a> @ WL |
+Delft
+Hydraulics</i></big><br>
+<big><i>21 jun 04<br>
+<br>
+</i></big>
+<h3>Contents</h3>
+<ul>
+</ul>
+<ul>
+  <li><a href="#Introduction">Introduction</a></li>
+  <li><a href="#Execution_Overview">Execution Overview</a></li>
+  <li><a href="#Names_and_IDs">Names and IDs</a><br>
+  </li>
+  <li><a href="#Categories">Categories</a></li>
+  <li><a href="#Blobs">Blobs</a></li>
+  <li><a href="#Iterators">Iterators</a></li>
+  <li><a href="#Clusters">Clusters</a></li>
+  <li><a href="#Debug_Facility">Debug Facility</a></li>
+  <li><a href="#Developer_Notes">Developer Notes</a><br>
+  </li>
+</ul>
+<br>
+<h2><a name="Introduction"></a>Introduction</h2>
+The Hydra executive provides parallelism, synchonization and
+message passing for domain decomposition (DD) and coupling in
+Delft3D.&nbsp; This document describes the semantics and C++ bindings
+of Hydra for Delft3D developers.<br>
+<br>
+Hydra supports a collection of interacting objects called <span
+ style="font-style: italic;">iterators</span>.&nbsp; Each iterator
+repeatedly does some work (e.g., computation or I/O) and then exchanges
+information with a fixed set of neighboring iterators. They continue
+doing this until they all decide to stop.&nbsp; (A single iterator can
+force termination if an error occurs.)&nbsp; The work an iterator does
+is specified by its iterator function, which is supplied by the Delft3D
+developer.<br>
+<br>
+Iterators are classified according to some essential common property
+and organized into <span style="font-style: italic;">categories</span>.&nbsp;
+The neighbors of an iterator may not belong to same category as the
+iterator itself.<br>
+<br>
+Consider the following undirected multipartite graph:<br>
+<br>
+<div style="margin-left: 40px;"><img src="im/hydranet.gif" title=""
+ alt="Hydra graph" style="width: 320px; height: 270px;"><br>
+</div>
+<br>
+<br>
+The blue nodes could represent hydrodynamic flow processes (one for
+each each subdomain), the red nodes DD mappers and the yellow node an
+online visualization process that renders a coherent view of the entire
+domain to an end user.&nbsp; Interactions between the flow processes
+and visualizer could occur every simulation time step, whereas
+interactions between flow processes and mappers could be more frequent
+within a numerical solver loop.<br>
+<br>
+All of the iterators in a given category can run in parallel.&nbsp; At
+any moment in time, iterators of only one category are executing.<br>
+<br>
+Because not all iterators can run simultaneously and the number of
+iterators in a category may exceed the number physical processors
+available, Hydra provides <span style="font-style: italic;">clusters</span>
+to group iterators together on a single processor so that efficient use
+is made of the underlying hardware.&nbsp; Clusters also define a common
+address space so that shared memory can be used for communication.<br>
+<br>
+Communication between clusters is done by message passing.&nbsp;
+Messages are stored in <span style="font-style: italic;">blobs</span>,
+which are opaque to Hydra.<br>
+<br>
+<h2><a name="Execution_Overview"></a>Execution Overview<br>
+</h2>
+<p>Hydra goes through four phases during execution:<br>
+</p>
+<ul>
+  <li>Configuration: Instantiation of categories, clusters and
+iterators.</li>
+  <li>Initialization: Sequential execution the iterator
+functions up to a certain point.<br>
+  </li>
+  <li>Simulation: Parallel execution of iterators with message
+exchange.&nbsp; This is the main phase of the program.<br>
+  </li>
+  <li>Finalization: Available for non-Hydra wrapup.<br>
+  </li>
+</ul>
+<p>Hydra starts out as a single thread.&nbsp; The Hydra executive must
+be bootstrapped before any other operations with:<br>
+</p>
+<p style="margin-left: 40px;"><span style="font-family: monospace;">void</span><span
+ style="font-family: monospace;"><span style="font-weight: bold;">
+Hydra::Boot</span>
+(</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; void (*<span
+ style="font-style: italic;">configfunction</span>)
+(int <span style="font-style: italic;">argc</span>, char * <span
+ style="font-style: italic;">argv</span>[])<br
+ style="font-family: monospace; font-style: italic;">
+</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; void (*<span
+ style="font-style: italic;">finalfunction</span>)
+(char * <span style="font-style: italic;">reason</span>)<br
+ style="font-family: monospace; font-style: italic;">
+</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</p>
+<p>The arguments to Boot are pointers to two user-defined
+functions.&nbsp; The first function should configure Hydra by creating
+instances of iterators, categories and clusters.&nbsp; It is given a
+copy of the command-line arguments used to start the program.&nbsp;
+Some parameters may be relevant (e.g., the name of a configuration
+file).&nbsp; Unrecognized parameters should be ignored; they may be
+meaningful to Hydra itself or other components of the program.<br>
+</p>
+<p>The second function is called after the simulation phase completes,
+and can be used to clean up loose ends (e.g., release allocated
+resources).&nbsp; Normally, it is passed a <small>NULL</small>
+pointer, unless the program has aborted, in which case it is passed a
+pointer to a character string describing the reason for the abort (see
+below).&nbsp; The finalization function is optional; <small>NULL</small>
+may be passed to Boot if it not present.<br>
+</p>
+<p>The configuration and finalization functions will run in the same
+address space.&nbsp; They do not, however, have access to the address
+spaces of the iterators.<br>
+</p>
+<p>After the configuration function returns, Hydra will sequentially
+invoke all iterator functions within their
+clusters.&nbsp; They can initialize their
+internal states, make Hydra calls to determine the configuration
+topology, and prepare for simulation.&nbsp; Code in the initialization
+phase cannot use pointers to objects created in the configuration phase
+because different address spaces are used.&nbsp; When their
+initialization has been completed, iterator functions must call:<br>
+</p>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void</span><span
+ style="font-family: monospace;"><span style="font-weight: bold;">
+Hydra::</span></span><span style="font-family: monospace;"><span
+ style="font-weight: bold;">Ready</span>
+(</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<p>When all iterator functions have called Ready, the initialization
+phase is concluded and the simulation proper is started. In this phase
+iterators will be allow to run in
+parallel, and the simulation proceeds until all iterators have returned
+from their function.<br>
+</p>
+<p>If an error occurs during any phase of the program that
+makes
+continuing on pointless, the entire program can be terminated
+immediately with:<br>
+</p>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void</span><span
+ style="font-family: monospace;"><span style="font-weight: bold;">
+Hydra::Abort</span>
+(</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; char * <span
+ style="font-style: italic;">reason,<br>
+&nbsp;&nbsp;&nbsp; ...<br
+ style="font-family: monospace; font-style: italic;">
+</span></span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+);</span><br>
+</div>
+<br>
+Reason is a character string that will be passed to the finalization
+function and
+can be used to describe why the simulation was aborted.&nbsp; Reason
+may be a printf format string with additional arguments, in which case
+the string will be rendered before being passed to the finalization
+function.<br>
+<p>During the simulation phase iterators synchronize and exchange
+information using Send and Receive calls.&nbsp; The general execution
+paradigm used in Delft3D is that an iterator repeatedly sends messages
+to all its neighbors (in a certain category) and then receives messages
+from all neighbors.&nbsp; A iterator is effectly blocked until all its
+neighbors have signalled it to continue.&nbsp; This causes a systolic
+execution pattern.<br>
+</p>
+<p>At the very end, when all iterators have terminated, the
+finalization function defined in the Initialize call will be
+invoked.&nbsp; The
+reason argument is that supplied to Abort, or <span
+ style="font-family: monospace;">NULL</span> for normal termination.<br>
+</p>
+<h2><a name="Names_and_IDs"></a>Names and IDs</h2>
+<p>Hydra is object oriented.&nbsp; Three object classes - categories,
+clusters and iterators - have three different kinds of identifiers:<br>
+</p>
+<ul>
+  <li>A character string name for user-oriented output (max length is <span
+ style="font-family: monospace;">Hydra::MAXSTRING</span>).</li>
+  <li>An integer ID for comparison purposes.<br>
+  </li>
+  <li>A C++ pointer for local invocation.&nbsp; Local means within the
+same program phase and cluster.</li>
+</ul>
+Names and IDs are global and available in all phases of the
+program.&nbsp; All three classes have methods to retrieve the name and
+ID given a pointer:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">char
+* <span style="font-style: italic;">name</span> = <span
+ style="font-style: italic;">myobject</span>-&gt;<span
+ style="font-weight: bold;">Name</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; void</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;"><br>
+int <span style="font-style: italic;">id</span> = <span
+ style="font-style: italic;">myobject</span>-&gt;<span
+ style="font-weight: bold;">ID</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; void</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+An ID is a nonnegative integer less than <span
+ style="font-family: monospace;">Hydra::MAXCATEGORIES</span>, <span
+ style="font-family: monospace;">Hydra::MAXCLUSTERS</span> and <span
+ style="font-family: monospace;">Hydra::MAXITERATORS</span>,
+respectively.<br>
+<br>
+Blobs are anonymous and do not have these methods.<br>
+<br>
+<p></p>
+<h2><a name="Categories"></a>Categories</h2>
+A category defines a set of objects that have something significant in
+common.&nbsp; For example, in Delft3D, flow processes, mappers and
+barriers
+are all categories.<br>
+<br>
+A category is created with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Category
+* <span style="font-style: italic;">mycat</span> = new <span
+ style="font-weight: bold;">Hydra::Category</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int * <span
+ style="font-style: italic;">id</span>,<br>
+&nbsp;&nbsp;&nbsp; const char *
+<span style="font-style: italic;">name</span><br>
+</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+The ID argument is a point to an integer that will be set to the ID of
+the new category.&nbsp; If the pointer is <small>NULL</small>, no
+assignment will be done.<br>
+<br>
+Given a category name, a point to its object instance can be retrieved
+with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Category
+* <span style="font-style: italic;">mycat</span> = <span
+ style="font-weight: bold;">Hydra::LookupCategory</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; const char * <span
+ style="font-style: italic;">name</span></span><br
+ style="font-family: monospace; font-style: italic;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+<h2><a name="Blobs"></a>Blobs</h2>
+Besides synchronization, Hydra provides a means of exchanging
+data.&nbsp; The organization and content of the data is
+arbitrary and opaque to Hydra.&nbsp; To Hydra, data is nothing more
+than a contiguous block of
+memory of a certain size, and is called a blob.&nbsp; Hydra passes
+copies of the data around as appropriate.&nbsp; Blobs are used in
+iterator initialization and for message passing.<br>
+<br>
+To create a blob, call:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">HydraBlob
+* <span style="font-style: italic;">myblob</span> = new <span
+ style="font-weight: bold;">Hydra::Blob</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; const void * <span
+ style="font-style: italic;">address,</span></span><br
+ style="font-family: monospace; font-style: italic;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; const unsigned
+int <span style="font-style: italic;">size</span></span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );<br>
+</span>
+</div>
+<br>
+This will create a small descriptor containing a copy of the address
+and size (in bytes).&nbsp; The data itself is not copied or otherwise
+accessed.&nbsp; The address should point to statically or dynamically
+allocated memory that remains valid for the lifetime of the blob.<br>
+<br>
+If the blob is used as an argument for Send or Receive (see Messages
+below) the data referred to in the descriptor is copied as appropriate
+(from the adress for Send, to the address for Receive).<br>
+<br>
+Blobs provide two methods to retrieve the instantiation parameters:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void
+* <span style="font-style: italic;">address</span> = blob-&gt;<span
+ style="font-weight: bold;">Address</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; void</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );<br>
+<br>
+unsigned int <span style="font-style: italic;">size</span> = blob-&gt;<span
+ style="font-weight: bold;">Size</span> (<br>
+&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );<br>
+</span></div>
+<br>
+Address returns a pointer to the blob data.&nbsp; Size returns its
+length in bytes.<br>
+<br>
+<h2><a name="Iterators"></a>Iterators</h2>
+<h3>Configuration Phase</h3>
+An iterator is an envelope for an active object.&nbsp; Iterators are
+created in the configuration phase (only) with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Iterator
+* <span style="font-style: italic;">myiter</span> = new <span
+ style="font-weight: bold;">Hydra::Iterator</span> (<br>
+&nbsp;&nbsp;&nbsp; int * <span style="font-style: italic;">id</span>,<br>
+&nbsp;&nbsp;&nbsp; char * <span style="font-style: italic;">name</span>,<br>
+&nbsp;&nbsp;&nbsp; Blob * <span style="font-style: italic;">configblob,<br>
+&nbsp;&nbsp;&nbsp; </span>Category * <span style="font-style: italic;">category</span>,<span
+ style="font-style: italic;"><br style="font-style: italic;">
+</span>&nbsp;&nbsp;&nbsp; </span><span style="font-family: monospace;">void
+(*<span style="font-style: italic;">function</span>)
+(<br>
+</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Iterator</span><span style="font-family: monospace;">
+* <span style="font-style: italic;">self</span>,<br>
+</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="font-family: monospace;">char *
+<span style="font-style: italic;">name</span>,<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span
+ style="font-family: monospace;">Blob * <span
+ style="font-style: italic;">configblob</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ),<br>
+&nbsp;&nbsp;&nbsp; </span><span style="font-family: monospace;">unsigned
+int <span style="font-style: italic;">weight</span> = 0<br>
+</span><span style="font-family: monospace;">);<span
+ style="font-family: monospace;"><br>
+<br>
+</span></span></div>
+The ID argument is a point to an integer that will be set to the ID of
+the new iterator.&nbsp; If the pointer is <small>NULL</small>, no
+assignment will be done.<br>
+<br>
+Iterators can be parameterized by means of a
+blob, which could contain a string or a complex data structure.&nbsp;
+If parameterization is not necessary, a <small>NULL</small> pointer
+should be given.<br>
+<br>
+Iterators have weights, which are used to
+automatically cluster itertators for load balancing (see <a
+ href="#Clusters">Clusters</a>).<br>
+<br>
+The iterator function is invoked by Hydra to carry out the actual
+work.&nbsp; The self argument is a pointer to the iterator object for
+various Hydra calls described below.&nbsp; The name and configuration
+blob parameters are copies of the arguments to the object instantiation
+call.<br>
+<br>
+Iterators are joined with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void
+<span style="font-weight: bold;">Hydra::Join</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; Iterator * <span
+ style="font-style: italic;">iter1</span>,</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; Iterator * <span
+ style="font-style: italic;">iter2</span>,</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; unsigned int <span
+ style="font-style: italic;">affinity</span> = 0<br
+ style="font-family: monospace;">
+</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+Join creates a symmetic relationship between two iterators.&nbsp;
+Joining A and B is the same as joining B and A.&nbsp; Join is
+idempotent, so doing both joins would result in a single relationship
+(and no error or warning).<br>
+<br>
+The categories of both iterators must
+be different.&nbsp; Iterators that belong to the same category cannot
+be joined.<br>
+<br>
+The affinity is used for load balancing, which is
+described later.&nbsp; If two iterators are joined more than once with
+varying affinities, the last affinity given will be used.<br>
+<br>
+Hydra runs until all iterators have terminated.&nbsp; Sometimes it is
+convenient to write iterators and repeatedly receive a message an
+indefinite number of times.&nbsp; To avoid requiring user code to shut
+down all iterators for global termination, an iterator may "detach"
+itself so that its termination is not required for global
+termination.&nbsp; Iterators can be detached with:<br>
+<div style="margin-left: 40px;"><br>
+<span style="font-family: monospace;">void <span
+ style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">Detach</span> (<br>
+&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );<br>
+<br>
+</span></div>
+<h3>Initialization and Simulation Phases</h3>
+An iterator function can call various Hydra functions to get
+information about the topology and attributes of other iterators.&nbsp;
+Since the topology is static, these calls will always return the same
+information; the return values can be remembered and used later.<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Iterator
+* <span style="font-style: italic;">self</span> = <span
+ style="font-weight: bold;">IteratorSelf</span> (<br>
+&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );<br>
+</span></div>
+<br>
+Returns an object pointer for the currently executing iterator.<br>
+<div style="margin-left: 40px;"><br>
+<span style="font-family: monospace;">Blob * <span
+ style="font-style: italic;">configblob</span> = <span
+ style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">ConfigBlob</span> (<br>
+&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );<br>
+<br>
+</span></div>
+Returns a reference to the configuration blob of an iterator.<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Category
+* <span style="font-style: italic;">cat</span> = <span
+ style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">Category</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; void</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+Returns the category of any iterator.<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">unsigned
+int <span style="font-style: italic;">count</span> = <span
+ style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">NeighborCount</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; Category * <span
+ style="font-style: italic;">cat</span> = NULL</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><span
+ style="font-family: monospace;"><br>
+</span></div>
+<br>
+Returns the number of neighbors in a given category or all categories
+(no argument) of an iterator.<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void
+<span style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">RewindNeighbors</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; Category * <span
+ style="font-style: italic;">cat</span> = NULL</span><br
+ style="font-family: monospace; font-style: italic;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br
+ style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">Iterator * <span
+ style="font-style: italic;">neighbor</span> = <span
+ style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">NextNeighbor</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; Category * <span
+ style="font-style: italic;">cat</span></span><span
+ style="font-family: monospace;"> = NULL</span><br
+ style="font-family: monospace; font-style: italic;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+These functions allow looping through a list of neighboring
+iterators.&nbsp; The Rewind function resets the list.&nbsp; The Next
+function fetches the next iterator on the list.&nbsp; The order is
+arbitrary but consistent.&nbsp; When the list is exhausted <small>NULL</small>
+is returned.&nbsp; Like in the Count function, the category can be
+omitted to get all neighbors regardless of their category.&nbsp; This
+is
+convenient when an iterator is known to have only one kind of
+neighbor.&nbsp; If a
+category is specified, the pointer should be the result of a
+LookupCategory done in the same program phase.<br>
+<br>
+The Rewind function must be called at least once before Next with the
+same argument.&nbsp; Rewind will print a warning if the iterator does
+not have any neighbors of the requested category.&nbsp; This can be
+avoided by ensure that the return value of Count is not zero.<br>
+<br>
+Hydra provides an iterator-specific value that can be set and retrieved
+with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void
+<span style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">SetValue</span> (<br>
+&nbsp;&nbsp;&nbsp; void * <span style="font-style: italic;">value</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );<br>
+<br>
+void * <span style="font-style: italic;">value</span> = <span
+ style="font-style: italic;">iterator</span>-&gt;<span
+ style="font-weight: bold;">GetValue</span> (<br>
+&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );<br>
+</span></div>
+<br>
+The value can be considered a global variable for all functions called
+from the iterator function.&nbsp; Each iterator will have its own
+actual value.&nbsp; If more then one value per iterator is required, an
+aggregate data structure can be created and a pointer to it used as the
+single iterator value.<br>
+<h2><a name="Messages"></a>Messages</h2>
+Hydra iterators can exchange messages with immediate neighbors.&nbsp;
+This is done with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void</span><span
+ style="font-family: monospace;"><span style="font-style: italic;">
+neighbor</span>-&gt;<span style="font-weight: bold;">Send</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; </span><span
+ style="font-family: monospace;">Blob * <span
+ style="font-style: italic;">message</span></span><br
+ style="font-family: monospace; font-style: italic;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+This function copies the blob to a queue of messages for the specified
+iterator and returns.&nbsp; The blob can be deleted or reused for an
+identically sized message immediately after Send returns.<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void
+<span style="font-style: italic;">neighbor</span>-&gt;<span
+ style="font-weight: bold;">Receive</span> (</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; </span><span
+ style="font-family: monospace;">Blob * <span
+ style="font-style: italic;">message<br>
+</span></span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+);</span><br>
+</div>
+<br>
+This gets the oldest message on the queue sent from the specified
+neighbor.&nbsp; There is no wildcard; the neighbor must be explicitly
+mentioned.&nbsp; If the queue is empty, Receive will block until a
+message is Sent the neighbor.&nbsp; The blob should be large enough to
+accomodate the message (otherwise the program will abort).&nbsp; The
+maximum blob size is just short of 4 GB (32-bit address size
+limitation).<br>
+<br>
+Care should be taken to avoid deadlock.&nbsp; If iterators fit the
+following paradigm<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Blob
+* out = new Hydra::Blob (NULL, sizeof <span style="font-style: italic;">abc</span>);</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">Blob * in&nbsp; = new Hydra::Blob
+(NULL, sizeof <span style="font-style: italic;">xyz</span>);</span><br
+ style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">while (! finished) {</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; // <span
+ style="font-style: italic;">do useful work of some kind involing data
+abc and xyz</span></span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; </span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; // <span
+ style="font-style: italic;">send messages to all neighbors</span></span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+self-&gt;RewindNeighbors ();</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; while
+(Iterator * neigh = NextNeighbor ()) {</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; out-&gt;Assign (<span style="font-style: italic;">abc</span>);</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; neigh-&gt;Send (out);</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; }</span><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; // <span
+ style="font-style: italic;">get messages from all nieghbors</span></span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+self-&gt;RewindNeighbors ();</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; while
+(Iterator * neigh = NextNeighbor ()) {</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; neigh-&gt;Recieve (message);</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">xyz</span> =
+in-&gt;Value ();</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; }</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; }</span><br>
+</div>
+<br>
+deadlock cannot occur.&nbsp; More complicated forms of communication
+are supported by Hydra, but without deadlock detection or avoidance.<br>
+<br>
+<h2><a name="Clusters"></a>Clusters</h2>
+<h3>Load Balancing</h3>
+Iterators are active objects implemented as
+threads that do computations.&nbsp; On a shared memory multiprocessor
+(e.g., SGI Origin) the operating system dynamically assigns threads to
+CPU's to acheive the best overall load balance (including other users'
+programs).&nbsp; On a distributed memory machine (e.g., Linux cluster)
+threads do not migrate.&nbsp; How iterator threads are
+placed on the physical nodes can affect performance.&nbsp; One wants
+maximal parallellism by having many nodes, but also wants to attain
+good utilization of the hardware resources.&nbsp; Simply placing every
+iterator on its own node is wasteful because they alternate execution
+based on categories, so many nodes would be idle at any given
+time.&nbsp; Also, placing related iterators on one node cuts down on
+the overhead for communication since the physical network is not
+involved.<br>
+<br>
+How to optimize the placement of Delft3D iterators on computational
+nodes
+is a non-trivial problem.&nbsp; The topology of the domain and the size
+and complexity of the subdomains can be used to determine a good
+placement.&nbsp; The width of the interfaces between subdomains is
+related to the amount of communication between objects.&nbsp; This is
+called the "affinity" of one iterator to another, and is a
+measure of how desireable it is to keep two iterators on the same
+node.&nbsp; The number of grid cells and types of the physical
+processes simulated can be used to estimate the computational
+requirement requirement of an iterator, which called its
+"weight".&nbsp;
+Affinities
+and weights are implied by the Delft3D input, and are independent on
+the underlying hardware configuration.<br>
+<br>
+Given a set of affinities and weights and the number of nodes, a
+clustering algorithm can be used to place iterators on nodes.&nbsp; The
+algorithm is simpler if the nodes are identical and communication
+communcation costs the same between any pair of nodes.&nbsp; The WL
+Linux cluster "hydrax" conforms to this model.<br>
+<br>
+Weights and affinities are non-negative integers
+and assumed to be on some common linear scale.&nbsp; They are specified
+as
+optional arguments to the iterator
+constructor and join method.&nbsp; Hydra does not attach any mean to
+the values
+themselves.<br>
+<br>
+The general heuristic employed by the placement algorithm is to spread
+the processes over all clusters as evenly as possible based on their
+weights.&nbsp; Since this is equivalent to the bin packing problem,
+which is NP-complete, the goal is a reasonable distribution, not an
+optimal one.&nbsp; Next the mappers are placed in the same cluster as
+the subdomain with which it has the greatest affinity.&nbsp; If,
+however, too many mappers aggregate around a heavy process, some will
+be moved to the less busy cluster of their other process.&nbsp;
+Barriers are all left on the main cluster.<br>
+<br>
+Automatic placement is done only if Place is never called. If not
+clusters have been created, Hydra will create one for every node of the
+underlying hardware before doing automatic placement.<br>
+<br>
+Automatic placement based on weights and affinities is not yet
+implemented.&nbsp; Manual placement is.<br>
+<h3>API Routines</h3>
+A Hydra cluster is an abstraction of a physical node in a distributed
+memory computer.&nbsp; Clusters contain a collection of zero or more
+iterator objects.&nbsp; The iterators in a cluster share
+a common address space.&nbsp; There is always one cluster (called the
+"main" cluster) present.&nbsp; Code for the configuration,
+initialization and finalization phases run in the main cluster and is
+also the default cluster for all iterators.<br>
+<br>
+Additional clusters can be created with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Cluster
+* <span style="font-style: italic;">cluster</span> = new <span
+ style="font-weight: bold;">Hydra::Cluster</span> (</span><span
+ style="font-family: monospace;"><br>
+&nbsp;&nbsp;&nbsp; int * <span style="font-style: italic;">id</span>,<br>
+&nbsp;&nbsp;&nbsp; const char *
+<span style="font-style: italic;">name</span></span><span
+ style="font-family: monospace;"><br style="font-style: italic;">
+</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; );</span><br>
+</div>
+<br>
+Iterator objects are placed in a cluster with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void<span
+ style="font-style: italic;"> iterator</span>-&gt;<span
+ style="font-weight: bold;">Place</span> (<br>
+&nbsp;&nbsp;&nbsp; Cluster * <span style="font-style: italic;">cluster</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );</span><span style="font-family: monospace;"><br>
+</span></div>
+<br>
+Clusters should be created and populated in the configuration phase of
+Hydra execution.<br>
+<br>
+Iterators can
+determine
+in which cluster they belong with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Cluster
+*<span style="font-style: italic;"> iterator</span>-&gt;<span
+ style="font-weight: bold;">Cluster</span> (<br>
+&nbsp;&nbsp;&nbsp; void<br>
+&nbsp;&nbsp;&nbsp; );<br>
+</span></div>
+<br>
+Two objects in the same cluster can share memory.&nbsp; If iterators
+have the same cluster ID (and hence name) the can share the same
+address space and C pointers can be used to communicate.<br>
+<br>
+<h2><a name="Debug_Facility"></a>Debug Facility</h2>
+<p>Multithreaded programs are notoriously difficult to debug.&nbsp;
+Hydra provides a trace mechanism to help locate problems.&nbsp; The
+amount of output is determined by the notification level.&nbsp; Each
+successive level adds more detail.<br>
+</p>
+<ul>
+  <li>0 = Nothing.</li>
+  <li>1 = Major program phases and the invocation and
+termination of iterators.</li>
+  <li>2 = Configuration information and message events.</li>
+  <li>3 = Everything except...</li>
+  <li>4 = Low-level MPI and Pthreads blocks and unblocks<br>
+  </li>
+</ul>
+The debug level can be set with:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">void
+Hydra::<span style="font-weight: bold;">SetDebugLevel</span> (<br>
+&nbsp;&nbsp;&nbsp; int <span style="font-style: italic;">level</span><br
+ style="font-style: italic;">
+&nbsp;&nbsp;&nbsp; );<br>
+</span></div>
+<br>
+If done in the configuration phase it applies globally.&nbsp;
+Thereafter it only affects the host on which the iterator is executing.<br>
+<br>
+[ToDo: describe output]<br>
+<br>
+<h2><a name="Developer_Notes"></a>Developer Notes</h2>
+API definitions are contained in include file "hydra.h".&nbsp; This
+file also contains non-API definitions, below the line "<span
+ style="font-family: monospace;">No API Beyond This Point</span>"; they
+should not be used outside Hydra itself.<br>
+<br>
+The namespace <span style="font-family: monospace; font-weight: bold;">Hydra</span>
+can be used to abbreviate names.<br>
+<br>
+Hydra is available in the library "libhydra.a".<br>
+<br>
+The implementation uses fixed sized buffers for various purposes, e.g.,
+strings, configuration blobs, etc.&nbsp; The limits are printed in
+debug level 3 (not yet implemented).<br>
+<br>
+IP sockets are used for communication in Hydra.&nbsp; Each iterator to
+iterator connection uses one socket on each host.&nbsp; Linux typically
+supports 1000 sockets (or more) per process.<br>
+<br>
+<br>
+<span style="font-style: italic; color: rgb(153, 17, 17);">The End.</span>
+<br>
+</body>
+</html>

@@ -1,0 +1,194 @@
+function h = qp_colormap(MapName,M)
+%QP_COLORMAP QuickPlot colormap repository.
+%
+%   CMap = QP_COLORMAP(MName,M)
+%   returns an M-by-3 matrix containing colormap MName. The input argument
+%   M is optional. If it is not provided the length of the colormap is
+%   taken equal to the length of the colormap of the current figure.
+%
+%   CMapStruct = QP_COLORMAP(':getstruct',MName)
+%   returns a structure of the indicated colormap which is compatible with
+%   the CLRMAP function.
+%
+%   Maps = QP_COLORMAP
+%   returns the names of all available maps on file, this list loaded upon
+%   the first call of QP_COLORMAP.
+%
+%   Maps = QP_COLORMAP(':reload')
+%   Forces reloading all colormaps from file and returns the new list.
+
+%----- LGPL --------------------------------------------------------------------
+%                                                                               
+%   Copyright (C) 2011-2012 Stichting Deltares.                                     
+%                                                                               
+%   This library is free software; you can redistribute it and/or                
+%   modify it under the terms of the GNU Lesser General Public                   
+%   License as published by the Free Software Foundation version 2.1.                         
+%                                                                               
+%   This library is distributed in the hope that it will be useful,              
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of               
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU            
+%   Lesser General Public License for more details.                              
+%                                                                               
+%   You should have received a copy of the GNU Lesser General Public             
+%   License along with this library; if not, see <http://www.gnu.org/licenses/>. 
+%                                                                               
+%   contact: delft3d.support@deltares.nl                                         
+%   Stichting Deltares                                                           
+%   P.O. Box 177                                                                 
+%   2600 MH Delft, The Netherlands                                               
+%                                                                               
+%   All indications and logos of, and references to, "Delft3D" and "Deltares"    
+%   are registered trademarks of Stichting Deltares, and remain the property of  
+%   Stichting Deltares. All rights reserved.                                     
+%                                                                               
+%-------------------------------------------------------------------------------
+%   http://www.deltaressystems.com
+%   $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/tools_lgpl/matlab/quickplot/progsrc/private/qp_colormap.m $
+%   $Id: qp_colormap.m 1482 2012-05-14 05:21:37Z jagers $
+
+persistent COLORMAPS
+
+NArg=nargin;
+if NArg==0
+    %
+    % Make sure that MapName is defined
+    %
+    MapName=':getmaps';
+elseif strcmp(MapName,':reload')
+    %
+    % A reload request should be treated as a case without input arguments
+    % (i.e. a request for a list of all colormaps).
+    %
+    NArg=0;
+end
+%
+% If COLORMAPS have not been loaded before, or if the user requests a
+% reload of the colormaps, load the colormaps.
+%
+if isempty(COLORMAPS) | strcmp(MapName,':reload')
+    %
+    % Retreive directory information from QP_BASEDIR.
+    %
+    qp_path=qp_basedir('base');
+    clrmap_path=[qp_path filesep 'colormaps'];
+    %
+    % Reset list of loaded colormaps.
+    %
+    COLORMAPS=[];
+    %
+    % Default list contains only jet.
+    %
+    COLORMAPS.Name='jet';
+    COLORMAPS.Space='RGB';
+    COLORMAPS.Index=[0 1/8 3/8 5/8 7/8 1];
+    COLORMAPS.Colors=[0 0 0.5; 0 0 1; 0 1 1; 1 1 0; 1 0 0; 0.5 0 0];
+    COLORMAPS.AlternatingColors=0;
+    %
+    % If the colormap directory exists.
+    %
+    if exist(clrmap_path)
+        %
+        % Get list of colormap files.
+        %
+        clrmap_path=[clrmap_path filesep];
+        d=dir([clrmap_path '*.clrmap']);
+        %
+        % Process colormap files.
+        %
+        j=1;
+        for i=1:length(d)
+            try
+                S=clrmap('read',[clrmap_path d(i).name]);
+                %
+                % Add colormap to list (overwriting the default colormap: jet).
+                %
+                if isfield(S,'Name')
+                    COLORMAPS(j).Name=S.Name;
+                else
+                    COLORMAPS(j).Name=d(i).Name;
+                end
+                if isfield(S,'AlternatingColors')
+                    COLORMAPS(j).AlternatingColors=S.AlternatingColors;
+                else
+                    COLORMAPS(j).AlternatingColors=0;
+                end
+                if isfield(S,'Index')
+                    COLORMAPS(j).Index=S.Index;
+                else
+                    COLORMAPS(j).Index=[];
+                end
+                COLORMAPS(j).Space=S.Space;
+                COLORMAPS(j).Colors=S.Colors;
+                %
+                % Increment the colormap counter. In general j will equal i,
+                % but if an error occurs while reading a certain colormap the
+                % colormap index j will be smaller than the file index i.
+                %
+                j=j+1;
+            catch
+                %   ui_message('warning',lasterr)
+            end
+        end
+    end
+    %
+    % Sort colormaps in alphabetical order (neglecting upper/lower case).
+    %
+    cmaps=lower({COLORMAPS.Name});
+    [dummy,i]=sort(cmaps);
+    COLORMAPS=COLORMAPS(i);
+end
+
+cmaps={COLORMAPS.Name};
+switch NArg
+    case 0
+        %
+        % Return the list of colormaps.
+        %
+        h=cmaps;
+        return;
+    case 1
+        %
+        % Return a colormap of a "default" length.
+        %
+        cf=get(0,'CurrentFigure');
+        if ~isempty(cf)
+            M = size(get(cf,'colormap'),1);
+        else
+            M = size(get(0,'defaultfigurecolormap'),1);
+        end
+end
+%
+% Handle exception of an empty colormap request.
+%
+if M==0,
+    h=[];
+    return;
+elseif isequal(MapName,':getstruct')
+    j=ustrcmpi(M,cmaps);
+    h=COLORMAPS(max(j,1));
+    return
+end;
+%
+% Find requested colormap.
+%
+j=ustrcmpi(MapName,cmaps);
+if COLORMAPS(j).AlternatingColors
+    M=size(COLORMAPS(j).Colors,1);
+end
+if j>0
+    %
+    % Retrieve colormap of requested length.
+    %
+    h=clrmap(COLORMAPS(j),M);
+else
+    %
+    % Error: could not find colormap.
+    % Retrieve by default first colormap of requested length.
+    %
+    h=clrmap(COLORMAPS(1),M);
+end
+%
+% Limit colormap to range between 0 and 1.
+%
+h=min(1,max(0,h));

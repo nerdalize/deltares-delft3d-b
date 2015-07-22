@@ -1,0 +1,16 @@
+#-------------------------------------------------------------------------------
+#   Makefile for plugin_culvert
+#
+#   Adri.Mourits@deltares.nl
+#   Frank.Platzek@deltares.nl
+#   9 jan 2009
+#
+#   Copyright (C) 2010, Deltares
+#-------------------------------------------------------------------------------
+
+all: plugin_culvert.o
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -shared -fpic -o plugin_culvert.so plugin_culvert.o
+
+plugin_culvert.o: plugin_culvert.f90
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -c -fpic plugin_culvert.f90
+

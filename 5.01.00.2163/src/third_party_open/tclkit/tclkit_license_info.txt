@@ -1,0 +1,23 @@
+Source:
+http://equi4.com/tclkit/license.html
+
+
+LICENSING
+
+The Metakit software is trademarked and copyrighted:
+
+•The trademark is asserted at the bottom of this and other pages, and means that if others were to call their software "Metakit", they would violate the trademark rights of Equi4 Software. Don't do it, the name is claimed, and has been in active use for several years.
+•Copyrights automatically apply to everything written, including the source code of Metakit, its documentation, and the pages on this website. As a reminder, the copyright attribution of all source code written by me contains a notice to that effect. Copyrights apply worldwide, establishing me as the author of the Metakit software. Don't remove copyright notices, ever.
+• THE METAKIT LICENSE •
+
+The following X/MIT-style license applies to all files in the Metakit distribution:
+
+Copyright (c) 1996-2007 Jean-Claude Wippler
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
