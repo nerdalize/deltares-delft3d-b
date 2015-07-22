@@ -1,9 +1,0 @@
-[Settings]
-
-Delay=0
-
-[Defaults]
-
-StreamType=SharedMem
-OnLine=True
-

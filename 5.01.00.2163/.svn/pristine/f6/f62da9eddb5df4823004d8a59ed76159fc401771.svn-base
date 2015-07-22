@@ -1,7 +1,0 @@
-Windows:
-Before building the NEFIS5 library for DeveloperStudio you have to build the library with VS2005. Some preprocessing is done in VS2005 (version_number.h)
-
-Linux:
-Use the script build.sh to build and test the NEFIS library
-
-Jan Mooiman

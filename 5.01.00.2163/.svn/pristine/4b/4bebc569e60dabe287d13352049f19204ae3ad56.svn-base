@@ -1,7 +1,0 @@
-[Settings]
-
-[Defaults]
-
-#StreamType=ASCII
-StreamType=InMem
-#StreamType=SharedMem

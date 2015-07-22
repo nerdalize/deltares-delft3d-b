@@ -1,5 +1,0 @@
-#!/bin/sh
-
-../../../bin/$MAKE_TARGETDIR/01_test >01test_linux_new.log 2>&1
-
-diff 01test_linux_new.log 01test_linux.log

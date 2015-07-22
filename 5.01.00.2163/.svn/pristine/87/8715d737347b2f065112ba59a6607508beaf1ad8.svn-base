@@ -1,4 +1,0 @@
-BND SEGMENT NR   1   C T        54     89     54     54    0.0   Uniform   
-BND SEGMENT NR   2   C T        54     89     97     89    0.0   Uniform   
-BND SEGMENT NR   3   C T        97     89     97     54    0.0   Uniform   
-BND SEGMENT NR   4   C T        97     54     54     54    0.0   Uniform   
