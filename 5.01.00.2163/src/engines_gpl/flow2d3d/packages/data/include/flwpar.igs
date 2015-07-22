@@ -1,0 +1,98 @@
+!----- GPL ---------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This program is free software: you can redistribute it and/or modify         
+!  it under the terms of the GNU General Public License as published by         
+!  the Free Software Foundation version 3.                                      
+!                                                                               
+!  This program is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                
+!  GNU General Public License for more details.                                 
+!                                                                               
+!  You should have received a copy of the GNU General Public License            
+!  along with this program.  If not, see <http://www.gnu.org/licenses/>.        
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: flwpar.igs 2083 2013-01-02 10:52:35Z ye $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/engines_gpl/flow2d3d/packages/data/include/flwpar.igs $$
+!-------------------------------------------------------------------------------
+type flwoutputtype
+    integer :: cntcflmsg           ! Counter of number of warnings concerning high advective Courant numbers
+    integer :: maxcflmsg           ! Maximum number of warnings concerning high advective Courant numbers
+    logical :: air
+    logical :: addtim              ! Flag for additional timings output
+    logical :: cflmsg              ! Flag for always writing warnings concerning high advective Courant numbers
+    logical :: chezy
+    logical :: cumdifuflux
+    logical :: difuflux
+    logical :: halfdt
+    logical :: layering
+    logical :: roughness
+    logical :: temperature
+    logical :: veuler
+    logical :: z0cur
+    logical :: z0rou
+end type flwoutputtype
+
+!
+! boundary conditions at one open boundary
+! 
+type fbcrbndtype
+    integer, dimension(4) :: ibct  ! boundary conditions  table
+                                   !  (1) table index in bc file
+                                   !  (2) first index of boundary parameter
+                                   !  (3) number of entries
+                                   !  (4) latest used record in table
+    character(1)          :: btype ! flow boundary condition
+                                   !   Z: water level
+                                   !   C: current
+                                   !   Q: flux/discharge
+                                   !   R: riemann
+                                   !   T: total discharge
+                                   !   N: neumann
+end type fbcrbndtype
+ 
+type gd_flwpar
+    !
+    ! doubles
+    !
+    !
+    ! reals
+    !
+    !
+    ! integers
+    !
+    !
+    ! pointers
+    !
+    real(fp), dimension(:,:,:)        , pointer :: fluxu     ! constituent flux xi direction
+    real(fp), dimension(:,:,:)        , pointer :: fluxuc    ! cumulative constituent flux xi direction
+    real(fp), dimension(:,:,:)        , pointer :: fluxv     ! constituent flux eta direction
+    real(fp), dimension(:,:,:)        , pointer :: fluxvc    ! cumulative constituent flux eta direction
+    real(fp), dimension(:,:,:)        , pointer :: fluxw     ! constituent flux z direction
+    real(fp), dimension(:,:,:)        , pointer :: fluxwc    ! cumulative constituent flux z direction
+    !
+    type (flwoutputtype)              , pointer :: flwoutput ! structure containing hydrodynamics output options
+    type (handletype)                 , pointer :: fbcrfile  ! tables containing corrective flow boundary conditions
+    type (fbcrbndtype)  , dimension(:), pointer :: fcrbnd    ! corrective flow boundary parameters 
+    ! 
+    ! logicals
+    !
+    logical        :: fbccorrection ! true when using corrective flow boundary conditions
+    !
+    ! characters
+    !
+    character(256) :: fbcrfilnam    ! name of input file for corrective flow boundary conditions 
+    !
+end type gd_flwpar

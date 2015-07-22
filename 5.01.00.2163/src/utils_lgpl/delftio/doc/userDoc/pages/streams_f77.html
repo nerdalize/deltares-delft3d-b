@@ -1,0 +1,89 @@
+<html>
+
+<head>
+<title>DelftIO Streams Fortran 77 Interface</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<p align="left"><font face="Arial">DelftIO <big>Streams</big> Fortran 77 Interface</font></p>
+
+<p><font color="#FF0000"><strong><big><em>Include files</em></big></strong></font></p>
+
+<p><a name="dio-streams.inc"><strong><em>dio-streams.inc</em></strong></a></p>
+
+<p>defines:<br>
+integer dio_ASCII_stream<br>
+integer dio_Binary_stream<br>
+integer dio_His_stream<br>
+integer dio_Nefis_stream<br>
+and the integer Stream-functions below.</p>
+
+<p><font color="#FF0000"><strong><big><em>Create a new stream</em></big></strong></font></p>
+
+<p>integer function DioCreateStreamSynched(streamType, name, mode)</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: stream</td>
+    <td>(O)</td>
+    <td>handle to DIO stream</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: streamType</td>
+    <td>I</td>
+    <td>type of stream</td>
+  </tr>
+  <tr>
+    <td>character(*)</td>
+    <td>:: name</td>
+    <td>I</td>
+    <td>stream name</td>
+  </tr>
+  <tr>
+    <td>character(*)</td>
+    <td>:: mode</td>
+    <td>I</td>
+    <td>open mode, must be 'r' (read) or&nbsp; 'w' (write)</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>Close a stream</em></big></strong></font></p>
+
+<p>subroutine DioStreamClose(stream)</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><em><small>arguments</small></em></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: stream</td>
+    <td>I</td>
+    <td>handle to DIO stream</td>
+  </tr>
+</table>
+</div>
+</body>
+</html>

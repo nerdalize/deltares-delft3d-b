@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{E6C59F91-93EE-4E08-B626-709B2D64D10D}">
+	<Platforms>
+		<Platform Name="Win32"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32" OutputDirectory="..\..\bin\$(ConfigurationName)">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" AdditionalIncludeDirectories="..\..\include;..\waq_kernel\lib\$(ConfigurationName);..\waq_utils_f\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)" FixedFormLineLength="fixedLength132" LocalVariableStorage="localStorageAutomatic" FloatingPointExceptionHandling="fpe0" ModulePath="$(OutDir)\" Traceback="true"/>
+				<Tool Name="VFLinkerTool" AdditionalOptions="/FORCE:MULTIPLE" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="..\..\..\..\third_party\wlauth\bin\win32\static;..\..\..\..\third_party_open\pthreads\bin\win32;..\..\bin\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)" IgnoreDefaultLibraryNames="libifcoremd.lib; libifcoremdd.lib;libcmt.lib" GenerateDebugInformation="true" SubSystem="subSystemConsole" AdditionalDependencies="timers.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32" OutputDirectory="..\..\bin\$(ConfigurationName)">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" AdditionalIncludeDirectories="..\..\include;..\waq_kernel\lib\$(ConfigurationName);..\waq_utils_f\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)" FixedFormLineLength="fixedLength132" LocalVariableStorage="localStorageAutomatic" ModulePath="$(OutDir)\" Traceback="true"/>
+				<Tool Name="VFLinkerTool" AdditionalOptions="/LTCG" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="..\..\..\..\third_party\wlauth\bin\win32\static;..\..\..\..\third_party_open\pthreads\bin\win32;..\..\bin\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)" IgnoreDefaultLibraryNames="libc.lib;libcmtd.lib;msvcrtd.lib;libcmt.lib" GenerateMapFile="true" SubSystem="subSystemConsole" StackReserveSize="67108864" AdditionalDependencies="timers.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+		<File RelativePath="..\delwaq2_version_number\include\resource.h"/>
+		<File RelativePath="..\delwaq2_version_number\include\version_number.rc"/></Filter>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath=".\src\block.f"/>
+		<File RelativePath=".\src\d_tr_d3d.f"/>
+		<File RelativePath=".\src\dlwqmain.f"/>
+		<File RelativePath=".\src\dlwqmainprog.f">
+			<FileConfiguration Name="Debug|Win32">
+				<Tool Name="VFFortranCompilerTool" FloatingPointExceptionHandling="fpe3"/></FileConfiguration></File>
+		<File RelativePath=".\src\getidentification.f"/></Filter></Files>
+	<Globals/></VisualStudioProject>

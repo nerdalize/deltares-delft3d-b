@@ -1,0 +1,241 @@
+The Short And Sweet Of It...
++-----------------------------------------------------------------------
+NetCDF-4 support is added as of R2010b.
+
+Please add this directory to your matlab path.  You must also have 
+mexnc on your path in order for snctools to work.
+
+SNCTOOLS is only supported on R14 or higher.  It will not work on
+MATLAB versions below R14.
+
+If you have R13 or earlier and just need mexnc, then you should look at
+compiling mexnc yourself.  
+
++-----------------------------------------------------------------------
+BASIC INSTALLATION AND USAGE
+
+In order to download SNCTOOLS, please refer to the website, 
+http://mexcdf.sourceforge.net/
+
+R2010b
+    With R2010b, you have native read/write support for netCDF-3 files
+    and classic-model netCDF-4 files.  You can also read enhanced model
+    netCDF-4 files, but in order to write to such files, you should drop
+    down to MATLAB's native netcdf package interface.
+
+    You should also download netcdf-java from Unidata at
+    http://www.unidata.ucar.edu/software/netcdf-java/ as this will
+    allow you to read OPeNDAP URLs and GRIB files.  See the USE_JAVA
+    section below.
+
+    After downloading and unpacking the software, issue the following
+    instructions from MATLAB (assuming that your current working
+    directory in MATLAB is where you downloaded and unpacked the
+    software):
+
+        addpath ([pwd '/mexcdf/mexnc']);
+        addpath ([pwd '/mexcdf/snctools']);
+        javaaddpath([pwd '/netcdfAll-4.2.jar']);
+        setpref('SNCTOOLS','USE_JAVA',true);
+        setpref('SNCTOOLS','USE_MEXNC',false);
+
+    You can test out your installation with
+
+        cd mexcdf/snctools/tests 
+        test_snctools
+
+R2008b, R2009a, R2009b, R2010a
+    With these releases, you have native read/write support
+    for netCDF-3 files.  If you wish to have netCDF-4 read
+    support, you will need to download netcdf-java from Unidata at
+    http://www.unidata.ucar.edu/software/netcdf-java/ as well.  You get
+    more than just netCDF-4 read support with this, you also get read
+    support for OPeNDAP URLs and GRIB files.  See the USE_JAVA section
+    below.
+
+    After downloading and unpacking the software, issue the following
+    instructions from MATLAB (assuming that your current working
+    directory in MATLAB is where you downloaded and unpacked the
+    software):
+
+        addpath ([pwd '/mexcdf/mexnc']);
+        addpath ([pwd '/mexcdf/snctools']);
+        javaaddpath([pwd '/netcdfAll-4.1.jar']);
+        setpref('SNCTOOLS','USE_JAVA',true);
+        setpref('SNCTOOLS','USE_MEXNC',false);
+
+    You can test out your installation with
+
+        cd mexcdf/snctools/tests 
+        test_snctools
+
+R2006a, R2006b, R2007a, R2007b, R2008a
+    MATLAB has no native netCDF support for these releases.  If you only
+    need to read netCDF files, you may do so by retrieving netcdf-java
+    from Unidata and enabling the java backend as described below.
+    
+    After downloading and unpacking the software, issue the following
+    instructions from MATLAB (assuming that your current working
+    directory in MATLAB is where you downloaded and unpacked the
+    software):
+
+        addpath ([pwd '/mexcdf/mexnc']);
+        addpath ([pwd '/mexcdf/snctools']);
+        javaaddpath([pwd '/netcdfAll-4.1.jar']);
+        setpref('SNCTOOLS','USE_JAVA',true);
+        setpref('SNCTOOLS','USE_MEXNC',false);
+
+    You can test out your installation with
+
+        cd mexcdf/snctools/tests 
+        test_snctools
+
+    If you need to write netcdf files, then you need to go back to
+    the sourceforge website and get the mex-file for your release.
+    Then set the USE_MEXNC preference to true:
+
+        setpref('SNCTOOLS','USE_MEXNC',true);
+
+R14
+    MATLAB has no native netCDF support for R14.  If you only need
+    to read netCDF files, you may do so by retrieving netcdf-java
+    from Unidata at http://www.unidata.ucar.edu/software/netcdf-java/,
+    but you will be restricted to the 2.2.20 release, which is
+    rather old (well, so is R14...)  It will not allow you to read
+    netCDF-4 files.
+
+    After downloading and unpacking the software, issue the following
+    instructions from MATLAB (assuming that your current working
+    directory in MATLAB is where you downloaded and unpacked the
+    software):
+
+        addpath ([pwd '/mexcdf/mexnc']);
+        addpath ([pwd '/mexcdf/snctools']);
+        javaaddpath([pwd '/toolsUI-2.2.20.jar']);
+        setpref('SNCTOOLS','USE_JAVA',true);
+        setpref('SNCTOOLS','USE_MEXNC',false);
+
+    You can test out your installation with
+
+        cd mexcdf/snctools/tests 
+        test_snctools
+
+    If you need to write netcdf files, then you need to go back to
+    the sourceforge website and get the mex-file for your release.
+    Then set the USE_MEXNC preference to true:
+
+        setpref('SNCTOOLS','USE_MEXNC',true);
+
++-----------------------------------------------------------------------
+SNCTOOLS PREFERENCES
+
+USE_JAVA 
+    If you wish to enable the netcdf-java backend (useful
+    for reading OPeNDAP URLs, GRIB2 files, netCDF-4 files, and
+    others), then this preference must be turned on.  First, go to
+    http://www.unidata.ucar.edu/software/netcdf-java/ and make sure you
+    retrieve the correct version...
+
+    If your version          Then you should download
+    of MATLAB is...          netcdf-java version...
+        R2010b                      4.2
+        R2010a                      4.1
+        R2009b                      4.1
+        R2009a                      4.1
+        R2008b                      4.1
+        R2008a                      4.1
+        R2007b                      4.1
+        R2007a                      4.1
+        R2006b                      4.1
+        R2006a                      4.1
+        R14                         2.2.20
+
+    Add the jar file to your MATLAB path with
+
+        >> javaaddpath ( '/path/to/netcdfAll-4.2.jar' );
+
+    You should then turn on the preference.
+    
+        >> setpref('SNCTOOLS','USE_JAVA',true);
+
+    If you need to access password-protected OPeNDAP resources, you will
+    need one more addition to your javapath, i.e.
+
+        >> javaaddpath ( '/path/to/snctools/classes' );
+
+PRESERVE_FVD
+    Way back in the old days, when mexnc/mexcdf was the only game
+    in town, data was always transposed when reading/writing netCDF
+    data thru MATLAB.  The reason for this was seemingly to make the
+    data look consistent with the way that the netcdf tools such as
+    "ncdump" presented the metadata.  "ncdump" is compiled in C, so
+    it is therefore a row-major-order application, whereas MATLAB 
+    presents data in column-major order.
+    
+    Transposing large datasets can be a costly operation, however, and
+    it really isn't necessary in all cases.  SNCTOOLS can be told to
+    not transpose data by setting the PRESERVE_FVD preference
+
+        >> setpref('SNCTOOLS','PRESERVE_FVD',true);
+
+    By default this preference is false.  If you set it to true,
+    you may see a big performance boost for large datasets, but you
+    might also end up breaking existing code that expected the data
+    to be permuted to row-major order, so you need to be careful
+    when using this.
+
+USE_STD_HDF4_SCALING 
+    The CF conventions differ from HDF4 in how scale factors are
+    to be applied; check their respective references for details.
+    By default, HDF4 datasets are scaled according to CF conventions,
+    but setting this preference to true forces NC_VARGET to use
+    standard HDF4 conventions.  This preference is only useful when
+	reading HDF4 data (obviously), it has no effect upon netCDF I/O.
+
++-----------------------------------------------------------------------
+BUG Reports You Should Know About
+
+1)  Experimental GRIB2 Support
+
+     If you have the netcdf-java jar file on your matlab javaclasspath,
+     you can try read GRIB2 files as if they were netcdf files.  This is
+     a bit experimental, though.  And if your version of MATLAB is R2008a
+     or below, you should take a look at Technical Solution 1-2Z4RS7 on
+     the Mathworks web site, http://www.mathworks.com.  This describes a
+     workaround for dealing with a conflict with the ucarunits.jar file
+     that used to ship with MATLAB until R2008b.  As of March 25, 2010,
+     the URL for this technical solution was at
+
+     http://www.mathworks.com/support/solutions/en/data/1-2Z4RS7/?solution=1-2Z4RS7
+
+2)  Segfaults on certain strided read operations.  
+
+    Affects versions R2008a and R2009a.  Please consult this URL.
+
+    http://www.mathworks.com/support/bugreports/522794
+
+3)  Empty Attributes
+
+    MATLAB versions R2008b thru R2009b incorrectly disallowed the creation
+    of empty attributes, which are quite clearly legal.  The bug is
+    fixed in 2010a, but fixes for 2008b thru 2009b are available.
+    Please consult this URL
+
+    http://www.mathworks.com/support/bugreports/609383
+
+4)  Out-of-memory error with negative indices.  Affects R2008b through
+    R20910a, but this only affects those who would use mexnc or the native
+    netcdf package directly, not snctools users.  Please consult this URL.
+
+    http://www.mathworks.com/support/bugreports/618322
+
++-----------------------------------------------------------------------
+Of all the routines in this m-file collection, the most useful (in my
+humble opinion) are as follows
+    
+    1. nc_varget    - reads a netcdf variable
+    2. nc_varput    - writes to a netcdf variable
+    3. nc_attget    - reads a netcdf attribute
+    4. nc_attput    - writes a netcdf attribute
+    6. nc_dump      - prints netcdf metadata
+

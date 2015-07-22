@@ -1,0 +1,5 @@
+#!/bin/sh
+
+../../../bin/$MAKE_TARGETDIR/02_treetest >treetest_linux_new.log 2>&1
+
+diff treetest_linux_new.log treetest_linux.log

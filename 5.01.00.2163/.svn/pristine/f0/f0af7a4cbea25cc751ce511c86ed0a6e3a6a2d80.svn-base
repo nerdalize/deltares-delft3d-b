@@ -1,0 +1,26 @@
+table-name           'Boundary Section : 1'
+contents             'Uniform   '
+location             '(1,2)..(1,2)        '
+time-function        'non-equidistant'
+reference-time       20010601
+time-unit            'minutes'
+interpolation        'linear'
+parameter            'time                '                     unit '[min]'
+parameter            'sediment 1           end A uniform'       unit '[kg/m**3]'
+parameter            'sediment 1           end B uniform'       unit '[kg/m**3]'
+records-in-table     2
+0.000000 0.000000 0.000000
+525600. 0.000000 0.000000
+table-name           'Boundary Section : 2'
+contents             'Uniform   '
+location             '(47,2)..(47,2)      '
+time-function        'non-equidistant'
+reference-time       20010601
+time-unit            'minutes'
+interpolation        'linear'
+parameter            'time                '                     unit '[min]'
+parameter            'sediment 1           end A uniform'       unit '[kg/m**3]'
+parameter            'sediment 1           end B uniform'       unit '[kg/m**3]'
+records-in-table     2
+0.000000 0.000000 0.000000
+525600. 0.000000 0.000000

@@ -1,0 +1,52 @@
+#!/bin/ksh
+#
+# diorun: run processes that are coupled on line by DelftIO SharedMem
+#
+# Stef.Hummel@deltares.nl
+#
+# (c) Deltares, Mar 2002
+#
+
+if [ "$MAKE_HOME" != "" ] ; then
+	PATH="$MAKE_HOME/extern/esmfsm/bin/wlinux:$PATH"
+fi
+
+pageSize=1024
+
+progName=`basename $0`
+
+if [ $# -ne 2 -a  $# -ne 3 ] ; then
+    echo "Usage: $progName proc1 proc2 [ sleepTime ] ]"
+    echo "\tRemark: Currently only 2 processes are allowed"
+    exit 1
+fi
+
+whence esm_create
+if [ $? != 0 ] ; then
+    echo "$progName: esm_create not available"
+    exit 1
+fi
+
+whence esm_delete
+if [ $? != 0 ] ; then
+    echo "$progName: esm_delete not available"
+    exit 1
+fi
+
+esmContext=`esm_create $pageSize 2>&1 | tail -1 | awk '{ print $1}'`
+
+echo "Starting processes for shared mem context: $esmContext"
+
+export DIO_SHM_ESM=$esmContext
+
+$1 &
+if [ $# = 3 ] ; then
+    sleep $3
+fi
+$2
+
+sleep 5
+if [ "$esmContext" != -1 -a "$esmContext" != "" ] ; then
+    esm_delete $esmContext
+fi
+

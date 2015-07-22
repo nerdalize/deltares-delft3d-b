@@ -1,0 +1,19 @@
+ 7.0000000e+000     [-]       :MORFAC, morphological scale factor
+ 7.2000000e+002     [min]     :MORSTT, spin-up interval before morphological changes
+ 5.0000001e-002     [m]       :THRESH, threshold sediment thickness
+.true.                        :MORUPD, update bathymetry during FLOW simulation
+.true.                        :EQMBC,  equilibrium sediment concentration profile at open boundary
+.false.                       :DENSIN, include effect of sediment on water density
+ 1.0000000e+000     [-]       :AKSFAC, van Rijn's reference height factor
+ 2.0000000e+000     [-]       :RWAVE,  estimated ripple height factor
+.false.                       :ROUSE,  set equilibrium sediment conc. to Rouse profiles
+ 1.0000000e+000     [-]       :ALFABS, long. bed gradient factor for bed load transport
+ 1.5000000e+000     [-]       :ALFABN, tran. bed gradient factor for bed load transport
+ 1.0000000e+000     [-]       :SUS,    current-related reference concentration factor
+ 1.0000000e+000     [-]       :BED,    current-related transport vector magnitude factor
+ 1.0000000e+000     [-]       :SUSW,   wave-related suspended transport factor
+ 1.0000000e+000     [-]       :BEDW,   wave-related bed-load transport factor
+ 1.0000000e-001     [m]       :SEDTHR, minimum depth for sediment calculation
+ 0.0000000e+000     [-]       :THETSD, global / maximum dry cell erosion factor
+ 1.5000000e+000     [m]       :HMAXTH, maximum depth for variable THETSD
+ 1.0000000e+000     [-]       :FWFAC,  tuning parameter for wave streaming

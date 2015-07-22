@@ -1,0 +1,63 @@
+modvci,modvit
+Sobek,BLOOMALG
+Sobek,SURF
+Sobek,VOLUME
+Sobek,XLENFROM
+Sobek,XLENTO
+Sobek,DELT
+Sobek,FLOW
+Sobek,IDT
+Sobek,ITIME
+Sobek,ITSTOP
+Sobek,ITSTRT
+Sobek,XAREA
+Sobek,Chezy
+Sobek,Rad
+Sobek,Temp
+Sobek,Velocity
+Sobek,VWind
+Sobek,Width
+Sobek,WindDir
+Delft3D,BLOOMALG
+Delft3D,SURF
+Delft3D,VOLUME
+Delft3D,XLENFROM
+Delft3D,XLENTO
+Delft3D,DELT
+Delft3D,FLOW
+Delft3D,IDT
+Delft3D,ITIME
+Delft3D,ITSTOP
+Delft3D,ITSTRT
+Delft3D,XAREA
+WAQS ,BLOOMALG
+WAQS ,SURF
+WAQS ,VOLUME
+WAQS ,XLENFROM
+WAQS ,XLENTO
+WAQS ,DELT
+WAQS ,FLOW
+WAQS ,IDT
+WAQS ,ITIME
+WAQS ,ITSTOP
+WAQS ,ITSTRT
+WAQS ,XAREA
+WAQS ,Chezy
+WAQS ,Rad
+WAQS ,Temp
+WAQS ,Velocity
+WAQS ,VWind
+WAQS ,Width
+WAQS ,WindDir
+WAQ    ,BLOOMALG
+WAQ    ,SURF
+WAQ    ,VOLUME
+WAQ    ,XLENFROM
+WAQ    ,XLENTO
+WAQ    ,DELT
+WAQ    ,FLOW
+WAQ    ,IDT
+WAQ    ,ITIME
+WAQ    ,ITSTOP
+WAQ    ,ITSTRT
+WAQ    ,XAREA

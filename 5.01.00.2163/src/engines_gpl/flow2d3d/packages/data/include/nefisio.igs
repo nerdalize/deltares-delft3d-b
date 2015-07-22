@@ -1,0 +1,100 @@
+!----- GPL ---------------------------------------------------------------------
+!                                                                               
+!  Copyright (C)  Stichting Deltares, 2011-2012.                                
+!                                                                               
+!  This program is free software: you can redistribute it and/or modify         
+!  it under the terms of the GNU General Public License as published by         
+!  the Free Software Foundation version 3.                                      
+!                                                                               
+!  This program is distributed in the hope that it will be useful,              
+!  but WITHOUT ANY WARRANTY; without even the implied warranty of               
+!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                
+!  GNU General Public License for more details.                                 
+!                                                                               
+!  You should have received a copy of the GNU General Public License            
+!  along with this program.  If not, see <http://www.gnu.org/licenses/>.        
+!                                                                               
+!  contact: delft3d.support@deltares.nl                                         
+!  Stichting Deltares                                                           
+!  P.O. Box 177                                                                 
+!  2600 MH Delft, The Netherlands                                               
+!                                                                               
+!  All indications and logos of, and references to, "Delft3D" and "Deltares"    
+!  are registered trademarks of Stichting Deltares, and remain the property of  
+!  Stichting Deltares. All rights reserved.                                     
+!                                                                               
+!-------------------------------------------------------------------------------
+!  $Id: nefisio.igs 1180 2012-01-13 17:05:48Z mourits $
+!  $HeadURL: https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/src/engines_gpl/flow2d3d/packages/data/include/nefisio.igs $$
+!-------------------------------------------------------------------------------
+    integer, parameter :: nefisrdtimc       =  1
+    integer, parameter :: nefisrdtimw       =  2
+    integer, parameter :: nefisrstcom       =  3
+    integer, parameter :: nefisrwbotc       =  4
+    integer, parameter :: nefiswrboun       =  5
+    integer, parameter :: nefiswrcurt       =  6
+    integer, parameter :: nefiswrdwqt       =  7
+    integer, parameter :: nefiswrgrid       =  8
+    integer, parameter :: nefiswribot       =  9
+    integer, parameter :: nefiswridoc       = 10
+    integer, parameter :: nefiswridro       = 11
+    integer, parameter :: nefiswrihis       = 12
+    integer, parameter :: nefiswrimap       = 13
+    integer, parameter :: nefiswrkenc       = 14
+    integer, parameter :: nefiswrkent       = 15
+    integer, parameter :: nefiswrparm       = 16
+    integer, parameter :: nefiswrplot       = 17
+    integer, parameter :: nefiswrrouf       = 18
+    integer, parameter :: nefiswrspcp       = 19
+    integer, parameter :: nefiswrtdro       = 20
+    integer, parameter :: nefiswrthisinf    = 21
+    integer, parameter :: nefiswrthis       = 22
+    integer, parameter :: nefiswrtmapinf    = 23
+    integer, parameter :: nefiswrtmap       = 24
+    integer, parameter :: nefissetwav       = 25
+    integer, parameter :: nefiswrsedhinf    = 26
+    integer, parameter :: nefiswrsedh       = 27
+    integer, parameter :: nefiswrsedminf    = 28
+    integer, parameter :: nefiswrsedm       = 29
+    integer, parameter :: nefiswrsedmavginf = 30
+    integer, parameter :: nefiswrsedmavg    = 31
+    integer, parameter :: nefischkcom       = 32
+    integer, parameter :: nefiswrwavhinf    = 33
+    integer, parameter :: nefiswrwavh       = 34
+    integer, parameter :: nefiswrrolm       = 35
+    integer, parameter :: nefiswrihisdad    = 36
+    integer, parameter :: nefiswrthisdad    = 37
+    integer, parameter :: nefiswrihisdis    = 38
+    integer, parameter :: nefiswrthisdis    = 39
+    integer, parameter :: nefiswrcomwind    = 40
+    integer, parameter :: nefiswrsedwaqm    = 41
+    integer, parameter :: nefiswrihisbal    = 42
+    integer, parameter :: nefiswrthisbal    = 43
+
+!
+    integer, parameter :: nrnefisfiles      = 43
+!
+    type nefiselement
+       integer                                 :: celidt !  Index of cell to write to or to read
+                                                         !  from.
+       integer                                 :: nelmx  !  Number of elements
+       integer      , dimension(:, :), pointer :: elmdms !  Array containing info about the
+                                                         !  element dimensions ELMDMS(1,*) is
+                                                         !  the number of dimensions
+                                                         !  ELMDMS(2-ELMDMS(1,*),*) is the size
+                                                         !  of each dimension. The size of the
+                                                         !  array is (6,NELEMS).
+       integer      , dimension(:)   , pointer :: nbytsg !  Array containing the number of bytes
+                                                         !  of each single ELMTPS 
+       character(10), dimension(:)   , pointer :: elmunt !  Array with element physical unit 
+       character(16), dimension(:)   , pointer :: elmnms !  Element name defined for the NEFIS-files 
+       character(16), dimension(:)   , pointer :: elmqty !  Array with element quantity 
+       character(16), dimension(:)   , pointer :: elmtps !  Array containing the types of the elements
+                                                         !  (real, ch. , etc. etc.) 
+       character(64), dimension(:)   , pointer :: elmdes !  Array with element description 
+       logical                                 :: first
+    end type nefiselement
+!
+    type nefisio
+       type (nefiselement) , dimension(nrnefisfiles)::nefiselem
+    end type nefisio

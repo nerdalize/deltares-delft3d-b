@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{35D95B51-6CBE-473D-9ED5-1BB7CE16BE24}">
+	<Platforms>
+		<Platform Name="Win32"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32" OutputDirectory="../../bin/$(ConfigurationName)">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" Preprocess="preprocessYes" AdditionalIncludeDirectories="include;..\data\bin\$(ConfigurationName);..\kernel\bin\$(ConfigurationName);..\..\..\..\utils_lgpl\precision\lib\$(ConfigurationName)\static;..\..\..\..\utils_lgpl\meteo\lib\$(ConfigurationName)\static;..\..\..\..\utils_lgpl\deltares_common\lib\$(ConfigurationName)\static" WarnInterfaces="true" ModulePath="$(OutDir)/" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebugDLL"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" IgnoreDefaultLibraryNames="libc.lib;LIBCMT.lib;LIBCMTD.lib" GenerateDebugInformation="true" SubSystem="subSystemConsole" LargeAddressAware="addrAwareLarge" AdditionalDependencies="wsock32.lib netapi32.lib comctl32.lib user32.lib advapi32.lib comdlg32.lib gdi32.lib winspool.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="call ..\..\..\..\scripts_lgpl\win32\update_version.cmd .\src\wave_version.F90 ..\..\ .\include\version_number.ini"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="echo &quot;This file is overwritten by the post-build command of the project wave&quot; &gt; ./src/wave_version.F90"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32" OutputDirectory="../../bin/$(ConfigurationName)">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" Preprocess="preprocessYes" AdditionalIncludeDirectories="include;..\data\bin\$(ConfigurationName);..\kernel\bin\$(ConfigurationName);..\..\..\..\utils_lgpl\precision\lib\$(ConfigurationName)\static;..\..\..\..\utils_lgpl\meteo\lib\$(ConfigurationName)\static;..\..\..\..\utils_lgpl\deltares_common\lib\$(ConfigurationName)\static" ModulePath="$(OutDir)/" RuntimeLibrary="rtMultiThreadedDLL"/>
+				<Tool Name="VFLinkerTool" AdditionalOptions="/LTCG" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" IgnoreDefaultLibraryNames="libc.lib;libcd.lib;LIBCMT.lib" SubSystem="subSystemConsole" LargeAddressAware="addrAwareLarge" AdditionalDependencies="wsock32.lib netapi32.lib comctl32.lib user32.lib advapi32.lib comdlg32.lib gdi32.lib winspool.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool" CommandLine="call ..\..\..\..\scripts_lgpl\win32\update_version.cmd .\src\wave_version.F90 ..\..\ .\include\version_number.ini"/>
+				<Tool Name="VFPostBuildEventTool" CommandLine="echo &quot;This file is overwritten by the post-build command of the project wave&quot; &gt; ./src/wave_version.F90
+..\..\..\..\scripts_lgpl\win32\oss-install.cmd wave ..\bin"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+		<File RelativePath=".\resource\wl.ico"/></Filter>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath=".\src\checklicense.f90"/>
+		<File RelativePath=".\src\usage.f90"/>
+		<File RelativePath=".\src\wave.f90"/>
+		<File RelativePath=".\src\wave_version.F90"/></Filter></Files>
+	<Globals/></VisualStudioProject>

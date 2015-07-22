@@ -1,0 +1,380 @@
+dispit,dispsu,dispsc
+"VertDisp  ","Continuity",   1.00000
+"VertDisp  ","Salinity  ",   1.00000
+"VertDisp  ","Cl        ",   1.00000
+"VertDisp  ","IM1       ",   1.00000
+"VertDisp  ","IM2       ",   1.00000
+"VertDisp  ","IM3       ",   1.00000
+"VertDisp  ","Cd        ",   1.00000
+"VertDisp  ","Cu        ",   1.00000
+"VertDisp  ","Zn        ",   1.00000
+"VertDisp  ","Cr        ",   1.00000
+"VertDisp  ","Hg        ",   1.00000
+"VertDisp  ","Pb        ",   1.00000
+"VertDisp  ","As        ",   1.00000
+"VertDisp  ","Va        ",   1.00000
+"VertDisp  ","Ni        ",   1.00000
+"VertDisp  ","BODC      ",   1.00000
+"VertDisp  ","Green     ",   1.00000
+"VertDisp  ","Diat      ",   1.00000
+"VertDisp  ","NO3       ",   1.00000
+"VertDisp  ","NH4       ",   1.00000
+"VertDisp  ","PO4       ",   1.00000
+"VertDisp  ","AAP       ",   1.00000
+"VertDisp  ","Si        ",   1.00000
+"VertDisp  ","OXY       ",   1.00000
+"VertDisp  ","TColi     ",   1.00000
+"VertDisp  ","EColi     ",   1.00000
+"VertDisp  ","FColi     ",   1.00000
+"VertDisp  ","EnCoc     ",   1.00000
+"VertDisp  ","153       ",   1.00000
+"VertDisp  ","ATR       ",   1.00000
+"VertDisp  ","BaP       ",   1.00000
+"VertDisp  ","Flu       ",   1.00000
+"VertDisp  ","Mef       ",   1.00000
+"VertDisp  ","Diu       ",   1.00000
+"VertDisp  ","HCH       ",   1.00000
+"VertDisp  ","HCB       ",   1.00000
+"VertDisp  ","cTR1      ",   1.00000
+"VertDisp  ","dTR1      ",   1.00000
+"VertDisp  ","cTR2      ",   1.00000
+"VertDisp  ","dTR2      ",   1.00000
+"VertDisp  ","cTR3      ",   1.00000
+"VertDisp  ","dTR3      ",   1.00000
+"VertDisp  ","cTR4      ",   1.00000
+"VertDisp  ","dTR4      ",   1.00000
+"VertDisp  ","cTR5      ",   1.00000
+"VertDisp  ","dTR5      ",   1.00000
+"VertDisp  ","TIC       ",   1.00000
+"VertDisp  ","H+        ",   1.00000
+"VertDisp  ","H2O       ",   1.00000
+"VertDisp  ","NatTemp   ",   1.00000
+"VertDisp  ","ModTemp   ",   1.00000
+"VertDisp  ","CBOD5     ",   1.00000
+"VertDisp  ","CBOD5_2   ",   1.00000
+"VertDisp  ","CBOD5_3   ",   1.00000
+"VertDisp  ","CBODu     ",   1.00000
+"VertDisp  ","CBODu_2   ",   1.00000
+"VertDisp  ","COD_Cr    ",   1.00000
+"VertDisp  ","COD_Mn    ",   1.00000
+"VertDisp  ","NBOD5     ",   1.00000
+"VertDisp  ","NBODu     ",   1.00000
+"VertDisp  ","POC1      ",   1.00000
+"VertDisp  ","POC2      ",   1.00000
+"VertDisp  ","POC3      ",   1.00000
+"VertDisp  ","POC4      ",   1.00000
+"VertDisp  ","DOC       ",   1.00000
+"VertDisp  ","PON1      ",   1.00000
+"VertDisp  ","PON2      ",   1.00000
+"VertDisp  ","PON3      ",   1.00000
+"VertDisp  ","PON4      ",   1.00000
+"VertDisp  ","DON       ",   1.00000
+"VertDisp  ","POP1      ",   1.00000
+"VertDisp  ","POP2      ",   1.00000
+"VertDisp  ","POP3      ",   1.00000
+"VertDisp  ","POP4      ",   1.00000
+"VertDisp  ","DOP       ",   1.00000
+"VertDisp  ","POS1      ",   1.00000
+"VertDisp  ","POS2      ",   1.00000
+"VertDisp  ","POS3      ",   1.00000
+"VertDisp  ","POS4      ",   1.00000
+"VertDisp  ","DOS       ",   1.00000
+"VertDisp  ","Opal      ",   1.00000
+"VertDisp  ","MPB1peli  ",   1.00000
+"VertDisp  ","MPB2psam  ",   1.00000
+"VertDisp  ","Mnd1Diat-m",   1.00000
+"VertDisp  ","Mnd2Flag-m",   1.00000
+"VertDisp  ","Mnd3Diat-f",   1.00000
+"VertDisp  ","Mnd4Flag-f",   1.00000
+"VertDisp  ","BLOOMALG01",   1.00000
+"VertDisp  ","BLOOMALG02",   1.00000
+"VertDisp  ","BLOOMALG03",   1.00000
+"VertDisp  ","BLOOMALG04",   1.00000
+"VertDisp  ","BLOOMALG05",   1.00000
+"VertDisp  ","BLOOMALG06",   1.00000
+"VertDisp  ","BLOOMALG07",   1.00000
+"VertDisp  ","BLOOMALG08",   1.00000
+"VertDisp  ","BLOOMALG09",   1.00000
+"VertDisp  ","BLOOMALG10",   1.00000
+"VertDisp  ","BLOOMALG11",   1.00000
+"VertDisp  ","BLOOMALG12",   1.00000
+"VertDisp  ","BLOOMALG13",   1.00000
+"VertDisp  ","BLOOMALG14",   1.00000
+"VertDisp  ","BLOOMALG15",   1.00000
+"VertDisp  ","BLOOMALG16",   1.00000
+"VertDisp  ","BLOOMALG17",   1.00000
+"VertDisp  ","BLOOMALG18",   1.00000
+"VertDisp  ","BLOOMALG19",   1.00000
+"VertDisp  ","BLOOMALG20",   1.00000
+"VertDisp  ","BLOOMALG21",   1.00000
+"VertDisp  ","BLOOMALG22",   1.00000
+"VertDisp  ","BLOOMALG23",   1.00000
+"VertDisp  ","BLOOMALG24",   1.00000
+"VertDisp  ","BLOOMALG25",   1.00000
+"VertDisp  ","BLOOMALG26",   1.00000
+"VertDisp  ","BLOOMALG27",   1.00000
+"VertDisp  ","BLOOMALG28",   1.00000
+"VertDisp  ","BLOOMALG29",   1.00000
+"VertDisp  ","BLOOMALG30",   1.00000
+"VertDisp  ","FrCon     ",   1.00000
+"VertDisp  ","FrFlow    ",   1.00000
+"VertDisp  ","SalBnd    ",   1.00000
+"VertDisp  ","OMP       ",   1.00000
+"VertDisp  ","SO4       ",   1.00000
+"VertDisp  ","SUD       ",   1.00000
+"VertDisp  ","SUP       ",   1.00000
+"VertDisp  ","VIVP      ",   1.00000
+"VertDisp  ","APATP     ",   1.00000
+"VertDisp  ","CH4       ",   1.00000
+"VertDisp  ","Alka      ",   1.00000
+"VertDisp  ","FeIIIpa   ",   1.00000
+"VertDisp  ","FeIIIpc   ",   1.00000
+"VertDisp  ","FeIIId    ",   1.00000
+"VertDisp  ","FeIId     ",   1.00000
+"VertDisp  ","FeS       ",   1.00000
+"VertDisp  ","FeS2      ",   1.00000
+"VertDisp  ","FeCO3     ",   1.00000
+"HorzDisp  ","Salinity  ",   1.00000
+"HorzDisp  ","Cl        ",   1.00000
+"HorzDisp  ","IM1       ",   1.00000
+"HorzDisp  ","IM2       ",   1.00000
+"HorzDisp  ","IM3       ",   1.00000
+"HorzDisp  ","Cd        ",   1.00000
+"HorzDisp  ","Cu        ",   1.00000
+"HorzDisp  ","Zn        ",   1.00000
+"HorzDisp  ","Cr        ",   1.00000
+"HorzDisp  ","Hg        ",   1.00000
+"HorzDisp  ","Pb        ",   1.00000
+"HorzDisp  ","As        ",   1.00000
+"HorzDisp  ","Va        ",   1.00000
+"HorzDisp  ","Ni        ",   1.00000
+"HorzDisp  ","BODC      ",   1.00000
+"HorzDisp  ","Green     ",   1.00000
+"HorzDisp  ","Diat      ",   1.00000
+"HorzDisp  ","NO3       ",   1.00000
+"HorzDisp  ","NH4       ",   1.00000
+"HorzDisp  ","PO4       ",   1.00000
+"HorzDisp  ","AAP       ",   1.00000
+"HorzDisp  ","Si        ",   1.00000
+"HorzDisp  ","OXY       ",   1.00000
+"HorzDisp  ","TColi     ",   1.00000
+"HorzDisp  ","EColi     ",   1.00000
+"HorzDisp  ","FColi     ",   1.00000
+"HorzDisp  ","EnCoc     ",   1.00000
+"HorzDisp  ","153       ",   1.00000
+"HorzDisp  ","ATR       ",   1.00000
+"HorzDisp  ","BaP       ",   1.00000
+"HorzDisp  ","Flu       ",   1.00000
+"HorzDisp  ","Mef       ",   1.00000
+"HorzDisp  ","Diu       ",   1.00000
+"HorzDisp  ","HCH       ",   1.00000
+"HorzDisp  ","HCB       ",   1.00000
+"HorzDisp  ","cTR1      ",   1.00000
+"HorzDisp  ","dTR1      ",   1.00000
+"HorzDisp  ","cTR2      ",   1.00000
+"HorzDisp  ","dTR2      ",   1.00000
+"HorzDisp  ","cTR3      ",   1.00000
+"HorzDisp  ","dTR3      ",   1.00000
+"HorzDisp  ","cTR4      ",   1.00000
+"HorzDisp  ","dTR4      ",   1.00000
+"HorzDisp  ","cTR5      ",   1.00000
+"HorzDisp  ","dTR5      ",   1.00000
+"HorzDisp  ","TIC       ",   1.00000
+"HorzDisp  ","H+        ",   1.00000
+"HorzDisp  ","H2O       ",   1.00000
+"HorzDisp  ","NatTemp   ",   1.00000
+"HorzDisp  ","ModTemp   ",   1.00000
+"HorzDisp  ","CBOD5     ",   1.00000
+"HorzDisp  ","CBOD5_2   ",   1.00000
+"HorzDisp  ","CBOD5_3   ",   1.00000
+"HorzDisp  ","CBODu     ",   1.00000
+"HorzDisp  ","CBODu_2   ",   1.00000
+"HorzDisp  ","COD_Cr    ",   1.00000
+"HorzDisp  ","COD_Mn    ",   1.00000
+"HorzDisp  ","NBOD5     ",   1.00000
+"HorzDisp  ","NBODu     ",   1.00000
+"HorzDisp  ","POC1      ",   1.00000
+"HorzDisp  ","POC2      ",   1.00000
+"HorzDisp  ","POC3      ",   1.00000
+"HorzDisp  ","DOC       ",   1.00000
+"HorzDisp  ","PON1      ",   1.00000
+"HorzDisp  ","PON2      ",   1.00000
+"HorzDisp  ","PON3      ",   1.00000
+"HorzDisp  ","DON       ",   1.00000
+"HorzDisp  ","POP1      ",   1.00000
+"HorzDisp  ","POP2      ",   1.00000
+"HorzDisp  ","POP3      ",   1.00000
+"HorzDisp  ","DOP       ",   1.00000
+"HorzDisp  ","Opal      ",   1.00000
+"HorzDisp  ","MPB1peli  ",   1.00000
+"HorzDisp  ","MPB2psam  ",   1.00000
+"HorzDisp  ","Mnd1Diat-m",   1.00000
+"HorzDisp  ","Mnd2Flag-m",   1.00000
+"HorzDisp  ","Mnd3Diat-f",   1.00000
+"HorzDisp  ","Mnd4Flag-f",   1.00000
+"HorzDisp  ","BLOOMALG01",   1.00000
+"HorzDisp  ","BLOOMALG02",   1.00000
+"HorzDisp  ","BLOOMALG03",   1.00000
+"HorzDisp  ","BLOOMALG04",   1.00000
+"HorzDisp  ","BLOOMALG05",   1.00000
+"HorzDisp  ","BLOOMALG06",   1.00000
+"HorzDisp  ","BLOOMALG07",   1.00000
+"HorzDisp  ","BLOOMALG08",   1.00000
+"HorzDisp  ","BLOOMALG09",   1.00000
+"HorzDisp  ","BLOOMALG10",   1.00000
+"HorzDisp  ","BLOOMALG11",   1.00000
+"HorzDisp  ","BLOOMALG12",   1.00000
+"HorzDisp  ","BLOOMALG13",   1.00000
+"HorzDisp  ","BLOOMALG14",   1.00000
+"HorzDisp  ","BLOOMALG15",   1.00000
+"HorzDisp  ","BLOOMALG16",   1.00000
+"HorzDisp  ","BLOOMALG17",   1.00000
+"HorzDisp  ","BLOOMALG18",   1.00000
+"HorzDisp  ","BLOOMALG19",   1.00000
+"HorzDisp  ","BLOOMALG20",   1.00000
+"HorzDisp  ","BLOOMALG21",   1.00000
+"HorzDisp  ","BLOOMALG22",   1.00000
+"HorzDisp  ","BLOOMALG23",   1.00000
+"HorzDisp  ","BLOOMALG24",   1.00000
+"HorzDisp  ","BLOOMALG25",   1.00000
+"HorzDisp  ","BLOOMALG26",   1.00000
+"HorzDisp  ","BLOOMALG27",   1.00000
+"HorzDisp  ","BLOOMALG28",   1.00000
+"HorzDisp  ","BLOOMALG29",   1.00000
+"HorzDisp  ","BLOOMALG30",   1.00000
+"HorzDisp  ","FrCon     ",   1.00000
+"HorzDisp  ","FrFlow    ",   1.00000
+"HorzDisp  ","SalBnd    ",   1.00000
+"HorzDisp  ","OMP       ",   1.00000
+"HorzDisp  ","SO4       ",   1.00000
+"HorzDisp  ","SUD       ",   1.00000
+"HorzDisp  ","SUP       ",   1.00000
+"HorzDisp  ","FeIIIpa   ",   1.00000
+"HorzDisp  ","FeIIIpc   ",   1.00000
+"HorzDisp  ","FeIIId    ",   1.00000
+"HorzDisp  ","FeIId     ",   1.00000
+"HorzDisp  ","FeS       ",   1.00000
+"HorzDisp  ","FeS2      ",   1.00000
+"HorzDisp  ","FeCO3     ",   1.00000
+"HorzDispV ","Salinity  ",   1.00000
+"HorzDispV ","Cl        ",   1.00000
+"HorzDispV ","IM1       ",   1.00000
+"HorzDispV ","IM2       ",   1.00000
+"HorzDispV ","IM3       ",   1.00000
+"HorzDispV ","Cd        ",   1.00000
+"HorzDispV ","Cu        ",   1.00000
+"HorzDispV ","Zn        ",   1.00000
+"HorzDispV ","Cr        ",   1.00000
+"HorzDispV ","Hg        ",   1.00000
+"HorzDispV ","Pb        ",   1.00000
+"HorzDispV ","As        ",   1.00000
+"HorzDispV ","Va        ",   1.00000
+"HorzDispV ","Ni        ",   1.00000
+"HorzDispV ","BODC      ",   1.00000
+"HorzDispV ","Green     ",   1.00000
+"HorzDispV ","Diat      ",   1.00000
+"HorzDispV ","NO3       ",   1.00000
+"HorzDispV ","NH4       ",   1.00000
+"HorzDispV ","PO4       ",   1.00000
+"HorzDispV ","AAP       ",   1.00000
+"HorzDispV ","Si        ",   1.00000
+"HorzDispV ","OXY       ",   1.00000
+"HorzDispV ","TColi     ",   1.00000
+"HorzDispV ","EColi     ",   1.00000
+"HorzDispV ","FColi     ",   1.00000
+"HorzDispV ","EnCoc     ",   1.00000
+"HorzDispV ","153       ",   1.00000
+"HorzDispV ","ATR       ",   1.00000
+"HorzDispV ","BaP       ",   1.00000
+"HorzDispV ","Flu       ",   1.00000
+"HorzDispV ","Mef       ",   1.00000
+"HorzDispV ","Diu       ",   1.00000
+"HorzDispV ","HCH       ",   1.00000
+"HorzDispV ","HCB       ",   1.00000
+"HorzDispV ","cTR1      ",   1.00000
+"HorzDispV ","dTR1      ",   1.00000
+"HorzDispV ","cTR2      ",   1.00000
+"HorzDispV ","dTR2      ",   1.00000
+"HorzDispV ","cTR3      ",   1.00000
+"HorzDispV ","dTR3      ",   1.00000
+"HorzDispV ","cTR4      ",   1.00000
+"HorzDispV ","dTR4      ",   1.00000
+"HorzDispV ","cTR5      ",   1.00000
+"HorzDispV ","dTR5      ",   1.00000
+"HorzDispV ","TIC       ",   1.00000
+"HorzDispV ","H+        ",   1.00000
+"HorzDispV ","H2O       ",   1.00000
+"HorzDispV ","NatTemp   ",   1.00000
+"HorzDispV ","ModTemp   ",   1.00000
+"HorzDispV ","CBOD5     ",   1.00000
+"HorzDispV ","CBOD5_2   ",   1.00000
+"HorzDispV ","CBOD5_3   ",   1.00000
+"HorzDispV ","CBODu     ",   1.00000
+"HorzDispV ","CBODu_2   ",   1.00000
+"HorzDispV ","COD_Cr    ",   1.00000
+"HorzDispV ","COD_Mn    ",   1.00000
+"HorzDispV ","NBOD5     ",   1.00000
+"HorzDispV ","NBODu     ",   1.00000
+"HorzDispV ","POC1      ",   1.00000
+"HorzDispV ","POC2      ",   1.00000
+"HorzDispV ","POC3      ",   1.00000
+"HorzDispV ","DOC       ",   1.00000
+"HorzDispV ","PON1      ",   1.00000
+"HorzDispV ","PON2      ",   1.00000
+"HorzDispV ","PON3      ",   1.00000
+"HorzDispV ","DON       ",   1.00000
+"HorzDispV ","POP1      ",   1.00000
+"HorzDispV ","POP2      ",   1.00000
+"HorzDispV ","POP3      ",   1.00000
+"HorzDispV ","DOP       ",   1.00000
+"HorzDispV ","Opal      ",   1.00000
+"HorzDispV ","MPB1peli  ",   1.00000
+"HorzDispV ","MPB2psam  ",   1.00000
+"HorzDispV ","Mnd1Diat-m",   1.00000
+"HorzDispV ","Mnd2Flag-m",   1.00000
+"HorzDispV ","Mnd3Diat-f",   1.00000
+"HorzDispV ","Mnd4Flag-f",   1.00000
+"HorzDispV ","BLOOMALG01",   1.00000
+"HorzDispV ","BLOOMALG02",   1.00000
+"HorzDispV ","BLOOMALG03",   1.00000
+"HorzDispV ","BLOOMALG04",   1.00000
+"HorzDispV ","BLOOMALG05",   1.00000
+"HorzDispV ","BLOOMALG06",   1.00000
+"HorzDispV ","BLOOMALG07",   1.00000
+"HorzDispV ","BLOOMALG08",   1.00000
+"HorzDispV ","BLOOMALG09",   1.00000
+"HorzDispV ","BLOOMALG10",   1.00000
+"HorzDispV ","BLOOMALG11",   1.00000
+"HorzDispV ","BLOOMALG12",   1.00000
+"HorzDispV ","BLOOMALG13",   1.00000
+"HorzDispV ","BLOOMALG14",   1.00000
+"HorzDispV ","BLOOMALG15",   1.00000
+"HorzDispV ","BLOOMALG16",   1.00000
+"HorzDispV ","BLOOMALG17",   1.00000
+"HorzDispV ","BLOOMALG18",   1.00000
+"HorzDispV ","BLOOMALG19",   1.00000
+"HorzDispV ","BLOOMALG20",   1.00000
+"HorzDispV ","BLOOMALG21",   1.00000
+"HorzDispV ","BLOOMALG22",   1.00000
+"HorzDispV ","BLOOMALG23",   1.00000
+"HorzDispV ","BLOOMALG24",   1.00000
+"HorzDispV ","BLOOMALG25",   1.00000
+"HorzDispV ","BLOOMALG26",   1.00000
+"HorzDispV ","BLOOMALG27",   1.00000
+"HorzDispV ","BLOOMALG28",   1.00000
+"HorzDispV ","BLOOMALG29",   1.00000
+"HorzDispV ","BLOOMALG30",   1.00000
+"HorzDispV ","FrCon     ",   1.00000
+"HorzDispV ","FrFlow    ",   1.00000
+"HorzDispV ","SalBnd    ",   1.00000
+"HorzDispV ","OMP       ",   1.00000
+"HorzDispV ","SO4       ",   1.00000
+"HorzDispV ","SUD       ",   1.00000
+"HorzDispV ","SUP       ",   1.00000
+"HorzDispV ","FeIIIpa   ",   1.00000
+"HorzDispV ","FeIIIpc   ",   1.00000
+"HorzDispV ","FeIIId    ",   1.00000
+"HorzDispV ","FeIId     ",   1.00000
+"HorzDispV ","FeS       ",   1.00000
+"HorzDispV ","FeS2      ",   1.00000
+"HorzDispV ","FeCO3     ",   1.00000

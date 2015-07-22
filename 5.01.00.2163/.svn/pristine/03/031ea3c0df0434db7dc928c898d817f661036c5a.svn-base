@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{C314928E-A71B-4DCD-8F0C-A5DFDD356F6A}">
+	<Platforms>
+		<Platform Name="Win32"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" AdditionalIncludeDirectories="../../../../engines_gpl/flow2d3d/packages/data/lib/$(ConfigurationName);../../../../engines_gpl/flow2d3d/packages/data/include;../../../../engines_gpl/flow2d3d/packages/manager/lib/$(ConfigurationName);../../../../engines_gpl/flow2d3d/packages/kernel/lib/$(ConfigurationName);../../../../utils_lgpl/deltares_common/lib/$(ConfigurationName)/static;../../../../utils_lgpl/ec_module/lib/$(ConfigurationName)/static;../../../../utils_lgpl/delftio/lib/$(ConfigurationName)/static;../../../../utils_lgpl/inifiles/lib/$(ConfigurationName)/static;../../../../utils_lgpl/precision/lib/$(ConfigurationName)/static;../../../../utils_lgpl/precision/include;../../../../utils_lgpl/esmfsm/include;../../../../third_party_open/mpich2/include;../../../../third_party_open/openda/core/native/include;./include" Interfaces="true" WarnInterfaces="true" Traceback="true" NullPointerCheck="true" UninitializedVariablesCheck="true" RuntimeLibrary="rtMultiThreadedDebug"/>
+				<Tool Name="VFLinkerTool" OutputFile="..\bin\win32\\$(ProjectName).exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="D:\src\ds_openmi_openda\engines\delftflow\packages\d3df_dll\win32_debug\" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" AdditionalIncludeDirectories="../../../../engines_gpl/flow2d3d/packages/data/lib/$(ConfigurationName);../../../../engines_gpl/flow2d3d/packages/data/include;../../../../engines_gpl/flow2d3d/packages/manager/lib/$(ConfigurationName);../../../../engines_gpl/flow2d3d/packages/kernel/lib/$(ConfigurationName);../../../../utils_lgpl/deltares_common/lib/$(ConfigurationName)/static;../../../../utils_lgpl/ec_module/lib/$(ConfigurationName)/static;../../../../utils_lgpl/delftio/lib/$(ConfigurationName)/static;../../../../utils_lgpl/inifiles/lib/$(ConfigurationName)/static;../../../../utils_lgpl/precision/lib/$(ConfigurationName)/static;../../../../utils_lgpl/precision/include;../../../../utils_lgpl/esmfsm/include;../../../../third_party_open/mpich2/include;../../../../third_party_open/openda/core/native/include;./include"/>
+				<Tool Name="VFLinkerTool" OutputFile="..\bin\win32\$(ProjectName).exe" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<File RelativePath=".\test_dll_noise.F90"/></Files>
+	<Globals/></VisualStudioProject>

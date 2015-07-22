@@ -1,0 +1,6 @@
+- Change Message.value from void * to uint64_t for 32- and 64-bit
+  interoperability
+  
+- Split client and server classes into interface and implementation
+
+- Multinode DD

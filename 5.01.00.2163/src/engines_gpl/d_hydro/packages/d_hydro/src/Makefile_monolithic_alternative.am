@@ -1,0 +1,119 @@
+#-------------------------------------------------------------------------------
+#   Makefile for monolithic d_hydro with Flow2D3D
+#
+#   Irv.Elshoff@Deltares.NL
+#   Adri.Mourits@Deltares.NL
+#   29 oct 11
+#
+#   Copyright (C) 2011, Deltares
+#-------------------------------------------------------------------------------
+
+
+include $(top_srcdir)/common.am
+
+
+bin_PROGRAMS = \
+    d_hydro.exe
+
+d_hydro_exe_SOURCES = \
+    d_hydro_version.cpp \
+    d_hydro.cpp
+
+
+INCLUDES = \
+    -DMONOLITHIC_FLOW2D3D \
+    -I$(top_builddir)/engines_gpl/flow2d3d/packages/flow2d3d/include \
+    -I$(STANDARD_C_INCLUDES) \
+    -I../include
+
+
+
+####    FINCLUDES += \
+####        -I$(top_builddir)/utils_lgpl/esmfsm/include
+####    FMODULES += \
+####        -I$(top_builddir)/utils_lgpl/inifiles/packages/inifiles/src
+
+
+MPILIBS += \
+    $(MPILIBS_ADDITIONAL)
+
+
+#-------------------------------------------------------------------------------
+#   Libraries
+
+d_hydro_exe_LDFLAGS = \
+    $(LDFLAGSMT_ADDITIONAL) 
+
+d_hydro_exe_LDADD = \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/flow2d3d/src/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/flow2d3d/src/dd/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/flow2d3d/src/dd/iterators/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/flow2d3d/src/dd/mapper/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/manager/src/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/main/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/non_hydro/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/taylor/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/timedep/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/compute/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/compute_nearfar/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/compute_roller/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/compute_sediment/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel_dd_f/src/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/io/src/preprocessor/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/io/src/output/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/inichk/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/dd/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/io/src/input/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/kernel/src/general/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/io_dol_f/src/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/plugin_user/src/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/plugin_3dmortrafrm_c/src/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/data/src/allocation/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/data/src/general/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/data/src/gdp/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/data/src/parallel_mpi/*.lo \
+    $(top_builddir)/engines_gpl/flow2d3d/packages/data/src/basics/*.lo \
+    \
+    $(top_builddir)/utils_lgpl/d_hydro_lib/packages/d_hydro_lib/src/libD_hydro.a \
+    $(top_builddir)/utils_lgpl/meteo/packages/meteo/src/libmeteo.a \
+    $(top_builddir)/utils_lgpl/ec_module/packages/ec_module/src/libec_module.a \
+    $(top_builddir)/utils_lgpl/delftio_sync/packages/delftio_sync/src/libdelftio_sync.a \
+    $(top_builddir)/utils_lgpl/delftio/packages/delftio/src/diof90/libdelftio.a \
+    $(top_builddir)/utils_lgpl/delftio/packages/delftio_shm/src/diof90/libdelftio_shm.a \
+    $(top_builddir)/utils_lgpl/d_hydro_lib/packages/d_hydro_lib/src/libD_hydro.a \
+    $(top_builddir)/utils_lgpl/esmfsm/packages/esmfsm/src/fsm/libfsm.a \
+    $(top_builddir)/utils_lgpl/esmfsm/packages/esmfsm_c/src/fsm/libfsm_c.a \
+    $(top_builddir)/utils_lgpl/esmfsm/packages/esmfsm_c/src/esm/libesm_c.a \
+    $(top_builddir)/utils_lgpl/inifiles/packages/inifiles/src/libinifiles.a \
+    $(top_builddir)/utils_lgpl/nefis/packages/nefis/src/libnefis.a \
+    $(top_builddir)/utils_lgpl/constants/packages/mathconsts/src/libmathconsts.a \
+    $(top_builddir)/utils_lgpl/precision/packages/precision/src/libprecision.a \
+    $(top_builddir)/utils_lgpl/semaphore/packages/semaphore/src/libsemaphore.a \
+    $(top_builddir)/utils_lgpl/stream/packages/stream/src/libstream.a \
+    $(top_builddir)/utils_lgpl/deltares_common/packages/deltares_common/src/libdeltares_common.a \
+    $(top_builddir)/utils_lgpl/deltares_common/packages/deltares_common_c/src/libdeltares_common_c.a \
+    $(top_builddir)/utils_lgpl/delftio_sync/packages/delftio_sync_version_number/src/libdelftio_sync_version_number.a \
+    $(top_builddir)/utils_lgpl/delftio/packages/delftio_version_number/src/libdelftio_version_number.a \
+    $(top_builddir)/utils_lgpl/esmfsm/packages/esmfsm_version_number/src/libesmfsm_version_number.a \
+    $(top_builddir)/utils_lgpl/meteo/packages/meteo_version_number/src/libmeteo_version_number.a \
+    $(top_builddir)/utils_lgpl/nefis/packages/nefis_version_number/src/libnefis_version_number.a \
+    $(top_builddir)/utils_lgpl/stream/packages/stream_version_number/src/libstream_version_number.a \
+    $(EXTERNALSOURCES) \
+    \
+    $(MPILIBS) \
+    $(FCLIBS) -ldl
+
+
+
+#-------------------------------------------------------------------------------
+
+BUILT_SOURCES = \
+    ./always \
+    ../include/d_hydro_version.h
+
+./always:
+	rm -f ../include/d_hydro_version.h
+
+../include/d_hydro_version.h:
+	$(top_srcdir)/scripts_lgpl/linux/update_version.sh ../include/d_hydro_version.h $(srcdir) ../include/version_number.ini $(top_builddir)
+

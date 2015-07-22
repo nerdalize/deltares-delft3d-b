@@ -1,0 +1,20 @@
+#ifndef SEMAPHORE_VERSION
+#define SEMAPHORE_VERSION
+
+#define semaphore_major "VN_MAJOR"
+#define semaphore_minor "VN_MINOR"
+#define semaphore_revision "VN_REVISION"
+#define semaphore_build "VN_BUILD_NUMBER"
+
+#define semaphore_company "Deltares"
+#define semaphore_company_url  = "http://www.deltares.nl"
+#define semaphore_program "SEMAPHORE"
+
+/*=================================================== DO NOT MAKE CHANGES BELOW THIS LINE ===================================================================== */
+
+static char semaphore_version [] = {semaphore_major"."semaphore_minor"."semaphore_revision"."semaphore_build};
+static char semaphore_version_full [] = {"Deltares, "semaphore_program" Version "semaphore_major"."semaphore_minor"."semaphore_revision"."semaphore_build", "__DATE__", "__TIME__""};
+
+extern char * getfullversionstring_semaphore(void);
+
+#endif SEMAPHORE_VERSION

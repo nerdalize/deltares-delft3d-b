@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "ec_module", "..\ec_module.vfproj", "{62E2E1DA-4AFA-4880-A508-1C4F217C93B1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{91C4971E-914C-4AD8-9711-6B53E856884C} = {91C4971E-914C-4AD8-9711-6B53E856884C}
+		{2D6BCBCA-CC6C-49FE-A6AA-61AF62529118} = {2D6BCBCA-CC6C-49FE-A6AA-61AF62529118}
+	EndProjectSection
+EndProject
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "ectest", "ectest\ectest.vfproj", "{EC02E4B5-485C-4810-9D0F-E5F5C332A5CA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{91C4971E-914C-4AD8-9711-6B53E856884C} = {91C4971E-914C-4AD8-9711-6B53E856884C}
+		{2D6BCBCA-CC6C-49FE-A6AA-61AF62529118} = {2D6BCBCA-CC6C-49FE-A6AA-61AF62529118}
+		{62E2E1DA-4AFA-4880-A508-1C4F217C93B1} = {62E2E1DA-4AFA-4880-A508-1C4F217C93B1}
+	EndProjectSection
+EndProject
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "precision", "..\..\..\..\precision\packages\precision\precision.vfproj", "{91C4971E-914C-4AD8-9711-6B53E856884C}"
+EndProject
+Project("{6989167D-11E4-40FE-8C1A-2192A86A7E90}") = "utils_flow", "..\..\..\..\utils_flow\packages\utils_flow\utils_flow.vfproj", "{2D6BCBCA-CC6C-49FE-A6AA-61AF62529118}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62E2E1DA-4AFA-4880-A508-1C4F217C93B1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{62E2E1DA-4AFA-4880-A508-1C4F217C93B1}.Debug|Win32.Build.0 = Debug|Win32
+		{62E2E1DA-4AFA-4880-A508-1C4F217C93B1}.Release|Win32.ActiveCfg = Release|Win32
+		{62E2E1DA-4AFA-4880-A508-1C4F217C93B1}.Release|Win32.Build.0 = Release|Win32
+		{EC02E4B5-485C-4810-9D0F-E5F5C332A5CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EC02E4B5-485C-4810-9D0F-E5F5C332A5CA}.Debug|Win32.Build.0 = Debug|Win32
+		{EC02E4B5-485C-4810-9D0F-E5F5C332A5CA}.Release|Win32.ActiveCfg = Release|Win32
+		{EC02E4B5-485C-4810-9D0F-E5F5C332A5CA}.Release|Win32.Build.0 = Release|Win32
+		{91C4971E-914C-4AD8-9711-6B53E856884C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{91C4971E-914C-4AD8-9711-6B53E856884C}.Debug|Win32.Build.0 = Debug|Win32
+		{91C4971E-914C-4AD8-9711-6B53E856884C}.Release|Win32.ActiveCfg = Release|Win32
+		{91C4971E-914C-4AD8-9711-6B53E856884C}.Release|Win32.Build.0 = Release|Win32
+		{2D6BCBCA-CC6C-49FE-A6AA-61AF62529118}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2D6BCBCA-CC6C-49FE-A6AA-61AF62529118}.Debug|Win32.Build.0 = Debug|Win32
+		{2D6BCBCA-CC6C-49FE-A6AA-61AF62529118}.Release|Win32.ActiveCfg = Release|Win32
+		{2D6BCBCA-CC6C-49FE-A6AA-61AF62529118}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,38 @@
+[MorphologyFileInformation]
+   FileCreatedBy    = Delft3D-FLOW-GUI, Version: 3.1804
+   FileCreationDate = 19-12-2003,  8:50:45
+   FileVersion      = 02.00
+[Morphology]
+   MorFac = 10        [ - ] Morphological scale factor
+   MorStt = 60.       [min] Start time for bed updating (in minutes rel. to simulation start time)
+   Thresh = 0.2       [ m ] Threshold sediment thickness for reducing sediment exchange
+   MorUpd = true      [T/F] Update bathymetry during flow run
+   EqmBc  = true      [T/F] Equilibrium concentration at inflow boundaries
+   DensIn = false     [T/F] Include effect of sediment on density gradient
+   AksFac = 0.5       [ - ] Van Rijn's reference height = AKSFAC * KS
+   RWave  = 2.0       [ - ] Wave related roughness = RWAVE * estimated ripple height. Van Rijn Recommends range 1-3
+   AlfaBs = 1.0       [ - ] Longitudinal bed gradient factor for bed load transport
+   AlfaBn = 1.5       [ - ] Transverse   bed gradient factor for bed load transport
+   Sus    = 1.0       [ - ] Suspended transport factor
+   Bed    = 1.0       [ - ] Bedload transport factor
+   SusW   = 0.3       [ - ] Wave-related suspended transport factor
+   BedW   = 1.0       [ - ] Wave-related bedload transport factor
+   SedThr = 0.25      [ m ] Minimum depth for sediment computations
+   ThetSD = 1.0       [ - ] Fraction of erosion to assign to adjacent dry cells
+   Hmaxth = 1.e-3     [ m ]
+   FWFac  = 1.0       [ - ] Tuning parameter for wave streaming
+   EpsPar = true      [T/F] Only for waves in combination with k-epsilon turbulence model
+                            TRUE : Van Rijn's parabolic-linear mixing distribution for current-related mixing
+                            FALSE: Vertical sediment mixing values from K-epsilon turbulence model
+   IopKCW = 1         [ - ] Flag for determining Rc and Rw (Only for Van Rijn (1993))
+                            1 (default): Rc from flow, Rw=RWAVE*0.025
+                            2          : Rc=RDC and Rw=RDW as read from this file
+                            3          : Rc=Rw determined from mobility
+   RDC    = 0.01      [ - ] Rc in case IopKCW = 2
+   RDW    = 0.02      [ - ] Rw in case IopKCW = 2
+   UpdInf = true      [T/F] Flag for updating bed at inflow boundaries
+                            FALSE (default) : Bed level constant
+                            TRUE            : Down-wind approach
+   TraGra = false     [T/F] Flag for updating bed level with transport gradients
+   GamMax = 0.6       [ - ] Maximum ratio Hrms/water depth
+   Multi  = true      [ - ] Flag for running parallel conditions

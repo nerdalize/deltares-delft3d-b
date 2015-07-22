@@ -1,0 +1,53 @@
+#   PutGet Test differences
+#
+#   Stef.Hummel@deltares.nl
+#
+#   (c) Deltares, June '01
+#
+
+outFile=TEST.diff
+
+if [ $# = 1 ] ; then
+    outFile=$1
+fi
+
+
+curTestDir=`(cd ..;pwd)`
+curTest=`basename $curTestDir`
+
+diffDir=../../../resultsApproved/$curTest/$ARCH
+
+echo "DIFFING WITH $diffDir"
+
+curDir=`pwd`
+
+tmpRes=$$.tmpRes
+tmpOrg=$$.tmpOrg
+
+diffs="false"
+for f in TEST*-res.txt
+do
+    if [ -f $diffDir/$f ] ; then
+	echo "=====$f=====" >> $outFile
+	grep -v 'dioVersion:' $f | grep -v 'dioIdent:' | grep -v 'DelftIO Version:' > $tmpRes
+	grep -v 'dioVersion:' $diffDir/$f | grep -v 'dioIdent:' | grep -v 'DelftIO Version:' > $tmpOrg
+	diffRes=`diff $tmpRes  $tmpOrg >> $outFile`
+	if [ "$?" != "0" ] ; then
+	    echo DIFFERENCES in $curDir/$f
+	    diffs="true"
+	fi
+    else
+	echo CAN NOT DIFF in $curDir
+	echo "===== $diffDir/$f not found =====" >> $outFile
+	diffs="true"
+    fi
+done
+
+if [ "$diffs" = "false" ] ; then
+    grep -v "=====" $outFile > $outFile.tmp
+    mv $outFile.tmp $outFile
+fi
+
+rm -f $tmpRes $tmpOrg
+
+

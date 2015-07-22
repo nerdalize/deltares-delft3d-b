@@ -1,0 +1,965 @@
+<html>
+
+<head>
+<title>DelftIO Par./Loc./Time Fortran 90 Interface</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+</head>
+
+<body>
+
+<p align="left"><font face="Arial">DelftIO <big>Par./Loc./Time</big> Fortran 90 Interface</font></p>
+
+<p><font color="#FF0000"><strong><big><em>Functions</em></big></strong></font></p>
+
+<p>The following functions are available:</p>
+
+<table border="1">
+  <tr>
+    <td><a name="DefinePltDataset"><strong>Define Dataset</strong></a></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltDefine">DioPltDefine</a></td>
+    <td>Define a Par./Loc./Time dataset, optionally on a <a href="streams_f90.html">Stream</a>.<br>
+    The function returns a handle to the PLT dataset.</td>
+  </tr>
+  <tr>
+    <td><strong>Write values</strong></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltPut">DioPltPut</a></td>
+    <td>Put values for a specific Julian time stamp, for a specific His timestep, or for the
+    next time step (for on line communication)</td>
+  </tr>
+  <tr>
+    <td><strong>Get Dataset</strong></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetDataset">DioPltGetDataset</a></td>
+    <td>Get a Par./Loc./Time dataset, optionally&nbsp; from a <a href="streams_f90.html">Stream</a>.<br>
+    The function returns a handle to the PLT dataset</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltOpenedOK">DioPltOpenedOK</a></td>
+    <td>Check if a Par./Loc./Time was opened succesfully</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetNPar">DioPltGetNPar</a></td>
+    <td>Get number of parameters in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetNLoc">DioPltGetNLoc</a></td>
+    <td>Get number of locations in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetNTimes">DioPltGetNTimes</a></td>
+    <td>Get number of time steps in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetPars">DioPltGetPars</a></td>
+    <td>Get the parameter names in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetLocs">DioPltGetLocs</a></td>
+    <td>Get the location names in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetIntIds">DioPltGetIntIds</a></td>
+    <td>Get the integer location indentifications in a PLT dataset (HIS files only)</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetTimes">DioPltGetTimes</a></td>
+    <td>Get the time steps in the PLT dataset (Julian time stamps)</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetHisSteps">DioPltGetHisSteps</a></td>
+    <td>Get the time steps in the PLT dataset as HIS steps</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetHisTimeUnit">DioPltGetHisTimeUnit</a></td>
+    <td>Get PLT's HIS time step unit</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetHisTimeMult">DioPltGetHisTimeMult</a></td>
+    <td>Get PLT's HIS time step multiplier</td>
+  </tr>
+  <tr>
+    <td><strong>Read values</strong></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGet">DioPltGet</a></td>
+    <td>Get floats (=reals) for the next time step.</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetSelection">DioPltGetSelection</a></td>
+    <td>Get floats (=reals) for a selection of parameters, locations and time steps; or get
+    all parameter/location values for one timestep</td>
+  </tr>
+  <tr>
+    <td><strong>Cleanup</strong></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltDestroy">DioPltDestroy</a></td>
+    <td>Close and destroy the PLT dataset</td>
+  </tr>
+  <tr>
+    <td><strong>Miscellaneous</strong></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltRewind">DioPltRewind</a></td>
+    <td>Rewind a (serial) file containing a PLT (only for parallel Sobek-CF/RR)</td>
+  </tr>
+  <tr>
+    <td><strong>General Functions</strong></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#DioPltGetVersion">DioGetVersion</a></td>
+    <td>Get DelftIO version</td>
+  </tr>
+  <tr>
+    <td><a href="#StringsEqual">StringsEqual</a></td>
+    <td>Compare Strings</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p><font color="#ff0000"><strong><big><em>Module files</em></big></strong></font></p>
+
+<p><strong><em>use dio_plt_rw</em></strong></p>
+
+<p>Module defines variable types that can be stored in a PLT:<br>
+integer dio_Plt_Real<br>
+integer dio_Plt_Double<br>
+integer dio_Plt_Integer<br>
+integer dio_Plt_Logical<br>
+and and implements the Plt-functions below.</p>
+
+<p><font color="#FF0000"><strong><big><em>Write a dataset</em></big></strong></font></p>
+
+<p><strong><em>step 1: define the dataset (optionally on a <a href="streams_f90.html">stream</a>)</em></strong></p>
+
+<p><a name="#DioPltDefine">The following overloaded define functions are available for
+PLT's:</a><br>
+<small><strong><font face="Courier New">function DioPltDefine([stream,] name, varType,
+pars, locs) result(plt)<br>
+function DioPltDefine([stream,] name, varType, pars, locs, julianStartTime
+[,julianEndTime]) result(plt)<br>
+function DioPltDefine([stream,] name, hisRunId, varType, pars, locs) result(plt)<br>
+function DioPltDefine([stream,] name, hisRunId, varType, pars, locs, julianStartTime
+[,julianEndTime]) result(plt)<br>
+function DioPltDefine([stream,] name, varType, pars, intLocIds, locs) result(plt)<br>
+function DioPltDefine([stream,] name, hisRunId, varType, pars, intLocIds, locs)
+result(plt)</font></strong></small><br>
+<small><strong><font face="Courier New">function DioPltDefine([stream,] name, hisRunId,
+varType, pars, intLocIds, locs, julianStartTime [,julianEndTime]) result(plt)</font></strong></small></p>
+
+<p>The following overloaded define functions are available for create MAP files:<br>
+<small><strong><font face="Courier New">function DioPltDefine([stream,] name, varType,
+pars, nLoc) result(plt)<br>
+function DioPltDefine([stream,] name, varType, pars, nLoc, julianStartTime
+[,julianEndTime]) result(plt)<br>
+function DioPltDefine([stream,] name, hisRunId, varType, pars, nLoc) result(plt)<br>
+function DioPltDefine([stream,] name, hisRunId, varType, pars, nLoc, julianStartTime
+[,julianEndTime]) result(plt)</font></strong></small></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>(O)</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioStreamType)</td>
+    <td>:: stream</td>
+    <td>I</td>
+    <td><strong>Optional</strong>: <a href="streams_f90.html">Stream</a> on which dataset must
+    be defined</td>
+  </tr>
+  <tr>
+    <td>character(*)</td>
+    <td>:: name</td>
+    <td>I</td>
+    <td>dataset name</td>
+  </tr>
+  <tr>
+    <td>character(HisRunIdSize),<br>
+    &nbsp;&nbsp;&nbsp; dimension(HisRunIdDim)</td>
+    <td>:: hisRunId</td>
+    <td>I</td>
+    <td>HIS runid for this dataset. If it includes a HIS T0-string, this T0-string is used for
+    the start time of the dataset.<br>
+    HisRunIdSize = 40, HisRunIdDim = 4.</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: varType</td>
+    <td>I</td>
+    <td>(dio_Plt_Real | dio_Plt_Double | dio_Plt_Integer | dio_Plt_Logical)</td>
+  </tr>
+  <tr>
+    <td>character(len=DioMaxParLen),<br>
+    &nbsp;&nbsp;&nbsp; dimension(:)</td>
+    <td>:: pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td>integer , dimension(:)<br>
+    </td>
+    <td>:: intLocIds</td>
+    <td>I</td>
+    <td>Integer locations Ids, as stored in HIS files. The dimension must be the same as the
+    one for locs</td>
+  </tr>
+  <tr>
+    <td>character(len=DioMaxLocLen),<br>
+    &nbsp;&nbsp;&nbsp; dimension(:)</td>
+    <td>:: locs</td>
+    <td>I</td>
+    <td>array with names of the locations in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: nLoc</td>
+    <td>I</td>
+    <td>Number of Locations in PLT, ID's not available (MAP files only).</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>:: julianStartTime</td>
+    <td>I</td>
+    <td>Julian timestamp for start time of PLT dataset</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>:: julianEndTime</td>
+    <td>I</td>
+    <td><strong>Optional</strong>: Julian timestamp for end time of PLT dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 2: write the data</em></strong></p>
+
+<p><a name="#DioPltPut">The following overloaded Put routines are available</a><br>
+<small><strong><font face="Courier New">subroutine DioPltPut(plt, values)<br>
+subroutine DioPltPut(plt, hisTimeStep, values)<br>
+subroutine DioPltPut(plt, hisTimeStep, values1D [,allowLarger] )<br>
+subroutine DioPltPut(plt, julianTime, values)</font></strong></small><br>
+</p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>:: julianTimeStamp</td>
+    <td>I</td>
+    <td>Julian time stamp for the next time step</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: HISTimeStep</td>
+    <td>I</td>
+    <td>HIS time step for the next time step</td>
+  </tr>
+  <tr>
+    <td>(real|doubleprecision|integer|logical), dimension(:,:)</td>
+    <td>:: values</td>
+    <td>I</td>
+    <td>2D-array with real, double precision, integer or logical values to be put. The maximum
+    dimension of this array is (1:number_of_parameters, 1:number_of_locations), but it may be
+    smaller.</td>
+  </tr>
+  <tr>
+    <td>(real|doubleprecision|integer|logical), dimension<strong>(:)</strong></td>
+    <td>:: values1D</td>
+    <td>I</td>
+    <td>1D-array with real, double precision, integer or logical values to be put. The
+    dimension of this array must be (number_of_parameters * number_of_locations) in the PLT,
+    unless the largerAllowed flag is set to .true., in which case the array may be larger (but
+    of course only the first (#pars*#locs) values are written.</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>:: allowLarger</td>
+    <td>I</td>
+    <td><strong>Optional</strong>: Flag indicating if values1D may be larger then
+    (#pars*#locs).</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>Get a dataset from a stream</em></big></strong></font></p>
+
+<p><strong><em>step 1: get the dataset information, optionally from specific <a
+href="streams_f90.html">stream</a></em></strong></p>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetDataset">DioPltGetDataset</a>([stream,]
+name) result(plt)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>(O)</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioStreamType)</td>
+    <td>:: stream</td>
+    <td>I</td>
+    <td><strong>Optional</strong>: <a href="streams_f90.html">Stream</a> on which dataset is
+    available</td>
+  </tr>
+  <tr>
+    <td>character(*)</td>
+    <td>:: name</td>
+    <td>I</td>
+    <td>dataset name</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 2: Check on succesful opening, get (number of) parameters / locations
+/ times in the dataset</em></strong></p>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltOpenedOK">DioPltOpenedOK</a>(dataset)
+result(n)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>::n</td>
+    <td>(O)</td>
+    <td>.true.: PLT opened succesfully; .false.: not opened succesfully</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetNPar">DioPltGetNPar</a>(dataset)
+result(n)<br>
+function <a name="#DioPltGetNLoc">DioPltGetNLoc</a>(dataset) result(n)<br>
+function <a name="#DioPltGetNTimes">DioPltGetNTimes</a>(dataset) result(n)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>::n</td>
+    <td>(O)</td>
+    <td>Number of Parameter or Locations in dataset</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetPars">DioPltGetPars</a>(dataset)
+result(names)<br>
+function <a name="#DioPltGetLocs">DioPltGetLocs</a>(dataset) result(names)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(len=DioMax(Par|Loc)Len), &amp;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; pointer, dimension(:)</td>
+    <td>:: names</td>
+    <td>(O)</td>
+    <td><strong>pointer</strong> to array with parameter/location names;<br>
+    <strong>Note</strong>: when the first 'Get' action is performed, the
+    parameter names and location names are
+    cleared from memory, so after this first 'Get' call the pointer returned by DioPltGetLocs
+    and DioPltGetPars
+    is not valid any more.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetIntIds">DioPltGetIntIds</a>(dataset)
+result(intIds)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer, &amp;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; pointer, dimension(:)</td>
+    <td>:: intIds</td>
+    <td>(O)</td>
+    <td><strong>pointer</strong> to array with integer location identifications (HIS files
+    only, for Map files a NULL pointer is returned);<br>
+    <strong>Note</strong>: when the first 'Get' action is performed, the integer location id's
+    are cleared from memory, so after this first 'Get' call the pointer returned by
+    DioPltGetIntIds is not valid any more.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetTimes">DioPltGetTimes</a>(dataset)
+result(julianTimes)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>double, &amp;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; pointer, dimension(:)</td>
+    <td>:: julianTimes</td>
+    <td>(O)</td>
+    <td>array with Julian time stamps</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetHisSteps">DioPltGetHisSteps</a>(dataset)
+result(hisSteps)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer, &amp;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp; pointer, dimension(:)</td>
+    <td>:: <strong><small><font face="Courier New">hisSteps</font></small></strong></td>
+    <td>(O)</td>
+    <td>array with integer HIS time steps</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetHisTimeUnit">DioPltGetHisTimeUnit</a>(dataset)
+result(hisTimeUnit)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: <strong><small><font face="Courier New">hisTimeUnit</font></small></strong></td>
+    <td>(O)</td>
+    <td>HIS time step unit</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">function <a name="#DioPltGetHisTimeMult">DioPltGetHisTimeMult</a>(dataset)
+result(hisTimeMult)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: <strong><small><font face="Courier New">hisTimeMult</font></small></strong></td>
+    <td>(O)</td>
+    <td>HIS time step multiplier</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 3a: get the data for the next time step</em></strong></p>
+
+<p><a name="#DioPltGet">The following overloaded Get functions are available</a><br>
+<small><font face="Courier New"><strong>function DioPltGet(plt, values) result(success)<br>
+function DioPltGet(plt, julianTimeStamp, values) result(success)<br>
+function DioPltGet(plt, HISTimeStep, values) result (success)</strong></font></small></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>:: success</td>
+    <td>(O)</td>
+    <td><strong>.true.</strong> if read was succesfull<br>
+    <strong>.false.</strong> if data was not found in te file, or if a <a
+    href="config_f90.html#TimeOut">TimeOut</a> occured</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>:: julianTimeStamp</td>
+    <td>O</td>
+    <td>Julian time stamp for the next time step</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: HISTimeStep</td>
+    <td>O</td>
+    <td>HIS time step for the next time step</td>
+  </tr>
+  <tr>
+    <td>(real | double precision | integer), pointer, dimension(:,:)</td>
+    <td>:: values</td>
+    <td>O</td>
+    <td>pointer to 2D-array, will point to the valus of the currently read timestep<br>
+    <strong>Note: when the next time step is read, the values in the array where 'values'
+    points to will be overwritten by the newly read values. So if one wants to keep using the
+    original values, a copy has to be made.</strong></td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 3b: get a selection of the data</em></strong></p>
+
+<p><a name="#DioPltGetSelection">The following overloaded GetSelection&nbsp; functions are
+available</a>:</p>
+
+<p><strong><font face="Courier New"><small>function DioPltGetSelection(plt, timIndex,
+values) result(success)</small></font></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>:: success</td>
+    <td>(O)</td>
+    <td><strong>.true.</strong> if time step was found<br>
+    <strong>.false.</strong> if not.<br>
+    (Caller should fill values array with 'missing values' in advance).</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: timIndex</td>
+    <td>I</td>
+    <td>Requested time step index (not the HIS time step?)</td>
+  </tr>
+  <tr>
+    <td>(real | double precision),<br>
+    dimension(:, :)</td>
+    <td>:: values</td>
+    <td>O</td>
+    <td>2D-array for resulting values for requested time step index (dimensions must be equal
+    to nPar * nLoc)</td>
+  </tr>
+</table>
+</div>
+
+<p><small><strong><font face="Courier New">function DioPltGetSelection(plt, nPar, parIndx,
+nLoc, locIndx, nTim, timIndx, values) result(success)</font></strong></small></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>:: success</td>
+    <td>(O)</td>
+    <td><strong>.true.</strong> if file could be scanned for data<br>
+    <strong>.false.</strong> if not.<br>
+    (Caller should fill values array with 'missing values' in advance).</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: nPar</td>
+    <td>I</td>
+    <td>Number of requested parameters</td>
+  </tr>
+  <tr>
+    <td>integer, dimension(nPar)</td>
+    <td>:: parIndx</td>
+    <td>&nbsp;</td>
+    <td>Indices of requested parameters</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: nLoc</td>
+    <td>I</td>
+    <td>Number of requested locations</td>
+  </tr>
+  <tr>
+    <td>integer, dimension(nLoc)</td>
+    <td>:: locIndx</td>
+    <td>I</td>
+    <td>Indices of requested locations</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: nTim</td>
+    <td>I</td>
+    <td>Number of requested time steps</td>
+  </tr>
+  <tr>
+    <td>integer, dimension(nTim)</td>
+    <td>:: timIndx</td>
+    <td>I</td>
+    <td>Indices of requested time steps</td>
+  </tr>
+  <tr>
+    <td>(real | double precision),<br>
+    dimension(nPar, nLoc, nTim)</td>
+    <td>:: values</td>
+    <td>O</td>
+    <td>3D-array for resulting values</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>Cleanup</em></big></strong></font></p>
+
+<p><strong><small><font face="Courier New">subroutine <a name="#DioPltDestroy">DioPltDestroy</a>(plt)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset to be closed and destroyed</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>Miscellaneous</em></big></strong></font></p>
+
+<p><small><strong><font face="Courier New">subroutine <a name="#DioPltRewind">DioPltRewind</a>(plt)</font></strong></small></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>:: plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time of which the (serial) file has to be rewinded (only
+    for parallel Sobek-CF/RR)</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>General support functions</em></big></strong></font></p>
+
+<p><strong><small><font face="Courier New">function <a name="DioPltGetVersion">
+DioPltGetVersion</a>() result(version)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(len=DioVersionLen)</td>
+    <td>::&nbsp;version</td>
+    <td>(O)</td>
+    <td>DelftIO version string (e.g.1.6.16)</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><font face="Courier New"><small>function <a name="#StringsEqual">StringsEqual</a>(caseMode,
+string_1, string_2) result(equal)</small></font></strong><br>
+Support function for comparing strings. Available when module <small><font
+face="Courier New">Dio_Plt_rw</font></small> is used; if not:<br>
+&nbsp;&nbsp;&nbsp; <small><font face="Courier New">use Dio_Prop</font></small><br>
+is enough to make the function-prototype and the <small><font face="Courier New">caseMode</font></small>
+enumeration available.<br>
+Example:<br>
+<font face="Courier New"><small>&nbsp;&nbsp; if ( StringsEqual(CaseInsens, myString,
+someString) ) then</small><br>
+<small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ! ... action<br>
+&nbsp;&nbsp; endif</small></font></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>:: equal</td>
+    <td>(O)</td>
+    <td><strong>.true.</strong> if strings are equal<br>
+    <strong>.false.</strong> if not.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>:: caseMode</td>
+    <td>I</td>
+    <td>Enumeration: <strong>CaseSens</strong> or <strong>CaseInsens</strong></td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>:: string_1</td>
+    <td>I</td>
+    <td>first string</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>:: string_2</td>
+    <td>I</td>
+    <td>second string</td>
+  </tr>
+</table>
+</div>
+</body>
+</html>

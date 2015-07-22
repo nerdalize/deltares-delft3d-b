@@ -1,0 +1,289 @@
+!!  Copyright(C) Stichting Deltares, 2012.
+!!
+!!  This program is free software: you can redistribute it and/or modify
+!!  it under the terms of the GNU General Public License version 3,
+!!  as published by the Free Software Foundation.
+!!
+!!  This program is distributed in the hope that it will be useful,
+!!  but WITHOUT ANY WARRANTY; without even the implied warranty of
+!!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+!!  GNU General Public License for more details.
+!!
+!!  You should have received a copy of the GNU General Public License
+!!  along with this program. If not, see <http://www.gnu.org/licenses/>.
+!!
+!!  contact: delft3d.support@deltares.nl
+!!  Stichting Deltares
+!!  P.O. Box 177
+!!  2600 MH Delft, The Netherlands
+!!
+!!  All indications and logos of, and references to registered trademarks
+!!  of Stichting Deltares remain the property of Stichting Deltares. All
+!!  rights reserved.
+
+      subroutine simph  ( pmsa   , fl     , ipoint , increm , noseg  ,
+     &                    noflux , iexpnt , iknmrk , noq1   , noq2   ,
+     &                    noq3   , noq4   )
+!>\file
+!>       Simple calculation of pH
+
+C**********************************************************************
+C     +----------------------------------------+
+C     |    D E L F T   H Y D R A U L I C S     |
+C     |    WAter Resources and Environment     |
+C     +----------------------------------------+
+C
+C***********************************************************************
+C
+C     Project : STANDAARDISATIE PROCES FORMULES T721.80 / T1014
+C     Author  : Arno Nolte
+C     Date    : 980602             Version : 0.01 for pH-delwaq
+C
+C     History :
+C
+C     Date    Author          Description
+C     ------  --------------  -----------------------------------
+C     980206  Arno Nolte       first version using alkalinity and total inorganic carbon
+C     981202  Arno Nolte       second version: improved dissociation constants (Millero, 1995)
+C
+C***********************************************************************
+C
+C     Description of the module :
+C
+C        General water quality module for DELWAQ:
+C        Simple calculation of pH, TESTVERSIE
+C        Restrictions: ...
+C
+C Name    T   L I/O   Description                                    Uni
+C ----    --- -  -    -------------------                             --
+C AHPLUS  R*4 1 L  activity of H+                                [mol/l]
+C ALKA    R*4 1 I  Alkalinity as HCO3-                          [mol/m3]
+C CO2     R*4 1 O  concentration CO2 in water                  [gCO2/m3]
+C CARBTO  R*4 1 I  total carbonate concentration                 [gC/m3]
+C M3TOL   R*4 1 L  conversion from 1/m3 to 1/l                    [m3/l]
+C MC      R*4 1 L  from gC/m3 to mol C/m3 (molar weight)         [g/mol]
+C MCO2    R*4 1 L  from gCO2 to mol CO2 (molar weight)           [g/mol]
+C MHCO3   R*4 1 L  fron gHCO3 to mol HCO3 (molar weight)         [g/mol]
+C K1      R*4 1 L  dissociation constant CO2-HCO3                [mol/l]
+C K2      R*4 1 L  dissociation constant HCO3-CO3                [mol/l]
+C PH      R*4 1 O  pH                                         [pH units]
+C SAL     R*4 1 I  salinity                                       [g/kg]
+C TEMP    R*4 1 I  temperature                                      [oC]
+C TEMpK   R*4 1 L  temperature in Kelvin                             [K]
+C-----------------------------------------------------------------------
+
+C     Logical Units : -
+
+C     Modules called : -
+C
+
+
+C     Name     Type   Library
+C     ------   -----  ------------
+      IMPLICIT REAL (A-H,J-Z)
+
+      REAL     PMSA  ( * ) , FL    (*)
+      INTEGER  IPOINT( * ) , INCREM(*) , NOSEG , NOFLUX,
+     +         IEXPNT(4,*) , IKNMRK(*) , NOQ1, NOQ2, NOQ3, NOQ4
+C
+C     Local declarations, constants in source
+C
+      PARAMETER ( MC     =    12.0    ,  MCO2 = 44.0 ,
+     +           MHCO3  =    61.0    ,  M3TOL = 1.0E-3, KELVIN = 273.15)
+      integer, save :: nr_mes = 0     ! message count negative total carbonate
+      integer, save :: nrmes2 = 0     ! message count negative salinity
+      integer, save :: nrmes3 = 0     ! message count high salinity
+      integer, save :: nrmes4 = 0     ! message count negative alkalinity
+      integer, save :: nrmes5 = 0     ! message count negative H+
+C
+      IP1  = IPOINT( 1)
+      IP2  = IPOINT( 2)
+      IP3  = IPOINT( 3)
+      IP4  = IPOINT( 4)
+      IP5  = IPOINT( 5)
+      IP6  = IPOINT( 6)
+      IP7  = IPOINT( 7)
+      IP8  = IPOINT( 8)
+C
+C     Loop over de segmenten
+C
+      DO 9000 ISEG = 1 , NOSEG
+C
+C     Eerste kenmerk actief of inactief segment
+C
+!!    CALL DHKMRK(1,IKNMRK(ISEG),IKMRK1)
+C
+C     Alleen actieve en bodem segmenten behandelen
+C
+!!    IF (IKMRK1.EQ.1) THEN
+      IF (BTEST(IKNMRK(ISEG),0)) THEN
+C
+C     Map PMSA on local variables
+C
+      SAL     = PMSA(IP1 )
+      CARBTOT = PMSA(IP2 )
+      ALKA    = PMSA(IP3 )
+      TEMP    = PMSA(IP4 )
+      PH_MIN  = PMSA(IP5 )
+      PH_MAX  = PMSA(IP6 )
+C
+C     Error messages
+
+      IF ( CARBTOT .LT. 1E-30 ) THEN
+         CALL GETMLU(ILUMON)
+         IF ( NR_MES .LT. 10 ) THEN
+            NR_MES = NR_MES + 1
+            WRITE ( ILUMON , * ) 'WARNING :total carbonate <= 0',
+     +                           ' segment=',ISEG,' conc=',CARBTOT
+         ENDIF
+         IF ( NR_MES .EQ. 10 ) THEN
+            NR_MES = NR_MES + 1
+            WRITE(ILUMON,*) ' 10 WARNINGS on total carbonate'
+            WRITE(ILUMON,*) ' No further messages on total carbonate'
+         ENDIF
+         CARBTOT = 1E-30
+      ENDIF
+      IF ( SAL .LT. 1E-30 ) THEN
+         CALL GETMLU(ILUMON)
+         IF ( NRMES2 .LT. 10 ) THEN
+            NRMES2 = NRMES2 + 1
+            WRITE ( ILUMON , * ) 'WARNING :salinity <= 0',
+     +                           ' segment=',ISEG,' conc=',SAL
+         ENDIF
+         IF ( NRMES2 .EQ. 10 ) THEN
+            NRMES2 = NRMES2 + 1
+            WRITE(ILUMON,*) ' 10 WARNINGS on salinity'
+            WRITE(ILUMON,*) ' No further messages on salinity'
+         ENDIF
+         SAL = 1E-30
+      ENDIF
+      IF ( SAL .GT. 50. ) THEN
+         CALL GETMLU(ILUMON)
+         IF ( NRMES4 .LT. 10 ) THEN
+            NRMES4 = NRMES4 + 1
+            WRITE ( ILUMON , * ) 'WARNING :salinity => 50.',
+     +                           ' segment=',ISEG,' conc=',SAL
+         ENDIF
+         IF ( NRMES4 .EQ. 10 ) THEN
+            NRMES4 = NRMES4 + 1
+            WRITE(ILUMON,*) ' 10 WARNINGS on salinity'
+            WRITE(ILUMON,*) ' No further messages on salinity'
+         ENDIF
+         SAL = 50.
+      ENDIF
+      IF ( ALKA .LT. 1E-30 ) THEN
+         CALL GETMLU(ILUMON)
+         IF ( NRMES3 .LT. 10 ) THEN
+            NRMES3 = NRMES3 + 1
+            WRITE ( ILUMON , * ) 'WARNING: alkalinity <= 0',
+     +                           ' segment=',ISEG,' conc=',ALKA
+         ENDIF
+         IF ( NRMES3 .EQ. 10 ) THEN
+            NRMES3 = NRMES3 + 1
+            WRITE(ILUMON,*) ' 10 WARNINGS on alkalinity'
+            WRITE(ILUMON,*) ' No further messages on alkalinity'
+         ENDIF
+         ALKA = 1E-30
+      ENDIF
+      IF (TEMP .LE. -KELVIN) THEN
+        WRITE (ILUMON,*) ' WARNING: Temperature drops below 0 Kelvin',
+     +   ' segment=',ISEG,' Temp set to 15 oC (288.15 K)'
+        TEMP = 15
+      ENDIF
+C
+C---- Procesformuleringen ---------------------------------------
+C ********************************
+C Dissociatieconstanten afhankelijk van temperatuur en saliniteit
+      TEMPK   = TEMP + KELVIN
+
+c Roy et al (1993), Millero (1995)
+      LNK1 = 290.9097 - 14554.21/TEMPK - 45.0575*log(TEMPK) +
+     +       (-228.39774 + 9714.36839/TEMPK + 34.485796*log(TEMPK)) *
+     +       SAL**0.5 + (54.20871 - 2310.48919/TEMPK -
+     +       8.19515*log(TEMPK)) * SAL + (-3.969101 + 170.22169/TEMPK +
+     +       0.603627*log(TEMPK))* SAL**1.5 - 0.00258768* SAL**2
+
+C --- Unit of K1 and K2 [mol/kg H2O]. To convert to [mol/kg solution] a fraction is added (Millero 1995)
+      LNK1 = LNK1 + log(1-SAL*0.001005)
+
+      K1  = exp (LNK1)
+
+c Roy et al (1993), Millero (1995)
+      LNK2 = 207.6548 - 11843.79/TEMPK - 33.6485*log(TEMPK) +
+     +       (-167.69908 + 6551.35253/TEMPK + 25.928788*log(TEMPK)) *
+     +       SAL**0.5 + (39.75854 - 1566.13883/TEMPK -
+     +       6.171951*log(TEMPK)) * SAL + (-2.892532 + 116.270079/TEMPK
+     +     + 0.45788501*log(TEMPK))*SAL**1.5 - 0.00613142* SAL**2
+
+      LNK2 = LNK2 + log(1-SAL*0.001005)
+
+      K2 = exp (LNK2)
+
+C ******************************
+C Conversion of [g/m3] to [mol/kg solvent]
+C Density seawater [kg/l]
+      RHOH2O = (1000. + 0.7 * SAL / (1-SAL/1000.)
+     +       - 0.0061 * (TEMP-4.0) * (TEMP-4.0))/1000
+
+      CARBTOT = (CARBTOT * M3TOL) / MC / RHOH2O
+      ALKA = (ALKA * M3TOL) / MHCO3 / RHOH2O
+
+
+C Oplossing vierkantsvergelijking
+      A = ALKA / K1
+      B = ALKA - CARBTOT
+      C = K2 * (ALKA - 2 * CARBTOT)
+      D = B**2 - 4 * A * C
+      IF (D .LT. 0) THEN
+        CALL GETMLU(ILUMON)
+        WRITE (ILUMON,*) 'No solution for pH: discriminant<0'
+        goto 10
+      ENDIF
+
+      AHPLUS = (-B + SQRT (D) ) / (2 * A)
+      IF (AHPLUS .LE. 0) THEN
+        CALL GETMLU(ILUMON)
+         IF ( NRMES5 .LT. 10 ) THEN
+            NRMES5 = NRMES5 + 1
+            WRITE (ILUMON,*) 'WARNING: H+ negative: ',AHPLUS,' in segment ',ISEG
+         ENDIF
+         IF ( NRMES5 .EQ. 10 ) THEN
+            NRMES5 = NRMES5 + 1
+            WRITE(ILUMON,*) ' 10 WARNINGS on H+'
+            WRITE(ILUMON,*) ' No further messages on H+'
+         ENDIF
+        goto 10
+      ENDIF
+      PH = - log10 (AHPLUS)
+      PH = MAX(PH_MIN,PH)
+      PH = MIN(PH_MAX,PH)
+      AHPLUS = 10.**(-PH)
+
+C --- Berekening CO2 Concentratie ----
+      CO2    = (CARBTOT / (1 + K1 / AHPLUS + K1 * K2 / AHPLUS**2))
+     +         * MCO2 * RHOH2O / M3TOL
+
+C
+C---- Output: voorzover van toepassing --------------------
+C
+      PMSA(IP7) = PH
+      PMSA(IP8) = CO2
+C
+      ENDIF
+C
+C---- Pointers ophogen ( altijd buiten de if's op kenmerk) in de segment loop
+C
+10    IP1   = IP1   + INCREM (  1 )
+      IP2   = IP2   + INCREM (  2 )
+      IP3   = IP3   + INCREM (  3 )
+      IP4   = IP4   + INCREM (  4 )
+      IP5   = IP5   + INCREM (  5 )
+      IP6   = IP6   + INCREM (  6 )
+      IP7   = IP7   + INCREM (  7 )
+      IP8   = IP8   + INCREM (  8 )
+c
+ 9000 CONTINUE
+c
+C
+      RETURN
+      END

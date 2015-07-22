@@ -1,0 +1,27 @@
+#-------------------------------------------------------------------------------
+#   Makefile for delftflow
+#
+#   Adri.Mourits@deltares.nl
+#   Frank.Platzek@deltares.nl
+#   15 nov 2010
+#
+#   Copyright (C) 2010, Deltares
+#-------------------------------------------------------------------------------
+
+all: engelund_hansen.o partheniades_krone.o settling_velocity.o shld.o vrijn84_riv_77.o
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -shared -fpic -o plugin_delftflow_traform.so engelund_hansen.o partheniades_krone.o settling_velocity.o shld.o vrijn84_riv_77.o
+
+engelund_hansen.o: engelund_hansen.f90
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -c -fpic engelund_hansen.f90
+
+partheniades_krone.o: partheniades_krone.f90
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -c -fpic partheniades_krone.f90
+
+settling_velocity.o: settling_velocity.f90
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -c -fpic settling_velocity.f90
+
+shld.o: shld.f90
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -c -fpic shld.f90
+
+vrijn84_riv_77.o: vrijn84_riv_77.f90
+	ifort -O2 -recursive -reentrancy threaded -traceback -g -c -fpic vrijn84_riv_77.f90

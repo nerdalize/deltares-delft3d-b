@@ -1,0 +1,84 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<meta NAME="GENERATOR" CONTENT="Microsoft FrontPage 3.0">
+<title>HIS, MAP and hia files</title>
+</head>
+
+<body>
+
+<p align="left"><strong><font face="Arial">HIS, Map and Hia files</font></strong></p>
+
+<p><font color="#FF0000"><strong><big><em>Long Parameter names and location ID's</em></big></strong></font></p>
+<font SIZE="2">
+
+<p>Two of the file formats supported for ParLocTime datasets are (Delwaq) HIS and MAP. <br>
+These file formats have a limit to the length of the parameter names and the location
+ID&#146;s: they can only be 20 characters long. To overcome this problem, DelftIO offers
+an upward/downward compatible 'version' of the HIS and MAP files: it uses an additional
+file, the 'HIA' (HIs Aliases) file or 'MAA' (MAp Aliases) file, which contains the
+parameter names and the location ID&#146;s that are longer then 20 characters.</p>
+
+<p>This way the limits are extended to: 
+
+<ul>
+  <li>80 characters for parameter names</li>
+  <li>132 characters for location ID&#146;s</li>
+</ul>
+
+<p>The Hia/Maa&nbsp; file has the same name as the HIS/MAP file, but the
+&#145;.his&#146;/&#145;.map&#146; extension has been replaced by the extension
+&#145;.hia&#146;/&#145;.maa&#146;. </p>
+
+<p><font color="#FF0000"><strong><big><em>Description of the HIA/MAA file</em></big></strong></font></p>
+
+<p>The Hia File (see the <a href="#Example">example</a> below) contains 4 groups: 
+
+<ul>
+  <li>[<a href="#General">General</a>]<br>
+    General information on file type and DelftIO version</li>
+  <li>[<a href="#DioCheck">DioCheck</a>]<br>
+    Information that is checked against the related HIS or MAP file, to be sure that the
+    HIA/MAA file indeed is the complement of the HIS or MAP file. All items that present in
+    the [DioCheck] group are checked against the related HIS or MAP file</li>
+  <li>[<a href="#Parameters">Long Parameters</a>]<br>
+    The names of the parameters with a length that exceeds 20 characters</li>
+  <li>[<a href="#Locations">Long Locations</a>]<br>
+    The names of the location ID&#146;s with a length that exceeds 20 characters</li>
+</ul>
+
+<p>When DelftIO generates a HIS or MAP file for a ParLocTime dataset, it first checks
+whether there is already a HIA/MAA file for that HIS or MAP <font SIZE="2">file. If so,
+this file is deleted, <i>unless</i> it contains:</p>
+
+<p><font face="Courier New">HiaStatus=Keep</font></p>
+
+<p>in the <font face="Courier New">[General]</font> Group.</p>
+
+<p><font color="#FF0000"><strong><big><em><a name="Example">Example</a> of the Hia File</em></big></strong></font></p>
+
+<p><font face="Courier New">[<a name="General">General</a>]<br>
+FileType=DelftIO HIA file<br>
+DioVersion=01.06.01<br>
+HiaVersion=1.00</font></p>
+
+<p><font face="Courier New">[<a name="DioCheck">DioCheck</a>]<br>
+NumberOfParameters=7<br>
+NumberOfLocations=4<br>
+T0=1900.01.01 00:00:00<br>
+TimeStepUnit=Second<br>
+TimeStepMultiplyer=1</font></p>
+
+<p><font face="Courier New">[Long <a name="Parameters">Parameters</a>]<br>
+2=Parameter B has a very very long name<br>
+5=The length of the name of variable E is more then 20 characters</font></p>
+
+<p><font face="Courier New">[Long <a name="Locations">Locations</a>]<br>
+1=Location ID 111 is a locatie name that&#146;s quite long<br>
+4= Not to mention the length of the name of Location ID 444, which contains 86 characters</font></p>
+
+<p>&nbsp;</p>
+</font></font>
+</body>
+</html>

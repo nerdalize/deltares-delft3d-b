@@ -1,0 +1,30 @@
+ nPar:            7
+ nLoc:            4
+ nTim:            0
+ pars:
+ Aa                                                                             
+  
+ Bb is een hele lange, veel te lange naam                                       
+  
+ Cc                                                                             
+  
+ Dd                                                                             
+  
+ En ook Ee is een hele lange, veel te lange naam                                
+  
+ Ff                                                                             
+  
+ Gg                                                                             
+  
+ MAP: locs:
+ Segment         1                                                              
+                                                      
+ Segment         2                                                              
+                                                      
+ Segment         3                                                              
+                                                      
+ Segment         4                                                              
+                                                      
+ tims:
+ 
+Got Reals, JUL: 2415020.50000000 Time: 1900/01/01 00:00:00.00   

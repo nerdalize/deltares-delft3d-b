@@ -1,0 +1,3 @@
+#!/bin/sh
+rm -rf nefis_ex.dat nefis_ex.def
+./test_04_dependent

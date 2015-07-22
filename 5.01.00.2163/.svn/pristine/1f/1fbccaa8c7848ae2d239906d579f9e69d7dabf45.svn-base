@@ -1,0 +1,1734 @@
+<html>
+
+<head>
+<title>DelftIO Par./Loc./Time Fortran 77 / DLL Interface</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+</head>
+
+<body>
+
+<p align="left"><font face="Arial">DelftIO Par./Loc./Time<small> </small>(<strong>PLT</strong>),
+&nbsp; <strong>Fortran 77 / DLL Interface</strong></font></p>
+
+<p><font color="#FF0000"><strong><big><em>Functions</em></big></strong></font></p>
+
+<p>The following functions are available for PLT datasets (the functions for 'MAP'
+datasets can be used when writing Delwaq Map files; in these cases their are no locations
+names, just the number of locations):</p>
+
+<table border="1" height="817">
+  <tr>
+    <td height="19"><strong>General</strong></td>
+    <td height="19"></td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofGetVersion">DiofGetVersion</a></td>
+    <td height="19">Get DelftIO version string</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofGetVersion">DiofGetMaxParLen</a></td>
+    <td height="19">Get max. length of Parameter name string</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofGetMaxDescrLen">DiofGetMaxLocLen</a></td>
+    <td height="19">Get max. length of Location ID string</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofGetMaxDescrLen">DiofGetMaxDescrLen</a></td>
+    <td height="19">Get max. length of Description ID string</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofGetHisRunIdSize">DiofGetHisRunIdSize</a></td>
+    <td height="19">Get string length (40 char.s) of the four RunID strings in a HIS or MAP
+    file</td>
+  </tr>
+  <tr>
+    <td height="19"><a name="DefinePltDataset"><strong>Define a PLT Dataset</strong></a></td>
+    <td height="19"><small><strong><em>All functions return an integer handle to a PLT
+    dataset.</em></strong></small></td>
+  </tr>
+  <tr>
+    <td height="35"><a href="#DiofPltDefine_1">DiofPltDefine_1</a></td>
+    <td height="35">Define a Par./Loc./Time dataset (<em>name, varType, parameters and
+    locations</em>).</td>
+  </tr>
+  <tr>
+    <td height="38"><a href="#DiofPltDefine_2">DiofPltDefine_2[a]</a></td>
+    <td height="38">Define a Par./Loc./Time dataset (<em>name, varType, parameters, locations,
+    <strong>Julian start time</em> [,<em>Julian end time</em>] </strong>)</td>
+  </tr>
+  <tr>
+    <td height="38"><a href="#DiofPltDefine_3">DiofPltDefine_3</a></td>
+    <td height="38">Define a Par./Loc./Time dataset (<em>name, <strong>HIS RunID strings,</strong>
+    varType, parameters, locations</em>)</td>
+  </tr>
+  <tr>
+    <td height="38"><a href="#DiofPltDefine_4">DiofPltDefine_4[a]</a></td>
+    <td height="38">Define a Par./Loc./Time dataset (<em>name, <strong>HIS RunID strings,</strong>
+    varType, parameters, locations, <strong>Julian start time</em> [,<em>Julian end time</em>]
+    </strong>)</td>
+  </tr>
+  <tr>
+    <td height="38"><a href="#DiofPltDefine_5">DiofPltDefine_5[a]</a></td>
+    <td height="38">Define a Par./Loc./Time dataset (<em>name, <strong>HIS RunID strings,</strong>
+    varType, parameters, <strong>integerLocIDs, </strong>locations, <strong>Julian start time</em>
+    [,<em>Julian end time</em>] </strong>)</td>
+  </tr>
+  <tr>
+    <td height="19"><strong>Define a MAP Dataset</strong></td>
+    <td height="19"><small><strong><em>All functions return an integer handle to a PLT
+    dataset.</em></strong></small></td>
+  </tr>
+  <tr>
+    <td height="38"><a href="#DiofPltDefine_11">DiofPltDefine_11</a></td>
+    <td height="38">Define a Par./#Locs./Time dataset (<em>name, varType, parameters,
+    numberOfLocations</em>).</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltDefine_12">DiofPltDefine_12[a]</a></td>
+    <td height="19">Define a Par./#Locs/Time dataset (<em>name, varType, parameters,
+    numberOfLocations, <strong>Julian start time</em> [,<em>Julian end time</em>] </strong>)</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltDefine_12">DiofPltDefine_13</a></td>
+    <td height="19">Define a Par./#Locs/Time dataset (<em>name, <strong>HIS RunID strings,</strong>
+    varType, parameters, numberOfLocations)</em></td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltDefine_12">DiofPltDefine_14[a]</a></td>
+    <td height="19">Define a Par./#Locs/Time dataset (<em>name, <strong>HIS RunID strings,</strong>
+    varType, parameters, numberOfLocations, <strong>Julian start time</em> [,<em>Julian end
+    time</em>] </strong>)</td>
+  </tr>
+  <tr>
+    <td height="19"><strong>Add parameter or location descriptions</strong></td>
+    <td height="19"></td>
+  </tr>
+  <tr>
+    <td height="38"><a href="#DiofPltAddDescriptions">DiofPltAddDescriptions</a></td>
+    <td height="38">Add parameter or location descriptions</td>
+  </tr>
+  <tr>
+    <td height="19"><strong>Write values</strong></td>
+    <td height="19"></td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltPutFloats">DiofPltPutFloats</a></td>
+    <td height="19">Put floats (=reals) for a certain Julian time stamp.</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltPutNextFloats">DiofPltPutNextFloats</a></td>
+    <td height="19">Put floats (=reals) for next time step. Used for on line communication.</td>
+  </tr>
+  <tr>
+    <td height="19"><strong>Get Dataset from a file</strong></td>
+    <td height="19"><small><strong><em>.</em></strong></small></td>
+  </tr>
+  <tr>
+    <td height="38"><a href="#DiofPltGetDataset">DiofPltGetDataset</a></td>
+    <td height="38">Get a Par./Loc./Time dataset.<br>
+    The function returns a handle to the PLT dataset</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetHeaderLine">DiofPltGetHeaderLine</a></td>
+    <td height="19">Get one of the HIS RunID header lines (1-4)</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetNPars">DiofPltGetNPars</a></td>
+    <td height="19">Get number of parameters in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetNLocs">DiofPltGetNLocs</a></td>
+    <td height="19">Get number of locations in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetNTimes">DiofPltGetNTimes</a></td>
+    <td height="19">Get number of time steps in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetPars">DiofPltGetPars</a></td>
+    <td height="19">Get the parameter names in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetLocs">DiofPltGetLocs</a></td>
+    <td height="19">Get the location names in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetDescriptions">DiofPltGetDescriptions</a></td>
+    <td height="19">Get the location descriptions or the parameter descriptions
+    in a PLT dataset</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetIntIds">DiofPltGetIntIds</a></td>
+    <td height="19">Get the integer location indentifications in a PLT dataset (HIS files
+    only)</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetTimes">DiofPltGetTimes</a></td>
+    <td height="19">Get the time steps in the PLT dataset (Julian time stamps)</td>
+  </tr>
+  <tr>
+    <td height="19"><strong>Read values</strong></td>
+    <td height="19"></td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetNextFloats">DiofPltGetNextFloats</a></td>
+    <td height="19">Get floats (=reals) for the next time step.</td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltGetSelection">DiofPltGetSelection</a></td>
+    <td height="19">Get floats (=reals) for a selection of parameters, locations and time
+    steps.</td>
+  </tr>
+  <tr>
+    <td height="19"><strong>Cleanup</strong></td>
+    <td height="19"></td>
+  </tr>
+  <tr>
+    <td height="19"><a href="#DiofPltClose">DiofPltClose</a></td>
+    <td height="19">Close and destroy the PLT dataset</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p><font color="#FF0000"><strong><big><em>Include files</em></big></strong></font></p>
+
+<p><strong><em>dio-plt.inc</em></strong></p>
+
+<p>(includes: <a href="streams_f77.html#dio-streams.inc">dio-streams.inc</a>)</p>
+
+<p>Defines the following enumerations:<br>
+<br>
+<small><font face="Courier New">integer Dio_PLT_Unknown = 0<br>
+integer Dio_PLT_Integer = 1<br>
+integer Dio_PLT_Real&nbsp;&nbsp;&nbsp; = 2<br>
+integer Dio_PLT_Double&nbsp; = 3<br>
+integer Dio_PLT_Logical = 4<br>
+<br>
+integer Dio_PLT_Pars = 1<br>
+integer Dio_PLT_Locs = 2<br>
+&nbsp;</font></small></p>
+
+<p><font color="#FF0000"><strong><big><em>General functions</em></big></strong></font></p>
+
+<p><strong><font face="Courier New" style="font-size: smaller">subroutine </font><small><font face="Courier New">
+<a name="DiofGetVersion">DiofGetVersion</a>()</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><em><font size="2" color="#0000FF">arguments</font></em></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>&nbsp;</td>
+    <td>O</td>
+    <td>Version string (at least 20 bytes)</td>
+  </tr>
+  </table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofGetMaxParLen">DiofGetMaxParLen</a>()</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Max. length of Parameter name string</td>
+  </tr>
+  </table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofGetMaxLocLen">DiofGetMaxLocLen</a>()</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Max. length of Location ID string</td>
+  </tr>
+  </table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function
+<a name="DiofGetMaxDescrLen">DiofGetMaxDescrLen</a>()</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Max. length of Description string</td>
+  </tr>
+  </table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofGetHisRunIdSize">DiofGetHisRunIdSize</a>()</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>String length (40 char.s) of the four RunID strings in a HIS or MAP file</td>
+  </tr>
+  </table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>Put a dataset on a stream</em></big></strong></font></p>
+
+<p><strong><em>step 1: define the dataset</em></strong></p>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltDefine_1">DiofPltDefine_1</a>(name,
+varType, nPar, pars, nLoc, locs)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nLoc)</td>
+    <td>locs</td>
+    <td>I</td>
+    <td>array with names of the locations in the dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><small><strong><font face="Courier New">integer function <a name="DiofPltDefine_2">DiofPltDefine_2</a>[a]
+(name, varType, nPar, pars, nLoc, locs, julianStartTime [,julianEndTime])</font></strong></small></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nLoc)</td>
+    <td>locs</td>
+    <td>I</td>
+    <td>array with names of the locations in the dataset</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianStartTime</td>
+    <td>I</td>
+    <td>startTime as Julian</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianEndTime</td>
+    <td>I</td>
+    <td>[a: endTime as Julian]</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltDefine_3">DiofPltDefine_3</a>(name,
+runId, varType, nPar, pars, nLoc, locs)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>character(Len=HisRunIdSize)<br>
+    dimension(4)</td>
+    <td>runId</td>
+    <td>I</td>
+    <td>HIS RunID strings</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nLoc)</td>
+    <td>locs</td>
+    <td>I</td>
+    <td>array with names of the locations in the dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><small><strong><font face="Courier New">integer function <a name="DiofPltDefine_4">DiofPltDefine_4</a>[a]
+(name, runId, varType, nPar, pars, nLoc, locs, julianStartTime [,julianEndTime])</font></strong></small></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>character(Len=HisRunIdSize)<br>
+    dimension(4)</td>
+    <td>runId</td>
+    <td>I</td>
+    <td>HIS RunID strings</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nLoc)</td>
+    <td>locs</td>
+    <td>I</td>
+    <td>array with names of the locations in the dataset</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianStartTime</td>
+    <td>I</td>
+    <td>startTime as Julian</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianEndTime</td>
+    <td>I</td>
+    <td>[a: endTime as Julian]</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><font face="Courier New"><small>integer function <a name="DiofPltDefine_5">DiofPltDefine_5</a>[a]
+(name, runId, varType, nPar, pars, nLoc, intLocIds, locs, julianStartTime
+[,julianEndTime])</small></font></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>character(Len=HisRunIdSize)<br>
+    dimension(4)</td>
+    <td>runId</td>
+    <td>I</td>
+    <td>HIS RunID strings</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>integer<br>
+    dimension(nLoc)</td>
+    <td>intLocIds</td>
+    <td>I</td>
+    <td>array with integer locations Ids, as stored in HIS files</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nLoc)</td>
+    <td>locs</td>
+    <td>I</td>
+    <td>array with names of the locations in the dataset</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianStartTime</td>
+    <td>I</td>
+    <td>startTime as Julian</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianEndTime</td>
+    <td>I</td>
+    <td>endTime as Julian</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltDefine_11">DiofPltDefine_11</a>(name,
+varType, nPar, pars, nLoc)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nLoc)</td>
+    <td>locs</td>
+    <td>I</td>
+    <td>array with names of the locations in the dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltDefine_12">DiofPltDefine_12</a>[a](name,
+varType, nPar, pars, nLoc, julianStartTime [,julianEndTime])</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianStartTime</td>
+    <td>I</td>
+    <td>startTime as Julian</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianEndTime</td>
+    <td>I</td>
+    <td>[a: endTime as Julian]</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltDefine_13">DiofPltDefine_13</a>(name,
+runId, varType, nPar, pars, nLoc)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>character(Len=HisRunIdSize)<br>
+    dimension(4)</td>
+    <td>runId</td>
+    <td>I</td>
+    <td>HIS RunID strings</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+</table>
+</div>
+
+<p><small><strong><font face="Courier New">integer function <a name="DiofPltDefine_14">DiofPltDefine_14</a>[a](name,
+runId, varType, nPar, pars, nLoc, julianStartTime [,julianEndTime])</font></strong></small></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+  <tr>
+    <td>character(Len=HisRunIdSize)<br>
+    dimension(4)</td>
+    <td>runId</td>
+    <td>I</td>
+    <td>HIS RunID strings</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>varType</td>
+    <td>I</td>
+    <td>type of variable to be stored in dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>I</td>
+    <td>array with names of the parameter in the dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianStartTime</td>
+    <td>I</td>
+    <td>startTime as Julian</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>julianEndTime</td>
+    <td>I</td>
+    <td>[a: endTime as Julian]</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 1a: </em></strong><em><strong>add descriptions to the
+dataset</strong></em></p>
+
+<p><strong><small><font face="Courier New">logical function
+<a name="DiofPltAddDescriptions">DiofPltAddDescriptions</a>(pltHandle,
+descr_type, nDescr, descriptions)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>.True.: Descriptions defined (non-blank elements in the the
+    output array &lt;descriptions&gt;).<br>
+    .False.: No descriptions defined.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>descr_type</td>
+    <td>I</td>
+    <td>description type:<br>
+    - dio_plt_pars (=1) for parameter descriptions<br>
+    - dio_plt_locs (=2) for location descriptions</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nDescr</td>
+    <td>I</td>
+    <td>number of descriptions, i.e. the number of parameters (descr_type==dio_plt_pars)
+    or locations (descr_type==dio_plt_locs) in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen),<br>
+    dimension(nDescr)</td>
+    <td>descriptions</td>
+    <td>O</td>
+    <td>array with location or parameter descriptions in the dataset.</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 2: </em></strong><em><strong>write the data</strong></em></p>
+
+<p><strong><small><font face="Courier New">subroutine <a name="DiofPltPutFloats">DiofPltPutFloats</a>(pltHandle,
+timestamp, nPar, nLoc, values)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>timestamp</td>
+    <td>I</td>
+    <td>time stamp as Julian</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>real<br>
+    dimension(nPar,nLoc)</td>
+    <td>values</td>
+    <td>I</td>
+    <td>2D-array with real values to be put.</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">subroutine <a name="DiofPltPutNextFloats">DiofPltPutNextFloats</a>(pltHandle,
+nPar, nLoc, values)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>real<br>
+    dimension(nPar,nLoc)</td>
+    <td>values</td>
+    <td>I</td>
+    <td>2D-array with real values to be put.</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>Get a dataset from a stream</em></big></strong></font></p>
+
+<p><strong><em>step 1: get the dataset information</em></strong></p>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltGetDataset">DiofPltGetDataset</a>(name)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Handle to Parameter/Location/Time dataset.<br>
+    0: Error occured<br>
+    &gt;0: Valid handle</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>character(Len=*)</td>
+    <td>name</td>
+    <td>I</td>
+    <td>datasetname</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 2: get (number of) parameters / locations / times, etc., from the
+dataset</em></strong></p>
+
+<p><strong><small><font face="Courier New">function <a name="DiofPltGetHeaderLine">DiofPltGetHeaderLine</a>(pltHandle,
+lineNr, line)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>True: OK<br>
+    False: error</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>lineNr</td>
+    <td>I</td>
+    <td>Required HIS RunID header lines (1-4)</td>
+  </tr>
+  <tr>
+    <td>character(Len=HisRunIdSize)</td>
+    <td>line</td>
+    <td>O</td>
+    <td>Content of header line HISRunID(lineNr)</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltGetNPars">DiofPltGetNPars</a>(pltHandle)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>Number of parameters in PLT dataset<br>
+    &gt;0: OK.<br>
+    0: Call GetLastError to Check if indeed there are 0 parameters, or if an error has occured</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltGetNLocs">DiofPltGetNLocs</a>(pltHandle)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>number of locations in PLT dataset<br>
+    &gt;0: OK.<br>
+    0: Call GetLastError to Check if indeed there are 0 locations, or if an error has occured</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">integer function <a name="DiofPltGetNTimes">DiofPltGetNTimes</a>(pltHandle)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>number of timesteps in PLT dataset<br>
+    &gt;0: OK.<br>
+    0: Call GetLastError to Check if indeed there are 0 time steps, or if an error has occured</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">logical function <a name="DiofPltGetPars">DiofPltGetPars</a>(pltHandle,
+nPar, pars)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>True: OK<br>
+    False: error</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of expected parameters</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxParLen)<br>
+    dimension(nPar)</td>
+    <td>pars</td>
+    <td>O</td>
+    <td>array with names of the parameters in the dataset</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">logical function <a name="DiofPltGetLocs">DiofPltGetLocs</a>(pltHandle,
+nLoc, locs)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>True: OK<br>
+    False: error</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of expected locations</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nLoc)</td>
+    <td>locs</td>
+    <td>O</td>
+    <td>array with names of the locations in the dataset;<br>
+    for MAP files, an array containing &quot;Segment&lt;locNr&gt;&quot; (locNr =
+    &lt;1..nLoc&gt;) is returned.</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">logical function
+<a name="DiofPltGetDescriptions">DiofPltGetDescriptions</a>(pltHandle,
+descr_type, nDescr, descriptions)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>.True.: Descriptions defined (non-blank elements in the the
+    output array &lt;descriptions&gt;).<br>
+    .False.: No descriptions defined.</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>descr_type</td>
+    <td>I</td>
+    <td>description type:<br>
+    - dio_plt_pars (=1) for parameter descriptions<br>
+    - dio_plt_locs (=2) for location descriptions</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nDescr</td>
+    <td>I</td>
+    <td>number of expected descriptions, i.e. the number of parameters (descr_type==dio_plt_pars)
+    or locations (descr_type==dio_plt_locs) in the PLT dataset</td>
+  </tr>
+  <tr>
+    <td>character(Len=DioMaxLocLen)<br>
+    dimension(nDescr)</td>
+    <td>descriptions</td>
+    <td>O</td>
+    <td>array with location or parameter descriptions in the dataset.</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">logical function <a name="DiofPltGetIntIds">DiofPltGetIntIds</a>(pltHandle,
+nLoc, intIds)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>True: OK<br>
+    False: error</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of expected location IDs</td>
+  </tr>
+  <tr>
+    <td>integer<br>
+    dimension(nLoc)</td>
+    <td>intIds</td>
+    <td>O</td>
+    <td>array with integer location identifications (HIS files only;<br>
+    for MAP files a series 1,2,3,..&lt;nLoc&gt; is returned).</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><small><font face="Courier New">logical function <a name="DiofPltGetTimes">DiofPltGetTimes</a>(pltHandle,
+nTime, times)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>True: OK<br>
+    False: error</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nTime</td>
+    <td>I</td>
+    <td>number of expected time stamps</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>times</td>
+    <td>O</td>
+    <td>array with julian time stamps</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 3a: get the data for the next time step</em></strong></p>
+
+<p><strong><small><font face="Courier New">logical function <a name="DiofPltGetNextFloats">DiofPltGetNextFloats</a>(pltHandle,
+nPar, nLoc, timestamp, values)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>return value</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>&nbsp;</td>
+    <td>(O)</td>
+    <td>True: OK<br>
+    False: error</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>number of parameters</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>number of locations</td>
+  </tr>
+  <tr>
+    <td>double precision</td>
+    <td>timestamp</td>
+    <td>O</td>
+    <td>Juliantime stamp of retrieved next values as </td>
+  </tr>
+  <tr>
+    <td>real<br>
+    dimension(nPar,nLoc)</td>
+    <td>values</td>
+    <td>O</td>
+    <td>2D-array with retrieved real values</td>
+  </tr>
+</table>
+</div>
+
+<p><strong><em>step 3b: get a selection of the data</em></strong></p>
+
+<p><strong><small><font face="Courier New">logical function <a name="#DiofPltGetSelection">DiofPltGetSelection</a>(pltHandle,
+nPar, parIndx, nLoc, locIndx, nTim, timIndx, values)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em>return value</em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>logical</td>
+    <td>:: success</td>
+    <td>(O)</td>
+    <td><strong>.true.</strong> if file could be scanned for data<br>
+    <strong>.false.</strong> if not.<br>
+    (Caller should fill values array with 'missing values' in advance).</td>
+  </tr>
+  <tr>
+    <td><font color="#0000FF"><em>arguments</em></font></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+  <tr>
+    <td>type(DioPltType)</td>
+    <td>plt</td>
+    <td>I</td>
+    <td>handle to Parameter/Location/Time dataset</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nPar</td>
+    <td>I</td>
+    <td>Number of requested parameters</td>
+  </tr>
+  <tr>
+    <td>integer<br>
+    dimension(nPar)</td>
+    <td>parIndx</td>
+    <td>I</td>
+    <td>Indices of requested parameters</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nLoc</td>
+    <td>I</td>
+    <td>Number of requested locations</td>
+  </tr>
+  <tr>
+    <td>integer<br>
+    dimension(nLoc)</td>
+    <td>locIndx</td>
+    <td>I</td>
+    <td>Indices of requested locations</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>nTim</td>
+    <td>I</td>
+    <td>Number of requested time steps</td>
+  </tr>
+  <tr>
+    <td>integer<br>
+    dimension(nTim)</td>
+    <td>timIndx</td>
+    <td>I</td>
+    <td>Indices of requested time steps</td>
+  </tr>
+  <tr>
+    <td>(real | double precision | integer),<br>
+    dimension(nPar, nLoc, nTim)</td>
+    <td>values</td>
+    <td>O</td>
+    <td>3D-array for resulting values</td>
+  </tr>
+</table>
+</div>
+
+<p><font color="#FF0000"><strong><big><em>Cleanup</em></big></strong></font></p>
+
+<p><strong><small><font face="Courier New">subroutine <a name="DiofPltClose">DiofPltClose</a>(pltHandle)</font></small></strong></p>
+<div align="left">
+
+<table border="1">
+  <tr>
+    <td><font color="#0000FF"><em><small>arguments</small></em></font></td>
+    <td>&nbsp;</td>
+    <td><font color="#0000FF">I/O</font></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>integer</td>
+    <td>pltHandle</td>
+    <td>I</td>
+    <td>handle todataset</td>
+  </tr>
+</table>
+</div>
+</body>
+</html>

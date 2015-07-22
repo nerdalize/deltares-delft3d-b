@@ -1,0 +1,8 @@
+Documentation of the versions of Delft3D-WAQ
+--------------------------------------------
+
+version: 4.52.11 - SVN-revision 14421
+-------------------------------------
+Revision 14421 is the last revision before merging the "DLL"
+branch with the trunk. We will bump the version of Delft3D-WAQ
+to 4.53.00 to reflect this fact.

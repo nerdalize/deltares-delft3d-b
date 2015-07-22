@@ -1,0 +1,16 @@
+To generate the shared object (.dll on WINDOWS ; .so on UNIX) do the following:
+
+- WINDOWS:
+
+	Open the solution file (.sln; one directory higher) and build the solution (in Release or Debug mode)
+	The generated .dll file is placed in the bin directory at that directory level.
+
+- LINUX:
+
+	In the LINUX-shell in this directory type: make -f Makefile_external
+	The generated .so file is placed directly in this directory.
+
+When using the .so on LINUX:
+Add the directory containing the .so file to environment parameter LD_LIBRARY_PATH. Example line:
+
+export LD_LIBRARY_PATH=/u/myname/src/plugin_delftflow_traform/src:$LD_LIBRARY_PATH 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{5EDA137F-2F66-4187-BA22-2CC820835344}">
+	<Platforms>
+		<Platform Name="Win32"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32" OutputDirectory="..\..\bin\$(ConfigurationName)">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" AdditionalIncludeDirectories="..\..\include;..\waq_kernel\lib\$(ConfigurationName);..\waq_utils_f\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug" Interfaces="true"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="..\..\..\..\third_party\wlauth\bin\win32\static;..\..\..\..\third_party_open\pthreads\bin\win32;..\..\bin\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)" IgnoreDefaultLibraryNames="libcmt.lib;libcmtd.lib" GenerateDebugInformation="true" SubSystem="subSystemConsole" AdditionalDependencies="timers.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" AdditionalIncludeDirectories="..\..\include;..\waq_kernel\lib\$(ConfigurationName);..\waq_utils_f\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="..\..\..\..\third_party\wlauth\bin\win32\static;..\..\..\..\third_party_open\pthreads\bin\win32;..\..\bin\$(ConfigurationName);..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName)" IgnoreDefaultLibraryNames="libcmt.lib" SubSystem="subSystemConsole" AdditionalDependencies="timers.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath="..\delwaq2\src\d_tr_d3d.f"/>
+		<File RelativePath="..\delwaq2\src\dlwqmain.f"/>
+		<File RelativePath=".\src\dlwqmain_two_instances.f90"/>
+		<File RelativePath="..\delwaq2\src\getidentification.f"/></Filter></Files>
+	<Globals/></VisualStudioProject>

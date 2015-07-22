@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{3BEC7153-8495-496D-94EB-AA293FB6939C}">
+	<Platforms>
+		<Platform Name="Win32"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32" OutputDirectory="..\..\bin\$(ConfigurationName)">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" AdditionalIncludeDirectories="..\..\..\part\include;..\..\include;..\waq_utils_f\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\delftio\lib\$(ConfigurationName)\static;..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\rd_token\lib\$(ConfigurationName)" FixedFormLineLength="fixedLength132" LocalVariableStorage="localStorageAutomatic" ModulePath="$(OutDir)\" Traceback="true"/>
+				<Tool Name="VFLinkerTool" AdditionalOptions="/FORCE:MULTIPLE" ShowProgress="linkProgressAll" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="..\..\..\..\third_party\wlauth\bin\win32\static;..\..\..\..\third_party_open\pthreads\bin\win32;;..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\rd_token\lib\$(ConfigurationName)" IgnoreDefaultLibraryNames="libc.lib;libcmtd.lib;msvcrtd.lib;libcmt.lib" GenerateDebugInformation="true" SubSystem="subSystemConsole" AdditionalDependencies="rd_token.lib timers.lib pthreadVCE2.lib wsock32.lib netapi32.lib comctl32.lib user32.lib advapi32.lib comdlg32.lib  libiomp5md.lib WbeMuuid.lib ole32.lib oleaut32.lib wsock32.lib netapi32.lib comctl32.lib user32.lib advapi32.lib comdlg32.lib gdi32.lib winspool.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32" OutputDirectory="..\..\bin\$(ConfigurationName)">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" OmitFramePointers="false" HeapArrays="100000" AdditionalIncludeDirectories="..\..\..\part\include;..\..\include;..\waq_utils_f\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\delftio\lib\$(ConfigurationName)\static;..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\rd_token\lib\$(ConfigurationName)" FixedFormLineLength="fixedLength132" WarnInterfaces="true" LocalVariableStorage="localStorageAutomatic" ModulePath="$(OutDir)\" Traceback="true"/>
+				<Tool Name="VFLinkerTool" AdditionalOptions="/stack:0x400000 /LTCG" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" AdditionalLibraryDirectories="..\..\..\..\third_party\wlauth\bin\win32\static;..\..\..\..\third_party_open\pthreads\bin\win32;;..\..\..\..\utils_lgpl\timers\lib\$(ConfigurationName);..\..\..\..\utils_lgpl\rd_token\lib\$(ConfigurationName)" IgnoreDefaultLibraryNames="libc.lib;libcmtd.lib;msvcrtd.lib;libcmt.lib" SubSystem="subSystemConsole" AdditionalDependencies="rd_token.lib timers.lib pthreadVCE2.lib wsock32.lib netapi32.lib comctl32.lib user32.lib advapi32.lib comdlg32.lib  libiomp5md.lib WbeMuuid.lib ole32.lib oleaut32.lib wsock32.lib netapi32.lib comctl32.lib user32.lib advapi32.lib comdlg32.lib gdi32.lib winspool.lib"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+		<File RelativePath="..\delwaq1_version_number\include\resource.h"/>
+		<File RelativePath="..\delwaq1_version_number\include\version_number.rc"/></Filter>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath=".\src\block.f"/>
+		<File RelativePath=".\src\dlwq00.f"/>
+		<File RelativePath=".\src\getidentification.f"/></Filter></Files>
+	<Globals/></VisualStudioProject>

@@ -1,0 +1,127 @@
+#! /bin/sh
+
+#-------------------------------------------------------------------------------
+#   WL Build Environment Setup
+#   Dot this file before the first make.
+#
+#   Usage: . setup [-csv] <platform>
+#   	    	-c  	Continue after compile errors
+#   	    	-i  	Do not depend on includes (dangerous)
+#   	    	-s  	Do not use platform subdirectories for targets
+#   	    	-v  	Print all compile/link actions
+#
+#   Irv.Elshoff@deltares.nl
+#   1 nov 04
+#
+#   Copyright (C) 2004, Deltares
+#-------------------------------------------------------------------------------
+
+
+if [ "$SHLVL" -ne 1 ]; then
+    echo "Warning: Be sure you are dotting this file rather than executing it"
+fi
+
+
+envar_defaults () {
+    export MAKE_HOME=`/bin/pwd`
+    export MAKE_CONTINUE='NO'
+    export MAKE_INCLUDES='YES'
+    export MAKE_TARGETDIR=''
+    export MAKE_VERBOSE='NO'
+    export MAKE_PLATFORM=''
+    }
+
+
+envar_unset () {
+    unset MAKE_HOME
+    unset MAKE_CONTINUE
+    unset MAKE_INCLUDES
+    unset MAKE_TARGETDIR
+    unset MAKE_VERBOSE
+    unset MAKE_PLATFORM
+    }
+
+
+usage () {
+    echo "Usage: . setup [-cisv] <platform>"
+    }
+
+
+setup () {
+    subdirs='YES'
+
+    opts=`getopt -o cisv -- "$@"`
+
+    if [ $? -ne 0 ]; then
+	usage
+	envar_unset
+	return
+    fi
+
+    eval set -- "$opts"
+
+    envar_defaults
+
+    while true; do
+	case "$1" in
+    	    -c)
+    		MAKE_CONTINUE='YES'
+		shift
+		;;
+    	    -i)
+    		MAKE_INCLUDES='NO'
+		shift
+		;;
+    	    -s)
+    		subdirs='NO'
+		shift
+		;;
+    	    -v)
+    		MAKE_VERBOSE='YES'
+		shift
+		;;
+	    --)
+		shift
+		break
+		;;
+	    *)
+		echo "Error in parsing command-line arguments"
+	    	envar_unset
+		return
+		;;
+	esac
+    done
+
+    if [ $# -ne 1 ]; then
+    	usage
+	envar_unset
+	return
+    fi
+
+    MAKE_PLATFORM="$1"
+    
+    if [ ! -r "make/platform/$MAKE_PLATFORM.mkf" ]; then
+    	echo "Cannot find make definitions for platform \"$MAKE_PLATFORM\""
+	envar_unset
+	return
+    fi
+    
+    if [ ! -x "make/platform/$MAKE_PLATFORM.sh" ]; then
+    	echo "Cannot find executable shell init for platform \"$MAKE_PLATFORM\""
+	envar_unset
+	return
+    fi
+
+    if [ $subdirs = 'YES' ]; then
+    	MAKE_TARGETDIR="$MAKE_PLATFORM"
+    else
+    	MAKE_TARGETDIR='.'
+    fi
+
+    . "make/platform/$MAKE_PLATFORM.sh"
+
+    PATH="$MAKE_HOME/scripts:$PATH"
+    }
+
+
+setup $*

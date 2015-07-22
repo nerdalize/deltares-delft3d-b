@@ -1,0 +1,22 @@
+#! /usr/bin/perl
+
+use strict;
+use warnings;
+
+my %bindings = ();
+my $exitcode = 0;
+
+while (<STDIN>) {
+    my ($id, $xx, $role, $left, $arrow, $right) = split;
+    if (defined $bindings{$left} && $bindings{$left} ne $right) {
+        print "Conflict: $left bound to $bindings{$left} and $right\n";
+        $exitcode = 1;
+        }
+    else {
+        $bindings{$left} = $right;
+        }
+    }
+
+exit $exitcode;
+
+
