@@ -1,9 +1,9 @@
 # deltares-delft3d
-![Alt text](http://walrus.wr.usgs.gov/coastal_processes/sfbaycoastalsys/sfbight/images/NestedGrid.jpg "Optional title")
+![Delft3D](http://walrus.wr.usgs.gov/coastal_processes/sfbaycoastalsys/sfbight/images/NestedGrid.jpg "Delft3D")
 
 Docker container for running Delft3D: a world leading open-source 2D/3D modeling suite to investigate hydrodynamics, sediment transport, morphology and water quality for fluvial, estuarine and coastal environments. 
 
-This repository packages Delft3D into a Docker container, this has several benefits:
+This repository packages Delft3D into a [Docker](https://www.docker.com/) container, this has several benefits:
 
 - Run modeling jobs on any machine that accepts Docker containers (localhost, Nerdalize, Amazon etc)
 - The steps required to start a job are the same regardless of the underlying infrastructure
