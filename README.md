@@ -13,3 +13,27 @@ This repository packages Delft3D into a [Docker](https://www.docker.com/) contai
 The Deltares Delft3D container requires a Docker running on a linux host (Boot2Docker, Ubuntu, CentOS etc) and a Docker client that is able to connect to this host. Instructions for installing Docker can be found [here](https://docs.docker.com/installation/)
 
 ## Getting Started
+Delft3D comes with several examples that we can use to demonstrate the usefullness of this container:
+
+1. We'll first need something to model, the Deltares Open Source Software (OSS) communites provides a basic example but requires you to create an [account first](http://oss.deltares.nl/home). 
+2. Once you've received your credentials, navigate to your favorite working directory and download an example from the Deltares repository: 
+
+   ```
+   cd ~/my-projects
+   wget --user=[YOUR_OSS_USERNAME] --password=[YOUR_OSS_PASSWORD] -r --no-parent https://svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/examples/01_standard/
+   ```
+3. Then navigate to the example directory and run the Delft3D Docker container. The current working directory (i.e the example) is mounted as a volume into the container using the `pwd` command and the Docker -v option:
+ 
+   ```
+   cd svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/examples/01_standard/
+   docker run -v `pwd`:/job quay.io/nerdalize/deltares-delft3d:5.0.1
+   ```
+4. The output should finish with `0 errors and 0 warnings` and the current working directory will contain the newly created output files: 
+
+   ```
+   tri-diag.f34
+trih-f34.dat
+trih-f34.def
+trim-f34.dat
+trim-f34.def
+   ```
