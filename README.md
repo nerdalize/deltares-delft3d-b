@@ -5,7 +5,7 @@ Docker container for running Delft3D: a world leading open-source 2D/3D modeling
 
 This repository packages Delft3D into a [Docker](https://www.docker.com/) container, this has several benefits:
 
-- It is possible to run modeling jobs on any machine that accepts Docker containers (localhost, Nerdalize, Amazon etc)
+- It is possible to run modeling jobs on any machine thas has Docker (localhost, Nerdalize, Amazon etc)
 - The steps required to start a job are the same regardless of the underlying infrastructure
 - Getting started with Delft3D no longer requires manual compilation and configuration 
 
