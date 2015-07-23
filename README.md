@@ -26,7 +26,7 @@ Delft3D comes with several examples that we can use to demonstrate the usefullne
  
    ```
    cd svn.oss.deltares.nl/repos/delft3d/tags/5.01.00.2163/examples/01_standard/
-   docker run -v `pwd`:/job quay.io/nerdalize/deltares-delft3d:5.0.1
+   docker run -v $(pwd):/job quay.io/nerdalize/deltares-delft3d:5.0.1
    ```
 4. The output should finish with `0 errors and 0 warnings` and the current working directory will contain the newly created output files: 
 
