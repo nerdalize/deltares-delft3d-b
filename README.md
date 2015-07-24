@@ -37,3 +37,10 @@ trih-f34.def
 trim-f34.dat
 trim-f34.def
    ```
+## Debugging the Delft3D Container
+In order to make debugging easier it is possible to step inside the container, this gives full access to the filesystem and Delft3D binaries allowing you to read log files or fiddle with parameters. To do this run the following:
+
+```
+docker run -it -v $(pwd):/job deltares-delft3d bash
+```
+
